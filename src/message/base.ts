@@ -14,7 +14,7 @@ export function generatePadronizedMessage(guild: Guild, queue?: MusicQueue): Mes
 		color: getColor(queue?.nowPlaying?.source),
 		description: generateDescription(queue),
 		image: {
-			url: queue?.nowPlaying?.thumbnail ?? 'https://i.imgur.com/CT5q8dq.png',
+			url: queue?.nowPlaying?.thumbnail ?? 'https://i.imgur.com/9D2qEgU.png',
 		},
 		footer: generateFooter(guild, queue),
 	};
@@ -26,11 +26,12 @@ export function generatePadronizedMessage(guild: Guild, queue?: MusicQueue): Mes
 	};
 }
 
+let antiSpamCounter = 0;
 let antiSpam: NodeJS.Timeout | null = null;
 let lastQueue: MusicQueue | null = null;
 
 export async function editQueueMessage(queue?: MusicQueue) {
-	if (antiSpam && queue) {
+	if (antiSpamCounter > 2 && queue) {
 		lastQueue = queue;
 		return;
 	}
@@ -38,11 +39,13 @@ export async function editQueueMessage(queue?: MusicQueue) {
 	const message = container.resolve<Message>(kMessage);
 
 	await message.edit(generatePadronizedMessage(message.guild!, queue));
+	antiSpamCounter++;
 
 	if (queue) {
 		// eslint-disable-next-line require-atomic-updates
 		antiSpam = setTimeout(() => {
 			antiSpam = null;
+			antiSpamCounter = 0;
 			void editQueueMessage(lastQueue!);
 		}, 5_000);
 	}
