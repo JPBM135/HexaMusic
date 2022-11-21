@@ -15,13 +15,9 @@ export const ReadyEvent = {
 			resolveEnv(EnvironmentalVariables.QueryChannelId),
 		)) as GuildTextBasedChannel;
 
+		console.log(`Query channel registered: ${QueryChannel.name}`);
+
 		container.register(kChannel, { useValue: QueryChannel });
-
-		const ErrorChannel = (await client.channels.fetch(
-			resolveEnv(EnvironmentalVariables.ErrorChannelId),
-		)) as GuildTextBasedChannel;
-
-		container.register(kErrorChannel, { useValue: ErrorChannel });
 
 		const QueryMessage = await QueryChannel.messages
 			.fetch(resolveEnv(EnvironmentalVariables.QueryMessageId))
@@ -32,10 +28,24 @@ export const ReadyEvent = {
 			container.register(kMessage, { useValue: message });
 		}
 
+		console.log(`Query message registered: ${QueryMessage?.id}`);
+
 		container.register(kMessage, { useValue: QueryMessage });
 
 		const SpotifyClient = new SpotifyApi(client);
 
+		console.log('Spotify client registered');
+
 		container.register(kSpotify, { useValue: SpotifyClient });
+
+		if (resolveEnv(EnvironmentalVariables.ErrorChannelId)) {
+			const ErrorChannel = (await client.channels.fetch(
+				resolveEnv(EnvironmentalVariables.ErrorChannelId),
+			)) as GuildTextBasedChannel;
+
+			container.register(kErrorChannel, { useValue: ErrorChannel });
+
+			console.log(`Error channel registered: ${ErrorChannel.name}`);
+		}
 	},
 };
