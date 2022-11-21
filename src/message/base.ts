@@ -27,7 +27,6 @@ export function generatePadronizedMessage(guild: Guild, queue?: MusicQueue): Mes
 }
 
 let antiSpamCounter = 0;
-let antiSpam: NodeJS.Timeout | null = null;
 let lastQueue: MusicQueue | null = null;
 
 export async function editQueueMessage(queue?: MusicQueue) {
@@ -43,10 +42,9 @@ export async function editQueueMessage(queue?: MusicQueue) {
 
 	if (queue) {
 		// eslint-disable-next-line require-atomic-updates
-		antiSpam = setTimeout(() => {
-			antiSpam = null;
+		setTimeout(() => {
 			antiSpamCounter = 0;
 			void editQueueMessage(lastQueue!);
-		}, 5_000);
+		}, 5_000).unref();
 	}
 }
