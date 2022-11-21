@@ -27,20 +27,18 @@ export function generatePadronizedMessage(guild: Guild, queue?: MusicQueue): Mes
 }
 
 let antiSpamCounter = 0;
-let lastQueue: MusicQueue | null = null;
+let lastQueue: MusicQueue | null | undefined = null;
 
 export async function editQueueMessage(queue?: MusicQueue) {
-	if (antiSpamCounter > 2 && queue) {
-		lastQueue = queue;
-		return;
-	}
+	lastQueue = queue;
+	if (antiSpamCounter > 2) return;
 
 	const message = container.resolve<Message>(kMessage);
 
 	await message.edit(generatePadronizedMessage(message.guild!, queue));
 	antiSpamCounter++;
 
-	if (queue) {
+	if (antiSpamCounter > 2 && queue) {
 		// eslint-disable-next-line require-atomic-updates
 		setTimeout(() => {
 			antiSpamCounter = 0;
