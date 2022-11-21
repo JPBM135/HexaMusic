@@ -31,7 +31,7 @@ let lastQueue: MusicQueue | null | undefined = null;
 
 export async function editQueueMessage(queue?: MusicQueue) {
 	lastQueue = queue;
-	if (antiSpamCounter > 2) return;
+	if (antiSpamCounter > 2 && queue) return;
 
 	const message = container.resolve<Message>(kMessage);
 
