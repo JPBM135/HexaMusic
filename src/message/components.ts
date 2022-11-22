@@ -148,7 +148,7 @@ export function generatePadronizedComponents(disabled = true, manager?: MusicQue
 				custom_id: 'queue:effects',
 				type: ComponentType.StringSelect,
 				disabled,
-				max_values: 1,
+				max_values: 2,
 				options: Object.keys(AudioFilterTypes).map(
 					(effect) =>
 						({

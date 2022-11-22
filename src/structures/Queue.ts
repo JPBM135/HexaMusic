@@ -147,6 +147,10 @@ export class MusicQueue {
 		);
 	}
 
+	private get nowPlayingResource() {
+		return this.nowPlaying?.resource ?? null;
+	}
+
 	public async connect() {
 		if (!this.voiceChannel.joinable) {
 			return sendMessage(`${Emojis.RedX} | Eu não tenho permissão para entrar nesse canal de voz!`, EmbedType.Error);
@@ -316,6 +320,10 @@ export class MusicQueue {
 			this.player?.unpause();
 			this.states.paused = false;
 
+			if (this.nowPlayingResource?.playStream.isPaused()) {
+				this.nowPlayingResource?.playStream.resume();
+			}
+
 			if (this.timeouts.paused) {
 				clearTimeout(this.timeouts.paused);
 				this.timeouts.paused = null;
@@ -330,6 +338,10 @@ export class MusicQueue {
 			this.destroy();
 			void sendMessage(`${Emojis.Leave} | Música pausada por muito tempo, saindo do canal de voz!`);
 		}, EMPTY_CHANNEL_TIMEOUT);
+
+		if (!this.nowPlayingResource?.playStream.isPaused()) {
+			this.nowPlayingResource?.playStream.pause();
+		}
 
 		this.states.paused = true;
 
@@ -437,10 +449,10 @@ export class MusicQueue {
 	}
 
 	public async setEffects(interaction: SelectMenuInteraction) {
-		const effects = interaction.values[0];
+		const effects = interaction.values;
 
 		this.audioEffects.reset();
-		this.audioEffects.addFilter(effects! as AudioFilterTypes);
+		for (const efc of effects) this.audioEffects.addFilter(efc! as AudioFilterTypes);
 
 		if (this.isPlaying()) {
 			this.nowPlaying.changeFilter(this.audioEffects);
@@ -888,6 +900,7 @@ export class MusicQueue {
 
 		this.player?.on('error', (error) => {
 			if (error.message.toLowerCase().includes('premature') && this.states.skipping) {
+				console.error(error);
 				return;
 			}
 
