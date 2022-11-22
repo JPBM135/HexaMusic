@@ -48,6 +48,7 @@ interface QueueStates {
 	autoplay: boolean;
 	paused: boolean;
 	repeat: RepeatModes;
+	skipping: number | null;
 }
 
 export enum RepeatModes {
@@ -107,6 +108,7 @@ export class MusicQueue {
 			paused: false,
 			repeat: RepeatModes.Off,
 			autoplay: false,
+			skipping: null,
 		};
 
 		this.timeouts = {
@@ -275,6 +277,7 @@ export class MusicQueue {
 		}
 
 		const oldPlaying = this.nowPlaying;
+		this.states.skipping = Date.now();
 
 		this.nowPlaying = null;
 		void this.checkQueue();
@@ -873,6 +876,10 @@ export class MusicQueue {
 		});
 
 		this.player?.on('error', (error) => {
+			if (error.message.includes('Premature close') && Date.now() - this.states.skipping! < 2_000) {
+				return;
+			}
+
 			console.error(error);
 			void sendErrorMessage(error);
 			this.nowPlaying = null;
