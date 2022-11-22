@@ -31,6 +31,7 @@ import { kQueues, kSpotify } from '../tokens.js';
 import { conditionalArrayReverse } from '../utils/array.js';
 import { formatDate } from '../utils/date.js';
 import { promisifyEnterState } from '../utils/enterState.js';
+import { formatPlaylistMessage } from '../utils/formatters.js';
 import { clearQuery, findFlags, findQueryMode } from '../utils/query.js';
 import { EmbedType, sendErrorMessage, sendInteraction, sendMessage } from '../utils/textChannel.js';
 import AudioFilters, { type AudioFilterTypes } from './AudioFilters.js';
@@ -491,15 +492,15 @@ export class MusicQueue {
 			this.queue.push(...conditionalArrayReverse(musics, inverse));
 
 			await sendMessage(
-				[
-					`${Emojis.Playlist} | ${inlineCode(
-						String(playlist.tracks.total),
-					)} músicas adicionadas da playlist ${hyperlink(
-						inlineCode(playlist.name),
-						playlist.external_urls.spotify,
-					)} de ${hyperlink(inlineCode(playlist.owner.display_name!), playlist.owner.external_urls.spotify)}!`,
-					`> Duração total: ${inlineCode(formatDate(musics.reduce((acc, cur) => acc + cur.duration, 0)))}`,
-				].join('\n'),
+				formatPlaylistMessage({
+					channelName: playlist.owner.display_name ?? playlist.name,
+					playlistName: playlist.name,
+					playlistUrl: playlist.external_urls.spotify,
+					channelUrl: playlist.owner.external_urls.spotify,
+					duration: musics.reduce((acc, cur) => acc + cur.duration, 0),
+					inverse,
+					trackCount: musics.length,
+				}),
 			);
 			return true;
 		} catch (error) {
@@ -545,16 +546,15 @@ export class MusicQueue {
 			this.queue.push(...conditionalArrayReverse(musics, inverse));
 
 			await sendMessage(
-				[
-					`${Emojis.Playlist} | ${inlineCode(String(album.tracks.total))} músicas adicionadas do álbum ${hyperlink(
-						inlineCode(album.name),
-						album.external_urls.spotify,
-					)} de ${hyperlink(
-						inlineCode(album.artists.map((artist) => artist.name).join(', ')),
-						album.artists.at(0)?.external_urls.spotify ?? album.external_urls.spotify,
-					)}!`,
-					`> Duração total: ${inlineCode(formatDate(musics.reduce((acc, cur) => acc + cur.duration, 0)))}`,
-				].join('\n'),
+				formatPlaylistMessage({
+					channelName: album.artists.map((artist) => artist.name).join(', '),
+					playlistName: album.name,
+					playlistUrl: album.external_urls.spotify,
+					channelUrl: album.artists.at(0)!.external_urls.spotify,
+					duration: musics.reduce((acc, cur) => acc + cur.duration, 0),
+					inverse,
+					trackCount: musics.length,
+				}),
 			);
 			return true;
 		} catch (error) {
@@ -600,15 +600,15 @@ export class MusicQueue {
 			this.queue.push(...conditionalArrayReverse(musics, inverse));
 
 			await sendMessage(
-				[
-					`${Emojis.Playlist} | ${inlineCode(
-						String(artist.tracks.length),
-					)} músicas adicionadas das top músicas de ${hyperlink(
-						inlineCode(artist.name),
-						artist.external_urls.spotify,
-					)}!`,
-					`> Duração total: ${inlineCode(formatDate(musics.reduce((acc, cur) => acc + cur.duration, 0)))}`,
-				].join('\n'),
+				formatPlaylistMessage({
+					channelName: artist.name,
+					playlistName: artist.name,
+					playlistUrl: artist.external_urls.spotify,
+					channelUrl: artist.external_urls.spotify,
+					duration: musics.reduce((acc, cur) => acc + cur.duration, 0),
+					inverse,
+					trackCount: musics.length,
+				}),
 			);
 			return true;
 		} catch (error) {
@@ -690,12 +690,15 @@ export class MusicQueue {
 			this.queue.push(...conditionalArrayReverse(musics, inverse));
 
 			await sendMessage(
-				[
-					`${Emojis.Playlist} | ${inlineCode(
-						String(playlist.videos.length),
-					)} músicas adicionadas da playlist ${hyperlink(inlineCode(playlist.title!), playlist.url!)}!`,
-					`> Duração total: ${inlineCode(formatDate(musics.reduce((acc, cur) => acc + cur.duration, 0)))}`,
-				].join('\n'),
+				formatPlaylistMessage({
+					channelName: playlist.channel?.name ?? 'Desconhecido',
+					playlistName: playlist.title!,
+					playlistUrl: playlist.url!,
+					channelUrl: playlist.channel?.url ?? 'https://youtube.com',
+					duration: musics.reduce((acc, cur) => acc + cur.duration, 0),
+					inverse,
+					trackCount: musics.length,
+				}),
 			);
 			return true;
 		} catch (error) {
