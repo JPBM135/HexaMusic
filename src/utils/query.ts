@@ -29,18 +29,10 @@ export function findQueryMode(query: string) {
 	return QueryMode.Search;
 }
 
-export function findFlags(query: string, flagsToFind?: undefined): RegExpMatchArray;
-export function findFlags(query: string, flagsToFind: string[]): boolean;
-export function findFlags(query: string, flagsToFind?: string[]) {
-	const flags = query.match(/--\w+/g);
+export function findFlags(query: string, flagsToFind: string[]) {
+	const flags = flagsToFind.flatMap((flag) => {
+		return [`--${flag}`, `-${flag[0]}`];
+	});
 
-	if (!flags) {
-		return [];
-	}
-
-	if (!flagsToFind) {
-		return flags;
-	}
-
-	return flags.some((flag) => flagsToFind.includes(flag));
+	return flags.some((flag) => query.includes(flag));
 }
