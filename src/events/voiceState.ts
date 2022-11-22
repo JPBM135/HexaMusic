@@ -1,4 +1,4 @@
-import type { VoiceState } from 'discord.js';
+import { type VoiceState, channelMention } from 'discord.js';
 import { Emojis } from '../constants.js';
 import { resolveQueue } from '../utils/resolveQueue.js';
 import { sendMessage } from '../utils/textChannel.js';
@@ -12,7 +12,9 @@ export const VoiceStateEvent = {
 
 			if (newState.channel && newState.channel?.id !== queue.voiceChannel.id) {
 				queue.voiceChannel = newState.channel;
-				void sendMessage(`${Emojis.OrangeConnection} | Conectado ao canal de voz **${newState.channel.name}**!`);
+				void sendMessage(
+					`${Emojis.OrangeConnection} | Conectado ao canal de voz ${channelMention(newState.channel.id)}!`,
+				);
 			}
 		}
 	},

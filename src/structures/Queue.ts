@@ -135,6 +135,13 @@ export class MusicQueue {
 		return formatDate(duration);
 	}
 
+	public formatedNowPlaying(music = this.nowPlaying) {
+		return hyperlink(
+			inlineCode(music?.name ?? 'Nada tocando'),
+			music?.originalUrl ?? 'https://www.youtube.com/watch?v=dQw4w9WgXcQ&ab_channel=RickAstley',
+		);
+	}
+
 	public async connect() {
 		if (!this.voiceChannel.joinable) {
 			return sendMessage(`${Emojis.RedX} | Eu não tenho permissão para entrar nesse canal de voz!`, EmbedType.Error);
@@ -255,9 +262,7 @@ export class MusicQueue {
 		this.player?.play(resource);
 
 		void sendMessage(
-			`${Emojis.Play} | Tocando ${inlineCode(this.nowPlaying.name)} pedido por ${userMention(
-				this.nowPlaying.requester.id,
-			)}!`,
+			`${Emojis.Play} | Tocando ${this.formatedNowPlaying()} pedido por ${userMention(this.nowPlaying.requester.id)}!`,
 		);
 
 		void editQueueMessage();
@@ -283,7 +288,7 @@ export class MusicQueue {
 		void this.checkQueue();
 
 		void editQueueMessage();
-		return void sendInteraction(interaction, `${Emojis.Skip} | Pulando ${inlineCode(oldPlaying.name)}!`);
+		return void sendInteraction(interaction, `${Emojis.Skip} | Pulando ${this.formatedNowPlaying(oldPlaying)}!`);
 	}
 
 	public async pause(interaction: ButtonInteraction) {
@@ -296,14 +301,14 @@ export class MusicQueue {
 			this.states.paused = false;
 
 			void editQueueMessage();
-			return void sendInteraction(interaction, `${Emojis.Pause} | Resumindo ${inlineCode(this.nowPlaying.name)}!`);
+			return void sendInteraction(interaction, `${Emojis.Pause} | Resumindo ${this.formatedNowPlaying()}!`);
 		}
 
 		this.player?.pause();
 		this.states.paused = true;
 
 		void editQueueMessage();
-		return void sendInteraction(interaction, `${Emojis.Pause} | Pausando ${inlineCode(this.nowPlaying.name)}!`);
+		return void sendInteraction(interaction, `${Emojis.Pause} | Pausando ${this.formatedNowPlaying()}!`);
 	}
 
 	public async shuffle(interaction: ButtonInteraction) {
