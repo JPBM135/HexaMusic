@@ -100,7 +100,7 @@ export default class SpotifyApi {
 		if (this.rateLimit.rateLimited) {
 			throw new Error(
 				`${Emojis.RedX} | Estamos sendo limitados pela API do Spotify, tente novamente em ${time(
-					new Date(this.rateLimit.retryTimestamp!),
+					new Date(this.rateLimit.retryTimestamp! + Date.now()),
 					TimestampStyles.RelativeTime,
 				)}`,
 			);
@@ -129,9 +129,16 @@ export default class SpotifyApi {
 				);
 			}
 
-			this.SpotifyClient.setAccessToken(this.token);
 			this.token = body.access_token;
+			this.SpotifyClient.setAccessToken(this.token);
 			this.expired = false;
+
+			this.expire = body.expires_in * 1_000;
+
+			setTimeout(() => {
+				this.expired = true;
+			}, this.expire);
+
 			return this.token;
 		}
 
