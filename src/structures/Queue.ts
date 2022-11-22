@@ -31,7 +31,7 @@ import { kQueues, kSpotify } from '../tokens.js';
 import { conditionalArrayReverse } from '../utils/array.js';
 import { formatDate } from '../utils/date.js';
 import { promisifyEnterState } from '../utils/enterState.js';
-import { findFlags, findQueryMode } from '../utils/query.js';
+import { clearQuery, findFlags, findQueryMode } from '../utils/query.js';
 import { EmbedType, sendErrorMessage, sendInteraction, sendMessage } from '../utils/textChannel.js';
 import AudioFilters, { type AudioFilterTypes } from './AudioFilters.js';
 import { Music, VideoSource } from './Songs.js';
@@ -195,30 +195,32 @@ export class MusicQueue {
 		const next = findFlags(queryString, ['next', 'proxima']);
 		const inverse = findFlags(queryString, ['inverse', 'inversa']);
 
+		const cleanQuery = clearQuery(queryString);
+
 		const queryType = findQueryMode(queryString.trim());
 		let found = false;
 
 		switch (queryType) {
 			case QueryMode.YoutubeVideo:
-				found = await this.resolveYoutubeVideo(queryString, requester, next);
+				found = await this.resolveYoutubeVideo(cleanQuery, requester, next);
 				break;
 			case QueryMode.YoutubePlaylist:
-				found = await this.resolveYoutubePlaylist(queryString, requester, inverse);
+				found = await this.resolveYoutubePlaylist(cleanQuery, requester, inverse);
 				break;
 			case QueryMode.SpotifyTrack:
-				found = await this.resolveSpotifyTrack(queryString, requester, next);
+				found = await this.resolveSpotifyTrack(cleanQuery, requester, next);
 				break;
 			case QueryMode.SpotifyAlbum:
-				found = await this.resolveSpotifyAlbum(queryString, requester, inverse);
+				found = await this.resolveSpotifyAlbum(cleanQuery, requester, inverse);
 				break;
 			case QueryMode.SpotifyArtist:
-				found = await this.resolveSpotifyArtist(queryString, requester, inverse);
+				found = await this.resolveSpotifyArtist(cleanQuery, requester, inverse);
 				break;
 			case QueryMode.SpotifyPlaylist:
-				found = await this.resolveSpotifyPlaylist(queryString, requester, inverse);
+				found = await this.resolveSpotifyPlaylist(cleanQuery, requester, inverse);
 				break;
 			case QueryMode.Search:
-				found = await this.resolveSearch(queryString, requester, next);
+				found = await this.resolveSearch(cleanQuery, requester, next);
 				break;
 			default:
 				void sendMessage(
