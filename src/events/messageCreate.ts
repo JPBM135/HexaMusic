@@ -5,7 +5,7 @@ import { Emojis, EnvironmentalVariables } from '../constants.js';
 import { MusicQueue } from '../structures/Queue.js';
 import { kQueues } from '../tokens.js';
 import { resolveEnv } from '../utils/env.js';
-import { sendMessage } from '../utils/textChannel.js';
+import { EmbedType, sendMessage } from '../utils/textChannel.js';
 
 export const MessageCreateEvent = {
 	name: 'messageCreate',
@@ -19,9 +19,11 @@ export const MessageCreateEvent = {
 		if (message.channel.id !== resolveEnv(EnvironmentalVariables.QueryChannelId)) return;
 
 		if (!message.member?.voice?.channel) {
-			await sendMessage(`${Emojis.RedX} | Você precisa estar em um canal de voz!`);
+			await sendMessage(`${Emojis.RedX} | Você precisa estar em um canal de voz!`, EmbedType.Error);
 			return;
 		}
+
+		setTimeout(async () => message.delete(), 500);
 
 		const queues = container.resolve<Collection<string, MusicQueue>>(kQueues);
 
@@ -30,12 +32,15 @@ export const MessageCreateEvent = {
 			return new MusicQueue(message.guild, voice!);
 		});
 
+		if (queue.voiceChannel.id !== message.member?.voice.channel.id) {
+			await sendMessage(`${Emojis.RedX} | Você precisa estar no mesmo canal de voz que eu!`, EmbedType.Error);
+			return;
+		}
+
 		if (!queue.isConnected()) {
 			await queue.connect();
 		}
 
 		await queue.query(message.content, message.member);
-
-		setTimeout(async () => message.delete(), 1_000);
 	},
 };

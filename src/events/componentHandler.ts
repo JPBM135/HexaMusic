@@ -1,7 +1,9 @@
 import type { Interaction, Collection } from 'discord.js';
 import { container } from 'tsyringe';
+import { Emojis } from '../constants.js';
 import { MusicQueue } from '../structures/Queue.js';
 import { kQueues } from '../tokens.js';
+import { EmbedType, sendInteraction } from '../utils/textChannel.js';
 
 type Buttons =
 	| 'autoplay'
@@ -30,6 +32,24 @@ export const ComponentHandlerEvent = {
 			const voice = interaction.member?.voice.channel;
 			return new MusicQueue(interaction.guild, voice!);
 		});
+
+		if (!queue.isConnected()) {
+			await sendInteraction(
+				interaction,
+				`${Emojis.RedX} | Não estou conectado a nenhum canal de voz!`,
+				EmbedType.Error,
+			);
+			return;
+		}
+
+		if (queue.voiceChannel.id !== interaction.member?.voice.channelId) {
+			await sendInteraction(
+				interaction,
+				`${Emojis.RedX} | Você precisa estar no mesmo canal de voz que eu!`,
+				EmbedType.Error,
+			);
+			return;
+		}
 
 		if (interaction.isSelectMenu()) {
 			await queue.setEffects(interaction);
