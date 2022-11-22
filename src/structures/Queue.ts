@@ -4,7 +4,6 @@ import {
 	type AudioPlayer,
 	joinVoiceChannel,
 	VoiceConnectionStatus,
-	entersState,
 	createAudioPlayer,
 	NoSubscriberBehavior,
 	AudioPlayerStatus,
@@ -26,10 +25,12 @@ import { container } from 'tsyringe';
 // @ts-expect-error: Missing types
 import YtSr from 'youtube-sr';
 import ytdl from 'ytdl-core';
-import { Emojis, EMPTY_CHANNEL_TIMEOUT, EMPTY_QUEUE_TIMEOUT, SPOTIFY_REGEX, YOUTUBE_REGEX } from '../constants.js';
+import { Emojis, EMPTY_CHANNEL_TIMEOUT, EMPTY_QUEUE_TIMEOUT } from '../constants.js';
 import { editQueueMessage } from '../message/base.js';
 import { kQueues, kSpotify } from '../tokens.js';
 import { formatDate } from '../utils/date.js';
+import { promisifyEnterState } from '../utils/enterState.js';
+import { findFlags, findQueryMode } from '../utils/query.js';
 import { EmbedType, sendErrorMessage, sendInteraction, sendMessage } from '../utils/textChannel.js';
 import AudioFilters, { type AudioFilterTypes } from './AudioFilters.js';
 import { Music, VideoSource } from './Songs.js';
@@ -135,7 +136,7 @@ export class MusicQueue {
 		return formatDate(duration);
 	}
 
-	public formatedNowPlaying(music = this.nowPlaying) {
+	public formattedNowPlaying(music = this.nowPlaying) {
 		return hyperlink(
 			inlineCode(music?.name ?? 'Nada tocando'),
 			music?.originalUrl ?? 'https://www.youtube.com/watch?v=dQw4w9WgXcQ&ab_channel=RickAstley',
@@ -158,7 +159,8 @@ export class MusicQueue {
 
 		this.connectionListeners();
 
-		if (!(await this.promisifyEnterState(VoiceConnectionStatus.Ready, 10_000))) {
+		if (!(await promisifyEnterState(this.connection, VoiceConnectionStatus.Ready, 10_000))) {
+			this.destroy();
 			return sendMessage(`${Emojis.RedX} | Não foi possível conectar ao canal de voz!`, EmbedType.Error);
 		}
 
@@ -189,18 +191,20 @@ export class MusicQueue {
 			return void sendMessage(`${Emojis.RedX} | Você precisa especificar uma música para pesquisar!`, EmbedType.Error);
 		}
 
-		const queryType = this.findQueryMode(queryString.trim());
+		const next = findFlags(queryString, ['next', 'proxima']);
+
+		const queryType = findQueryMode(queryString.trim());
 		let found = false;
 
 		switch (queryType) {
 			case QueryMode.YoutubeVideo:
-				found = await this.resolveYoutubeVideo(queryString, requester);
+				found = await this.resolveYoutubeVideo(queryString, requester, next);
 				break;
 			case QueryMode.YoutubePlaylist:
 				found = await this.resolveYoutubePlaylist(queryString, requester);
 				break;
 			case QueryMode.SpotifyTrack:
-				found = await this.resolveSpotifyTrack(queryString, requester);
+				found = await this.resolveSpotifyTrack(queryString, requester, next);
 				break;
 			case QueryMode.SpotifyAlbum:
 				found = await this.resolveSpotifyAlbum(queryString, requester);
@@ -212,7 +216,7 @@ export class MusicQueue {
 				found = await this.resolveSpotifyPlaylist(queryString, requester);
 				break;
 			case QueryMode.Search:
-				found = await this.resolveSearch(queryString, requester);
+				found = await this.resolveSearch(queryString, requester, next);
 				break;
 			default:
 				void sendMessage(
@@ -236,6 +240,7 @@ export class MusicQueue {
 			this.nowPlaying = null;
 			this.timeouts.noSongs = setTimeout(() => {
 				this.destroy();
+				void sendMessage(`${Emojis.Leave} | Fila vazia por muito tempo, saindo do canal de voz!`);
 			}, EMPTY_QUEUE_TIMEOUT);
 			void editQueueMessage();
 			return;
@@ -245,6 +250,7 @@ export class MusicQueue {
 			this.nowPlaying = null;
 			this.timeouts.emptyChannel = setTimeout(() => {
 				this.destroy();
+				void sendMessage(`${Emojis.Leave} | Canal de voz vazio por muito tempo, saindo do canal de voz!`);
 			}, EMPTY_CHANNEL_TIMEOUT);
 		}
 
@@ -262,7 +268,7 @@ export class MusicQueue {
 		this.player?.play(resource);
 
 		void sendMessage(
-			`${Emojis.Play} | Tocando ${this.formatedNowPlaying()} pedido por ${userMention(this.nowPlaying.requester.id)}!`,
+			`${Emojis.Play} | Tocando ${this.formattedNowPlaying()} pedido por ${userMention(this.nowPlaying.requester.id)}!`,
 		);
 
 		void editQueueMessage();
@@ -276,6 +282,8 @@ export class MusicQueue {
 		}
 	}
 
+	// #region Buttons
+
 	public async skip(interaction: ButtonInteraction) {
 		if (!this.nowPlaying) {
 			return void sendInteraction(interaction, `${Emojis.RedX} | Não há nada tocando no momento!`, EmbedType.Error);
@@ -288,7 +296,7 @@ export class MusicQueue {
 		void this.checkQueue();
 
 		void editQueueMessage();
-		return void sendInteraction(interaction, `${Emojis.Skip} | Pulando ${this.formatedNowPlaying(oldPlaying)}!`);
+		return void sendInteraction(interaction, `${Emojis.Skip} | Pulando ${this.formattedNowPlaying(oldPlaying)}!`);
 	}
 
 	public async pause(interaction: ButtonInteraction) {
@@ -300,15 +308,25 @@ export class MusicQueue {
 			this.player?.unpause();
 			this.states.paused = false;
 
+			if (this.timeouts.paused) {
+				clearTimeout(this.timeouts.paused);
+				this.timeouts.paused = null;
+			}
+
 			void editQueueMessage();
-			return void sendInteraction(interaction, `${Emojis.Pause} | Resumindo ${this.formatedNowPlaying()}!`);
+			return void sendInteraction(interaction, `${Emojis.Pause} | Resumindo ${this.formattedNowPlaying()}!`);
 		}
 
 		this.player?.pause();
+		this.timeouts.paused = setTimeout(() => {
+			this.destroy();
+			void sendMessage(`${Emojis.Leave} | Música pausada por muito tempo, saindo do canal de voz!`);
+		}, EMPTY_CHANNEL_TIMEOUT);
+
 		this.states.paused = true;
 
 		void editQueueMessage();
-		return void sendInteraction(interaction, `${Emojis.Pause} | Pausando ${this.formatedNowPlaying()}!`);
+		return void sendInteraction(interaction, `${Emojis.Pause} | Pausando ${this.formattedNowPlaying()}!`);
 	}
 
 	public async shuffle(interaction: ButtonInteraction) {
@@ -424,43 +442,16 @@ export class MusicQueue {
 		return void sendInteraction(interaction, `${Emojis.Music} | Efeitos definidos com sucesso!`);
 	}
 
+	// #endregion
+
 	private clearQueueTimeouts() {
-		if (this.timeouts.noSongs) clearTimeout(this.timeouts.noSongs);
-		if (this.timeouts.emptyChannel) clearTimeout(this.timeouts.emptyChannel);
-		if (this.timeouts.paused) clearTimeout(this.timeouts.paused);
-
-		this.timeouts.noSongs = null;
-		this.timeouts.emptyChannel = null;
-		this.timeouts.paused = null;
+		for (const [key, timeout] of Object.entries(this.timeouts) as [keyof Timeouts, NodeJS.Timeout][]) {
+			clearTimeout(timeout);
+			this.timeouts[key] = null;
+		}
 	}
 
-	private findQueryMode(query: string) {
-		if (YOUTUBE_REGEX.playlist.test(query)) {
-			return QueryMode.YoutubePlaylist;
-		}
-
-		if (YOUTUBE_REGEX.video.test(query)) {
-			return QueryMode.YoutubeVideo;
-		}
-
-		if (SPOTIFY_REGEX.playlist_no_query.test(query)) {
-			return QueryMode.SpotifyPlaylist;
-		}
-
-		if (SPOTIFY_REGEX.track_no_query.test(query)) {
-			return QueryMode.SpotifyTrack;
-		}
-
-		if (SPOTIFY_REGEX.album_no_query.test(query)) {
-			return QueryMode.SpotifyAlbum;
-		}
-
-		if (SPOTIFY_REGEX.artist_no_query.test(query)) {
-			return QueryMode.SpotifyArtist;
-		}
-
-		return QueryMode.Search;
-	}
+	// #region Resolve
 
 	private async resolveSpotifyPlaylist(query: string, requester: GuildMember) {
 		try {
@@ -622,7 +613,7 @@ export class MusicQueue {
 		}
 	}
 
-	private async resolveSpotifyTrack(query: string, requester: GuildMember) {
+	private async resolveSpotifyTrack(query: string, requester: GuildMember, next: boolean) {
 		try {
 			const SpotifyApi = container.resolve<SpotifyApi>(kSpotify);
 
@@ -640,7 +631,8 @@ export class MusicQueue {
 				requester,
 			);
 
-			this.queue.push(music);
+			// eslint-disable-next-line @typescript-eslint/no-unused-expressions
+			next ? this.queue.unshift(music) : this.queue.push(music);
 
 			await sendMessage(
 				`${Emojis.Track} | Música ${hyperlink(inlineCode(track.name), track.external_urls.spotify)} de ${hyperlink(
@@ -708,7 +700,7 @@ export class MusicQueue {
 		}
 	}
 
-	private async resolveYoutubeVideo(query: string, requester: GuildMember) {
+	private async resolveYoutubeVideo(query: string, requester: GuildMember, next: boolean) {
 		try {
 			const video = await getVideo(query);
 
@@ -729,7 +721,8 @@ export class MusicQueue {
 				requester,
 			);
 
-			this.queue.push(music);
+			// eslint-disable-next-line @typescript-eslint/no-unused-expressions
+			next ? this.queue.unshift(music) : this.queue.push(music);
 
 			await sendMessage(
 				`${Emojis.Track} | Música ${hyperlink(inlineCode(video.title ?? 'Nenhum titúlo'), video.url)} de ${hyperlink(
@@ -744,7 +737,7 @@ export class MusicQueue {
 		}
 	}
 
-	private async resolveSearch(query: string, requester: GuildMember) {
+	private async resolveSearch(query: string, requester: GuildMember, next: boolean) {
 		try {
 			const video = await searchOne(query, 'video', false);
 
@@ -765,7 +758,8 @@ export class MusicQueue {
 				requester,
 			);
 
-			this.queue.push(music);
+			// eslint-disable-next-line @typescript-eslint/no-unused-expressions
+			next ? this.queue.unshift(music) : this.queue.push(music);
 
 			await sendMessage(
 				`${Emojis.Track} | Vídeo ${hyperlink(inlineCode(video.title ?? 'Nenhum titúlo'), video.url)} de ${hyperlink(
@@ -808,6 +802,8 @@ export class MusicQueue {
 
 		void editQueueMessage();
 	}
+
+	// #endregion
 
 	public removeFromQueue(type: 'autoplay' | 'looped') {
 		if (type === 'autoplay') {
@@ -894,14 +890,5 @@ export class MusicQueue {
 		this.player?.on('debug', (message) => {
 			console.log(message);
 		});
-	}
-
-	private async promisifyEnterState(state: VoiceConnectionStatus, timeout: number): Promise<boolean> {
-		try {
-			await entersState(this.connection!, state, timeout);
-			return true;
-		} catch {
-			return false;
-		}
 	}
 }
