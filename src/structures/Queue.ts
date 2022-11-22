@@ -28,6 +28,7 @@ import ytdl from 'ytdl-core';
 import { Emojis, EMPTY_CHANNEL_TIMEOUT, EMPTY_QUEUE_TIMEOUT } from '../constants.js';
 import { editQueueMessage } from '../message/base.js';
 import { kQueues, kSpotify } from '../tokens.js';
+import { conditionalArrayReverse } from '../utils/array.js';
 import { formatDate } from '../utils/date.js';
 import { promisifyEnterState } from '../utils/enterState.js';
 import { findFlags, findQueryMode } from '../utils/query.js';
@@ -192,6 +193,7 @@ export class MusicQueue {
 		}
 
 		const next = findFlags(queryString, ['next', 'proxima']);
+		const inverse = findFlags(queryString, ['inverse', 'inversa']);
 
 		const queryType = findQueryMode(queryString.trim());
 		let found = false;
@@ -201,19 +203,19 @@ export class MusicQueue {
 				found = await this.resolveYoutubeVideo(queryString, requester, next);
 				break;
 			case QueryMode.YoutubePlaylist:
-				found = await this.resolveYoutubePlaylist(queryString, requester);
+				found = await this.resolveYoutubePlaylist(queryString, requester, inverse);
 				break;
 			case QueryMode.SpotifyTrack:
 				found = await this.resolveSpotifyTrack(queryString, requester, next);
 				break;
 			case QueryMode.SpotifyAlbum:
-				found = await this.resolveSpotifyAlbum(queryString, requester);
+				found = await this.resolveSpotifyAlbum(queryString, requester, inverse);
 				break;
 			case QueryMode.SpotifyArtist:
-				found = await this.resolveSpotifyArtist(queryString, requester);
+				found = await this.resolveSpotifyArtist(queryString, requester, inverse);
 				break;
 			case QueryMode.SpotifyPlaylist:
-				found = await this.resolveSpotifyPlaylist(queryString, requester);
+				found = await this.resolveSpotifyPlaylist(queryString, requester, inverse);
 				break;
 			case QueryMode.Search:
 				found = await this.resolveSearch(queryString, requester, next);
@@ -453,7 +455,7 @@ export class MusicQueue {
 
 	// #region Resolve
 
-	private async resolveSpotifyPlaylist(query: string, requester: GuildMember) {
+	private async resolveSpotifyPlaylist(query: string, requester: GuildMember, inverse: boolean) {
 		try {
 			const SpotifyApi = container.resolve<SpotifyApi>(kSpotify);
 
@@ -484,7 +486,7 @@ export class MusicQueue {
 					),
 			);
 
-			this.queue.push(...musics);
+			this.queue.push(...conditionalArrayReverse(musics, inverse));
 
 			await sendMessage(
 				[
@@ -504,7 +506,7 @@ export class MusicQueue {
 		}
 	}
 
-	private async resolveSpotifyAlbum(query: string, requester: GuildMember) {
+	private async resolveSpotifyAlbum(query: string, requester: GuildMember, inverse: boolean) {
 		try {
 			const SpotifyApi = container.resolve<SpotifyApi>(kSpotify);
 
@@ -538,7 +540,7 @@ export class MusicQueue {
 					),
 			);
 
-			this.queue.push(...musics);
+			this.queue.push(...conditionalArrayReverse(musics, inverse));
 
 			await sendMessage(
 				[
@@ -559,7 +561,7 @@ export class MusicQueue {
 		}
 	}
 
-	private async resolveSpotifyArtist(query: string, requester: GuildMember) {
+	private async resolveSpotifyArtist(query: string, requester: GuildMember, inverse: boolean) {
 		try {
 			const SpotifyApi = container.resolve<SpotifyApi>(kSpotify);
 
@@ -593,7 +595,7 @@ export class MusicQueue {
 					),
 			);
 
-			this.queue.push(...musics);
+			this.queue.push(...conditionalArrayReverse(musics, inverse));
 
 			await sendMessage(
 				[
@@ -647,7 +649,7 @@ export class MusicQueue {
 		}
 	}
 
-	private async resolveYoutubePlaylist(query: string, requester: GuildMember) {
+	private async resolveYoutubePlaylist(query: string, requester: GuildMember, inverse: boolean) {
 		try {
 			const playlist = await getPlaylist(query, {
 				fetchAll: true,
@@ -683,7 +685,7 @@ export class MusicQueue {
 					),
 			);
 
-			this.queue.push(...musics);
+			this.queue.push(...conditionalArrayReverse(musics, inverse));
 
 			await sendMessage(
 				[
