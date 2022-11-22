@@ -45,13 +45,14 @@ interface Timeouts {
 	emptyChannel: NodeJS.Timeout | null;
 	noSongs: NodeJS.Timeout | null;
 	paused: NodeJS.Timeout | null;
+	skip: NodeJS.Timeout | null;
 }
 
 interface QueueStates {
 	autoplay: boolean;
 	paused: boolean;
 	repeat: RepeatModes;
-	skipping: number | null;
+	skipping: boolean;
 }
 
 export enum RepeatModes {
@@ -111,13 +112,14 @@ export class MusicQueue {
 			paused: false,
 			repeat: RepeatModes.Off,
 			autoplay: false,
-			skipping: null,
+			skipping: false,
 		};
 
 		this.timeouts = {
 			emptyChannel: null,
 			noSongs: null,
 			paused: null,
+			skip: null,
 		};
 	}
 
@@ -295,7 +297,7 @@ export class MusicQueue {
 		}
 
 		const oldPlaying = this.nowPlaying;
-		this.states.skipping = Date.now();
+		this.skipTimeout();
 
 		this.nowPlaying = null;
 		void this.checkQueue();
@@ -884,7 +886,7 @@ export class MusicQueue {
 		});
 
 		this.player?.on('error', (error) => {
-			if (error.message.includes('Premature close') && Date.now() - this.states.skipping! < 2_000) {
+			if (error.message.includes('Premature close') && this.states.skipping) {
 				return;
 			}
 
@@ -897,5 +899,16 @@ export class MusicQueue {
 		this.player?.on('debug', (message) => {
 			console.log(message);
 		});
+	}
+
+	private skipTimeout() {
+		if (this.timeouts.skip) {
+			clearTimeout(this.timeouts.skip);
+		}
+
+		this.states.skipping = true;
+		setTimeout(() => {
+			this.states.skipping = false;
+		}, 2_000);
 	}
 }
