@@ -638,7 +638,7 @@ export class MusicQueue {
 				`${Emojis.Track} | Música ${hyperlink(inlineCode(track.name), track.external_urls.spotify)} de ${hyperlink(
 					inlineCode(track.artists.map((artist) => artist.name).join(', ')),
 					track.artists.at(0)?.external_urls.spotify ?? track.external_urls.spotify,
-				)} adicionada!`,
+				)} adicionada${next ? ' como próxima' : ''}!`,
 			);
 			return true;
 		} catch (error) {
@@ -728,7 +728,7 @@ export class MusicQueue {
 				`${Emojis.Track} | Música ${hyperlink(inlineCode(video.title ?? 'Nenhum titúlo'), video.url)} de ${hyperlink(
 					inlineCode(video.channel?.name ?? 'Desconhecido'),
 					video.channel?.url ?? 'https://youtube.com',
-				)} adicionada!`,
+				)} adicionada${next ? ' como próxima' : ''}!`,
 			);
 			return true;
 		} catch (error) {
@@ -765,7 +765,7 @@ export class MusicQueue {
 				`${Emojis.Track} | Vídeo ${hyperlink(inlineCode(video.title ?? 'Nenhum titúlo'), video.url)} de ${hyperlink(
 					inlineCode(video.channel?.name ?? 'Desconhecido'),
 					video.channel?.url ?? 'https://youtube.com',
-				)} adicionado!`,
+				)} adicionado${next ? ' como próximo' : ''}!`,
 			);
 			return true;
 		} catch (error) {
