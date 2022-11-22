@@ -40,6 +40,7 @@ export enum Emojis {
 	Leave = '<:icons_leave:1042952079427239936>',
 	Loop = '<:icons_loop:1042951088996888586>',
 	Music = '<:icons_music:1042946184018415696>',
+	OrangeConnection = '<:icons_idelping:1044612147969261579>',
 	Pause = '<:icons_play:1042946188149796874>',
 	Play = '<:icons_pause:1042946185683533895>',
 	Playlist = '<:icons_createchannel:1043283098130989086>',
