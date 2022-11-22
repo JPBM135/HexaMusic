@@ -5,8 +5,8 @@ import type { downloadOptions } from 'ytdl-core';
 import ytdl from 'ytdl-core';
 import { EnvironmentalVariables, YTDL_ARGS } from '../constants.js';
 import { resolveEnv } from '../utils/env.js';
-import { sendErrorMessage } from '../utils/textChannel.js';
 import type AudioFilters from './AudioFilters.js';
+import type { Music } from './Songs.js';
 
 const { opus: OpusTranscoder, FFmpeg: FFmpegTranscoder } = prism;
 
@@ -38,12 +38,16 @@ export class StreamDownloader {
 
 	public opus: Opus.Encoder | null;
 
-	public constructor(url: string, options: YTDLStreamOptions = {}) {
+	public manager: Music;
+
+	public constructor(url: string, manager: Music, options: YTDLStreamOptions = {}) {
 		this.url = url;
 		this.options = options;
 		this.ffmpegArgs = options.encoderArgs ?? [];
 		this.fmt = options.fmt ?? 'bestaudio';
 		this.seek = options.seek ?? 0;
+
+		this.manager = manager;
 
 		this.baseStream = null;
 		this.outputStream = new PassThrough();
@@ -119,13 +123,13 @@ export class StreamDownloader {
 	}
 
 	public destroy(error?: Error) {
-		if (error) void sendErrorMessage(error);
+		if (error) this.manager.manager.player?.emit('error', error);
 		console.log('Destroying stream');
 
-		/* 		this.baseStream?.destroy();
+		this.baseStream?.destroy();
 		this.outputStream?.destroy();
 		this.transcoder?.destroy();
-		this.opus?.destroy(); */
+		this.opus?.destroy();
 	}
 
 	private _createListeners() {

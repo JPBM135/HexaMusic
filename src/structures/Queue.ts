@@ -297,6 +297,7 @@ export class MusicQueue {
 		}
 
 		const oldPlaying = this.nowPlaying;
+		this.states.skipping = true;
 		this.skipTimeout();
 
 		this.nowPlaying = null;
@@ -886,7 +887,7 @@ export class MusicQueue {
 		});
 
 		this.player?.on('error', (error) => {
-			if (error.message.includes('Premature close') && this.states.skipping) {
+			if (error.message.toLowerCase().includes('premature') && this.states.skipping) {
 				return;
 			}
 
@@ -906,7 +907,6 @@ export class MusicQueue {
 			clearTimeout(this.timeouts.skip);
 		}
 
-		this.states.skipping = true;
 		setTimeout(() => {
 			this.states.skipping = false;
 		}, 2_000);
