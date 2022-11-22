@@ -36,3 +36,7 @@ export function findFlags(query: string, flagsToFind: string[]) {
 
 	return flags.some((flag) => query.includes(flag));
 }
+
+export function clearQuery(query: string) {
+	return query.replace(/-{1,2}\w+/g, '').trim();
+}
