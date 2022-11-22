@@ -36,7 +36,7 @@ interface CatchFallbackResponse {
 }
 
 function errorToCodeblock(error: CatchFallbackResponse) {
-	return `\`\`\`json\n${error.body}\n\`\`\``;
+	return ` \`\`\`json\n${error.body}\n\`\`\``;
 }
 
 export default class SpotifyApi {
@@ -86,7 +86,7 @@ export default class SpotifyApi {
 			return false;
 		}
 
-		if (statusCode === 401) {
+		if (statusCode === 400) {
 			this.expired = true;
 			this.token = null;
 			this.expire = null;
