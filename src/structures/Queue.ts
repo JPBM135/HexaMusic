@@ -217,7 +217,7 @@ export class MusicQueue {
 
 		void this.checkQueue();
 
-		return void editQueueMessage(this);
+		return void editQueueMessage();
 	}
 
 	public async checkQueue(): Promise<void> {
@@ -228,7 +228,7 @@ export class MusicQueue {
 			this.timeouts.noSongs = setTimeout(() => {
 				this.destroy();
 			}, EMPTY_QUEUE_TIMEOUT);
-			void editQueueMessage(this);
+			void editQueueMessage();
 			return;
 		}
 
@@ -258,7 +258,7 @@ export class MusicQueue {
 			)}!`,
 		);
 
-		void editQueueMessage(this);
+		void editQueueMessage();
 
 		if (this.queue.length > 0) {
 			void this.queue[1]?.getVideo();
@@ -279,7 +279,7 @@ export class MusicQueue {
 		this.nowPlaying = null;
 		void this.checkQueue();
 
-		void editQueueMessage(this);
+		void editQueueMessage();
 		return void sendInteraction(interaction, `${Emojis.Skip} | Pulando ${inlineCode(oldPlaying.name)}!`);
 	}
 
@@ -292,14 +292,14 @@ export class MusicQueue {
 			this.player?.unpause();
 			this.states.paused = false;
 
-			void editQueueMessage(this);
+			void editQueueMessage();
 			return void sendInteraction(interaction, `${Emojis.Pause} | Resumindo ${inlineCode(this.nowPlaying.name)}!`);
 		}
 
 		this.player?.pause();
 		this.states.paused = true;
 
-		void editQueueMessage(this);
+		void editQueueMessage();
 		return void sendInteraction(interaction, `${Emojis.Pause} | Pausando ${inlineCode(this.nowPlaying.name)}!`);
 	}
 
@@ -314,7 +314,7 @@ export class MusicQueue {
 
 		this.queue = this.queue.sort(() => Math.random() - 0.5);
 
-		void editQueueMessage(this);
+		void editQueueMessage();
 		return void sendInteraction(interaction, `${Emojis.Shuffle} | Fila embaralhada com sucesso!`);
 	}
 
@@ -325,7 +325,7 @@ export class MusicQueue {
 
 		this.queue = this.queue.reverse();
 
-		void editQueueMessage(this);
+		void editQueueMessage();
 		return void sendInteraction(interaction, `${Emojis.Loop} | Fila invertida com sucesso!`);
 	}
 
@@ -334,7 +334,7 @@ export class MusicQueue {
 			this.states.autoplay = false;
 			this.removeFromQueue('autoplay');
 
-			void editQueueMessage(this);
+			void editQueueMessage();
 			return void sendInteraction(interaction, `${Emojis.RedX} | Autoplay desativado!`);
 		}
 
@@ -342,7 +342,7 @@ export class MusicQueue {
 
 		void this.resolveAutoPlay();
 
-		void editQueueMessage(this);
+		void editQueueMessage();
 		return void sendInteraction(interaction, `${Emojis.Stream} | Autoplay ativado!`);
 	}
 
@@ -350,21 +350,21 @@ export class MusicQueue {
 		if (this.states.repeat === RepeatModes.Off) {
 			this.states.repeat = RepeatModes.Music;
 
-			void editQueueMessage(this);
+			void editQueueMessage();
 			return void sendInteraction(interaction, `${Emojis.RepeatOne} | Repetindo música!`);
 		}
 
 		if (this.states.repeat === RepeatModes.Music) {
 			this.states.repeat = RepeatModes.Queue;
 
-			void editQueueMessage(this);
+			void editQueueMessage();
 			return void sendInteraction(interaction, `${Emojis.Repeat} | Repetindo fila!`);
 		}
 
 		this.states.repeat = RepeatModes.Off;
 		this.removeFromQueue('looped');
 
-		void editQueueMessage(this);
+		void editQueueMessage();
 		return void sendInteraction(interaction, `${Emojis.RedX} | Repetição desativada!`);
 	}
 
@@ -375,7 +375,7 @@ export class MusicQueue {
 
 		this.nowPlaying?.resource?.volume?.setVolume(volume / 100);
 
-		void editQueueMessage(this);
+		void editQueueMessage();
 		return void sendMessage(`${Emojis.Music} | Volume definido para ${volume}%!`);
 	}
 
@@ -386,7 +386,7 @@ export class MusicQueue {
 	public async clear(interaction: ButtonInteraction) {
 		this.queue = [];
 
-		void editQueueMessage(this);
+		void editQueueMessage();
 		return void sendInteraction(interaction, `${Emojis.Delete} | Fila limpa com sucesso!`);
 	}
 
@@ -398,7 +398,7 @@ export class MusicQueue {
 	public async clearEffects(interaction: ButtonInteraction) {
 		this.audioEffects.reset();
 
-		void editQueueMessage(this);
+		void editQueueMessage();
 		return void sendInteraction(interaction, `${Emojis.Delete} | Efeitos removidos com sucesso!`);
 	}
 
@@ -412,7 +412,7 @@ export class MusicQueue {
 			this.nowPlaying.changeFilter(this.audioEffects);
 		}
 
-		void editQueueMessage(this);
+		void editQueueMessage();
 		return void sendInteraction(interaction, `${Emojis.Music} | Efeitos definidos com sucesso!`);
 	}
 
@@ -798,7 +798,7 @@ export class MusicQueue {
 
 		this.queue.push(autoplay);
 
-		void editQueueMessage(this);
+		void editQueueMessage();
 	}
 
 	public removeFromQueue(type: 'autoplay' | 'looped') {
@@ -810,7 +810,7 @@ export class MusicQueue {
 	}
 
 	public destroy() {
-		void editQueueMessage(undefined);
+		void editQueueMessage();
 
 		if (this.connection && this.connection.state.status !== VoiceConnectionStatus.Destroyed) {
 			this.connection.destroy();

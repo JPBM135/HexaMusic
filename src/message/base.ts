@@ -3,6 +3,7 @@ import type { Guild, MessageReplyOptions, APIEmbed, Message } from 'discord.js';
 import { container } from 'tsyringe';
 import type { MusicQueue } from '../structures/Queue.js';
 import { kMessage } from '../tokens.js';
+import { resolveQueue } from '../utils/resolveQueue.js';
 import { generatePadronizedComponents } from './components.js';
 import { generateContent } from './content.js';
 import { generateAuthor, generateDescription, generateFooter } from './embed.js';
@@ -27,22 +28,20 @@ export function generatePadronizedMessage(guild: Guild, queue?: MusicQueue): Mes
 }
 
 let antiSpamCounter = 0;
-let lastQueue: MusicQueue | null | undefined = null;
 
-export async function editQueueMessage(queue?: MusicQueue) {
-	lastQueue = queue;
-	if (antiSpamCounter > 2 && queue) return;
+export async function editQueueMessage() {
+	if (antiSpamCounter > 2) return;
 
 	const message = container.resolve<Message>(kMessage);
 
-	await message.edit(generatePadronizedMessage(message.guild!, queue));
+	await message.edit(generatePadronizedMessage(message.guild!, resolveQueue(message.guildId!)));
 	antiSpamCounter++;
 
-	if (antiSpamCounter > 2 && queue) {
+	if (antiSpamCounter > 2) {
 		// eslint-disable-next-line require-atomic-updates
 		setTimeout(() => {
 			antiSpamCounter = 0;
-			void editQueueMessage(lastQueue!);
+			void editQueueMessage();
 		}, 5_000).unref();
 	}
 }
