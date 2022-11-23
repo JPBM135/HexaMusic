@@ -3,8 +3,8 @@ import type { Readable } from 'node:stream';
 import prism, { type opus as Opus, type FFmpeg } from 'prism-media';
 import type { downloadOptions } from 'ytdl-core';
 import ytdl from 'ytdl-core';
-import { EnvironmentalVariables, YTDL_ARGS } from '../constants.js';
-import { resolveEnv } from '../utils/env.js';
+import { /* EnvironmentalVariables, */ YTDL_ARGS } from '../constants.js';
+// import { resolveEnv } from '../utils/env.js';
 import type AudioFilters from './AudioFilters.js';
 import type { Music } from './Songs.js';
 
@@ -65,7 +65,7 @@ export class StreamDownloader {
 			...YTDL_ARGS,
 			requestOptions: {
 				headers: {
-					cookie: resolveEnv(EnvironmentalVariables.Cookie),
+					// cookie: resolveEnv(EnvironmentalVariables.Cookie),
 				},
 			},
 		});
