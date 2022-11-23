@@ -78,6 +78,10 @@ export class Music {
 		return Boolean(this._data.video);
 	}
 
+	public get isLive() {
+		return this._data.video?.live ?? false;
+	}
+
 	public get name() {
 		return this._data.spotify?.name ?? this._data.video?.title ?? 'Unknown';
 	}

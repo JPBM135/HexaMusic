@@ -746,8 +746,13 @@ export class MusicQueue {
 			// eslint-disable-next-line @typescript-eslint/no-unused-expressions
 			next ? this.queue.unshift(music) : this.queue.push(music);
 
+			const { isLive } = music;
+
 			await sendMessage(
-				`${Emojis.Track} | Música ${hyperlink(inlineCode(video.title ?? 'Nenhum titúlo'), video.url)} de ${hyperlink(
+				`${Emojis[isLive ? 'Live' : 'Track']} | ${isLive ? 'Livestream' : 'Vídeo'} ${hyperlink(
+					inlineCode(video.title ?? 'Nenhum titúlo'),
+					video.url,
+				)} de ${hyperlink(
 					inlineCode(video.channel?.name ?? 'Desconhecido'),
 					video.channel?.url ?? 'https://youtube.com',
 				)} adicionada${next ? ' como próxima' : ''}!`,

@@ -38,6 +38,7 @@ export enum Emojis {
 	GreenTick = '<:icons_Correct:1043283096574890066>',
 	Join = '<:icons_join:1043200234345480253>',
 	Leave = '<:icons_leave:1042952079427239936>',
+	Live = '<:icons_live:1045059779279732766>',
 	Loop = '<:icons_loop:1042951088996888586>',
 	Music = '<:icons_music:1042946184018415696>',
 	OrangeConnection = '<:icons_idelping:1044612147969261579>',

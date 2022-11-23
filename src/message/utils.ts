@@ -1,7 +1,11 @@
 import { EmbedColors, Emojis } from '../constants.js';
-import { VideoSource } from '../structures/Songs.js';
+import { type Music, VideoSource } from '../structures/Songs.js';
 
-export function getEmoji(source: VideoSource) {
+export function getEmoji(music: Music) {
+	const { source, isLive } = music;
+
+	if (isLive) return Emojis.Live;
+
 	switch (source) {
 		case VideoSource.Youtube:
 			return Emojis.Youtube;

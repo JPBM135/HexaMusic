@@ -16,7 +16,7 @@ export function generateContent(guild: Guild, queue?: MusicQueue): string {
 
 	const parsedQueue: string[] = queue.queue.map(
 		(music, index) =>
-			`**${index + 1}-** ${getEmoji(music.source)} | ${music.name} ➜ ${userMention(
+			`**${index + 1}-** ${getEmoji(music)} | ${music.name} ➜ ${userMention(
 				music.source === VideoSource.AutoPlay ? guild.client.user.id : music.requester.id,
 			)}`,
 	);
