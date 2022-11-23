@@ -137,7 +137,6 @@ export class StreamDownloader {
 			this.onError(error);
 			console.error('Base stream error', error);
 		});
-		this.baseStream!.on('end', this.destroy.bind(this));
 		this.transcoder!.on('error', (error) => {
 			this.onError(error);
 			console.error('Transcoder error', error);
@@ -150,6 +149,8 @@ export class StreamDownloader {
 			this.onError(error);
 			console.error('Output stream error', error);
 		});
+
+		this.outputStream?.on('end', this.destroy.bind(this));
 
 		// this.baseStream?.on('data', () => console.count('base-data'));
 		// this.outputStream?.on('data', () => console.count('data'));
