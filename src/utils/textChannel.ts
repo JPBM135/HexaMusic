@@ -64,13 +64,14 @@ export async function sendInteraction(
 }
 
 export async function sendErrorMessage(error: Error): Promise<void> {
-	await sendMessage({
-		content: `${Emojis.RedX} | An error occurred ${error.message}:\n${codeBlock('js', error.message)}`,
-	});
+	const msg = await sendMessage(
+		`${Emojis.RedX} | An error occurred ${error.message}:\n${codeBlock('js', error.message)}`,
+		EmbedType.Error,
+	);
 
 	const ErrorChannel = container.resolve<GuildTextBasedChannel>(kErrorChannel);
 
 	await ErrorChannel.send({
-		content: `${Emojis.RedX} | An error occurred ${error.message}:\n${codeBlock('js', error.stack ?? '')}`,
+		embeds: msg.embeds,
 	});
 }
