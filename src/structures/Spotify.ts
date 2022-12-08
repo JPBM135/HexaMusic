@@ -1,5 +1,5 @@
 import { setTimeout } from 'node:timers';
-import { type Client, time, TimestampStyles, inlineCode } from 'discord.js';
+import { time, TimestampStyles, inlineCode } from 'discord.js';
 import SpotifyNode from 'spotify-web-api-node';
 import { Emojis, EnvironmentalVariables, SPOTIFY_REGEX } from '../constants.js';
 import { validateStatusCode } from '../utils/bool.js';
@@ -40,8 +40,6 @@ function errorToCodeblock(error: CatchFallbackResponse) {
 }
 
 export default class SpotifyApi {
-	public client: Client;
-
 	public token: string | null;
 
 	public expire: number | null;
@@ -55,9 +53,7 @@ export default class SpotifyApi {
 
 	public SpotifyClient: SpotifyNode;
 
-	public constructor(client: Client) {
-		this.client = client;
-
+	public constructor() {
 		this.token = null;
 		this.expire = null;
 		this.expired = false;
@@ -117,29 +113,19 @@ export default class SpotifyApi {
 		if (this.token && this.expired) {
 			const { body, statusCode, headers } = await this.SpotifyClient.refreshAccessToken().catch(catchFallback);
 
-			if (!this._backOff(statusCode, headers) || typeof body === 'string') {
-				throw new Error(
-					`${Emojis.RedX} | Falha ao obter o token da API do Spotify, a API retornou ${inlineCode(
-						String(statusCode),
-					)}${errorToCodeblock({
-						body: body as string,
-						statusCode,
-						headers,
-					})}`,
-				);
+			if (this._backOff(statusCode, headers) && typeof body !== 'string') {
+				this.token = body.access_token;
+				this.SpotifyClient.setAccessToken(this.token);
+				this.expired = false;
+
+				this.expire = body.expires_in * 1_000;
+
+				setTimeout(() => {
+					this.expired = true;
+				}, this.expire);
+
+				return this.token;
 			}
-
-			this.token = body.access_token;
-			this.SpotifyClient.setAccessToken(this.token);
-			this.expired = false;
-
-			this.expire = body.expires_in * 1_000;
-
-			setTimeout(() => {
-				this.expired = true;
-			}, this.expire);
-
-			return this.token;
 		}
 
 		const { body, statusCode, headers } = await this.SpotifyClient.clientCredentialsGrant().catch(catchFallback);
@@ -384,3 +370,7 @@ export default class SpotifyApi {
 		return this.rateLimit.rateLimited;
 	}
 }
+
+const spot = new SpotifyApi();
+
+console.log(await spot.getToken(), spot);

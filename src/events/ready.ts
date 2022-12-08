@@ -32,7 +32,7 @@ export const ReadyEvent = {
 
 		container.register(kMessage, { useValue: QueryMessage });
 
-		const SpotifyClient = new SpotifyApi(client);
+		const SpotifyClient = new SpotifyApi();
 
 		console.log('Spotify client registered');
 
