@@ -841,8 +841,6 @@ export class MusicQueue {
 	}
 
 	public destroy() {
-		void editQueueMessage();
-
 		if (this.connection && this.connection.state.status !== VoiceConnectionStatus.Destroyed) {
 			this.connection.destroy();
 			this.connection = null;
@@ -858,6 +856,8 @@ export class MusicQueue {
 
 		const queues = container.resolve<Collection<string, MusicQueue>>(kQueues);
 		queues.delete(this.guild.id);
+
+		void editQueueMessage();
 	}
 
 	private connectionListeners() {
@@ -906,6 +906,15 @@ export class MusicQueue {
 		this.player?.on('error', (error) => {
 			if (error.message.toLowerCase().includes('premature') && this.states.skipping) {
 				console.error(error);
+				return;
+			}
+
+			if (error.message.includes('410')) {
+				void sendMessage(
+					`${Emojis.RedX} | Estamos sendo limitados pelo YouTube, por segurança a rede e para impedir que percamos o acesso a plataforma, limparemos a fila!`,
+					EmbedType.Error,
+				);
+				this.destroy();
 				return;
 			}
 
