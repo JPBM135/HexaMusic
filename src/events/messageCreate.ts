@@ -18,16 +18,16 @@ export const MessageCreateEvent = {
 
 		if (message.channel.id !== resolveEnv(EnvironmentalVariables.QueryChannelId)) return;
 
+		setTimeout(async () => message.delete(), 500);
+
 		if (!message.member?.voice?.channel) {
 			await sendMessage(`${Emojis.RedX} | Você precisa estar em um canal de voz!`, EmbedType.Error);
 			return;
 		}
 
-		setTimeout(async () => message.delete(), 500);
-
 		const queues = container.resolve<Collection<string, MusicQueue>>(kQueues);
 
-		const queue = queues.ensure(message.guildId!, () => {
+		const queue = queues.ensure(message.guildId, () => {
 			const voice = message.member?.voice.channel;
 			return new MusicQueue(message.guild, voice!);
 		});
