@@ -8,7 +8,7 @@ import {
 	codeBlock,
 } from 'discord.js';
 import { container } from 'tsyringe';
-import { EmbedColors, Emojis } from '../constants.js';
+import { DELETE_MESSAGE_TIMEOUT, EmbedColors, Emojis } from '../constants.js';
 import { kChannel, kErrorChannel } from '../tokens.js';
 
 export enum EmbedType {
@@ -34,7 +34,7 @@ export async function sendMessage(payload: MessageReplyOptions | string, embed =
 		message = await channel.send(payload);
 	}
 
-	setTimeout(async () => message?.delete(), 7_000);
+	setTimeout(async () => message?.delete(), DELETE_MESSAGE_TIMEOUT);
 
 	return message;
 }
@@ -60,7 +60,7 @@ export async function sendInteraction(
 
 	if (interaction.ephemeral) return;
 
-	setTimeout(async () => interaction?.deleteReply(), 7_000);
+	setTimeout(async () => interaction?.deleteReply(), DELETE_MESSAGE_TIMEOUT);
 }
 
 export async function sendErrorMessage(error: Error): Promise<void> {

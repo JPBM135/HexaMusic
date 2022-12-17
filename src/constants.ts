@@ -73,3 +73,5 @@ export enum EmbedColors {
 export const EMPTY_CHANNEL_TIMEOUT = 5 * 60 * 1_000;
 export const PAUSED_TIMEOUT = 20 * 60 * 1_000;
 export const EMPTY_QUEUE_TIMEOUT = 10 * 60 * 1_000;
+
+export const DELETE_MESSAGE_TIMEOUT = 7_000;
