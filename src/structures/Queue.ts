@@ -684,7 +684,7 @@ export class MusicQueue {
 							looped: false,
 							playlist: {
 								author: {
-									icon: playlist.channel?.iconURL(),
+									icon: playlist.channel?.iconURL?.(),
 									name: playlist.channel?.name ?? 'Desconhecido',
 									url: playlist.channel?.url ?? 'https://youtube.com',
 								},
