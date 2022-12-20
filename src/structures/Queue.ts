@@ -841,6 +841,8 @@ export class MusicQueue {
 	}
 
 	public destroy() {
+		this.clearQueueTimeouts();
+
 		if (this.connection && this.connection.state.status !== VoiceConnectionStatus.Destroyed) {
 			this.connection.destroy();
 			this.connection = null;
