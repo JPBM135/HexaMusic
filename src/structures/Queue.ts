@@ -444,6 +444,10 @@ export class MusicQueue {
 	public async clearEffects(interaction: ButtonInteraction) {
 		this.audioEffects.reset();
 
+		if (this.isPlaying()) {
+			this.nowPlaying.changeFilter(this.audioEffects);
+		}
+
 		void editQueueMessage();
 		return void sendInteraction(interaction, `${Emojis.Delete} | Efeitos removidos com sucesso!`);
 	}
