@@ -388,9 +388,11 @@ __metadata:
     "@discordjs/voice": dev
     "@swc/cli": ^0.1.57
     "@swc/core": ^1.3.11
+    "@types/fluent-ffmpeg": ^2.1.20
     "@types/node": ^18.11.9
     "@types/spotify-api": ^0.0.19
     "@types/spotify-web-api-node": ^5.0.7
+    "@types/zeromq": ^5.2.1
     "@yuudachi/framework": ^0.1.3
     bufferutil: ^4.0.7
     cpy-cli: ^4.2.0
@@ -418,6 +420,7 @@ __metadata:
     youtube-ext: ^1.0.11
     youtube-sr: ^4.3.4
     ytdl-core: ^4.11.2
+    zeromq: 5
     zlib-sync: ^0.1.7
   languageName: unknown
   linkType: soft
@@ -739,6 +742,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/fluent-ffmpeg@npm:^2.1.20":
+  version: 2.1.20
+  resolution: "@types/fluent-ffmpeg@npm:2.1.20"
+  dependencies:
+    "@types/node": "*"
+  checksum: f810a12a427f8e6568cec2ef250693e533112b66b7cd9ca9e10fe32b2aecb85623b8bb4ae5e51e47f79e27cdb969d3115720588b9f6fc7e4d17b4d4dc5e0d677
+  languageName: node
+  linkType: hard
+
 "@types/json-schema@npm:^7.0.9":
   version: 7.0.11
   resolution: "@types/json-schema@npm:7.0.11"
@@ -826,6 +838,15 @@ __metadata:
   dependencies:
     "@types/yargs-parser": "*"
   checksum: 0ab269abc2da2223cf0a8c16d578850fbe327d40fb85724b5c3f9f6cf38d03656ef699518c05d4df3bc337339ec6d0aad7df01682a9dca4783ad1ccc7336cf12
+  languageName: node
+  linkType: hard
+
+"@types/zeromq@npm:^5.2.1":
+  version: 5.2.1
+  resolution: "@types/zeromq@npm:5.2.1"
+  dependencies:
+    "@types/node": "*"
+  checksum: f4541b34e2f6a8d397f84b3c1309e404378596847045ed9ad721401f59aaa63b3c8ab0ef489cfb42972987a7fd39a5cb8ebb5b1b8a1dd9088503602731705f14
   languageName: node
   linkType: hard
 
@@ -4224,7 +4245,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"nan@npm:^2.14.0, nan@npm:^2.15.0":
+"nan@npm:2.17.0, nan@npm:^2.14.0, nan@npm:^2.15.0":
   version: 2.17.0
   resolution: "nan@npm:2.17.0"
   dependencies:
@@ -4301,6 +4322,17 @@ __metadata:
     node-gyp-build-optional: optional.js
     node-gyp-build-test: build-test.js
   checksum: d888bae0fb88335f69af1b57a2294a931c5042f36e413d8d364c992c9ebfa0b96ffe773179a5a2c8f04b73856e8634e09cce108dbb9804396d3cc8c5455ff2db
+  languageName: node
+  linkType: hard
+
+"node-gyp-build@npm:^4.5.0":
+  version: 4.6.0
+  resolution: "node-gyp-build@npm:4.6.0"
+  bin:
+    node-gyp-build: bin.js
+    node-gyp-build-optional: optional.js
+    node-gyp-build-test: build-test.js
+  checksum: 25d78c5ef1f8c24291f4a370c47ba52fcea14f39272041a90a7894cd50d766f7c8cb8fb06c0f42bf6f69b204b49d9be3c8fc344aac09714d5bdb95965499eb15
   languageName: node
   linkType: hard
 
@@ -6197,6 +6229,17 @@ __metadata:
     miniget: ^4.2.2
     sax: ^1.1.3
   checksum: 57df38b5b1e4955db0e0c0be8d185f34de9eaee102ad1281d69de91628230cc84e8d46d278409eafa68c4aab4085a0f9fe8de30e9ea8644e011e20cae7f37c0e
+  languageName: node
+  linkType: hard
+
+"zeromq@npm:5":
+  version: 5.3.1
+  resolution: "zeromq@npm:5.3.1"
+  dependencies:
+    nan: 2.17.0
+    node-gyp: latest
+    node-gyp-build: ^4.5.0
+  checksum: 2a66959697ccdbd30916f862b0b639c5d3f2e301f68ef34cb7eb74f8ad5947ffe36ab06731073dbf1db9556afb9c938e13e18127b838915f0bc424444026845d
   languageName: node
   linkType: hard
 

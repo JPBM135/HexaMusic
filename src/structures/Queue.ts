@@ -34,7 +34,7 @@ import { promisifyEnterState } from '../utils/enterState.js';
 import { formatPlaylistMessage } from '../utils/formatters.js';
 import { clearQuery, findFlags, findQueryMode } from '../utils/query.js';
 import { EmbedType, sendErrorMessage, sendInteraction, sendMessage } from '../utils/textChannel.js';
-import AudioFilters, { type AudioFilterTypes } from './AudioFilters.js';
+import AudioFilters, { type AudioFiltersArguments } from './AudioFilters.js';
 import { Music, VideoSource } from './Songs.js';
 import type SpotifyApi from './Spotify.js';
 
@@ -452,14 +452,21 @@ export class MusicQueue {
 		const effects = interaction.values;
 
 		this.audioEffects.reset();
-		for (const efc of effects) this.audioEffects.addFilter(efc! as AudioFilterTypes);
+		for (const efc of effects) this.audioEffects.addFilter(efc! as keyof typeof AudioFiltersArguments);
 
 		if (this.isPlaying()) {
 			this.nowPlaying.changeFilter(this.audioEffects);
 		}
 
 		void editQueueMessage();
-		return void sendInteraction(interaction, `${Emojis.Music} | Efeitos definidos com sucesso!`);
+		return void sendInteraction(
+			interaction,
+			[
+				`${Emojis.Music} | Efeitos definidos com sucesso!`,
+				`> **Dinâmicos:** Serão aplicados em alguns segundos.`,
+				`> **Estáticos:** Serão aplicados na próxima música.`,
+			].join('\n'),
+		);
 	}
 
 	// #endregion

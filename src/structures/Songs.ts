@@ -128,11 +128,8 @@ export class Music {
 			this.stream = null;
 		}
 
-		const { filters, hasFilter } = this.manager.audioEffects;
-
 		this.stream = new StreamDownloader(this._data.video!.url, this, {
 			...YTDL_ARGS,
-			encoderArgs: hasFilter ? ['-af', filters] : [],
 			fmt: 's16le',
 			opusEncoded: true,
 			seek,

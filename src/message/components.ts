@@ -9,7 +9,7 @@ import {
 	type APIStringSelectComponent,
 } from 'discord.js';
 import { Emojis } from '../constants.js';
-import { AudioFilterTypes } from '../structures/AudioFilters.js';
+import { AudioFiltersArguments } from '../structures/AudioFilters.js';
 import { type MusicQueue, RepeatModes } from '../structures/Queue.js';
 
 interface ButtonOptions {
@@ -20,30 +20,22 @@ interface ButtonOptions {
 	style: ButtonStyle;
 }
 
-const ReadableAudioEffects: Record<keyof typeof AudioFilterTypes, string> = {
+const ReadableAudioEffects: Record<keyof typeof AudioFiltersArguments, string> = {
 	'8D': '8D',
-	bassboost: 'Bassboost',
-	bassboost_high: 'Bassboost Alto',
-	bassboost_low: 'Bassboost Baixo',
+	bassboost: 'Bassboost (Dinâmico)',
 	chorus: 'Coro',
 	chorus3d: 'Coro 3D',
 	earrape: 'EarRape',
 	expander: 'Expansor',
-	fadein: 'Fade In',
 	flanger: 'Flanger',
-	gate: 'Gate',
-	haas: 'Haas',
-	karaoke: 'Karaoke',
+	karaoke: 'Karaoke (Dinâmico)',
 	mcompand: 'MCompand',
 	mono: 'Mono Audio',
-	mstlr: 'MSTLR',
-	mstrr: 'MSTRR',
-	nightcore: 'Nightcore',
 	normalizer: 'Normalizador',
 	phaser: 'Fase',
 	pulsator: 'Pulsador',
 	surrounding: 'Surrounding',
-	treble: 'Agudo',
+	treble: 'Agudo (Dinâmico)',
 	tremolo: 'Tremolo',
 	vibrato: 'Vibrato',
 };
@@ -149,13 +141,13 @@ export function generatePadronizedComponents(disabled = true, manager?: MusicQue
 				type: ComponentType.StringSelect,
 				disabled,
 				max_values: 2,
-				options: Object.keys(AudioFilterTypes).map(
+				options: Object.keys(AudioFiltersArguments).map(
 					(effect) =>
 						({
-							label: ReadableAudioEffects[effect as keyof typeof AudioFilterTypes],
+							label: ReadableAudioEffects[effect as keyof typeof AudioFiltersArguments],
 							value: effect,
-							default: audioEffects?.hasFilterType(effect as AudioFilterTypes) ?? false,
-							description: `Efeito de áudio ${ReadableAudioEffects[effect as keyof typeof AudioFilterTypes]}`,
+							default: audioEffects?.hasFilterType(effect as keyof typeof AudioFiltersArguments) ?? false,
+							description: `Efeito de áudio ${ReadableAudioEffects[effect as keyof typeof AudioFiltersArguments]}`,
 						} as APISelectMenuOption),
 				),
 				placeholder: 'Efeitos de Áudio',

@@ -1,72 +1,147 @@
-export enum AudioFilterTypes {
-	'8D' = 'apulsator=hz=0.09',
-	bassboost = 'bass=g=20:f=110:w=0.3',
-	bassboost_high = 'bass=g=30:f=110:w=0.3',
-	bassboost_low = 'bass=g=15:f=110:w=0.3',
-	chorus = 'chorus=0.7:0.9:55:0.4:0.25:2',
-	chorus3d = 'chorus=0.5:0.9:50|60|40:0.4|0.32|0.3:0.25|0.4|0.3:2|2.3|1.3',
-	earrape = 'channelsplit;sidechaingate=level_in=64',
-	expander = 'compand=attacks=0:points=-80/-169|-54/-80|-49.5/-64.6|-41.1/-41.1|-25.8/-15|-10.8/-4.5|0/0|20/8.3',
-	fadein = 'afade=t=in:ss=0:d=10',
-	flanger = 'flanger',
-	gate = 'agate',
-	haas = 'haas',
-	karaoke = 'stereotools=mlev=0.03',
-	mcompand = 'mcompand',
-	mono = 'pan=mono|c0=.5*c0+.5*c1',
-	mstlr = 'stereotools=mode=ms>lr',
-	mstrr = 'stereotools=mode=ms>rr',
-	nightcore = 'aresample=48000;asetrate=48000*1.25',
-	normalizer = 'dynaudnorm=g=101',
-	phaser = 'aphaser=in_gain=0.4',
-	pulsator = 'apulsator=hz=1',
-	surrounding = 'surround',
-	treble = 'treble=g=5',
-	tremolo = 'tremolo',
-	vibrato = 'vibrato=f=6.5',
-}
+export const AudioFiltersArguments = {
+	'8D': {
+		args: 'apulsator=hz=0.09',
+		dynamic: false,
+		generator: null,
+	},
+	bassboost: {
+		args: 'bass=g=0:f=110:w=0.3',
+		dynamic: true,
+		generator: (enable: boolean) => `Parsed_bass_0 g ${enable ? '15' : '0'}`,
+	},
+	chorus: {
+		args: 'chorus=0.7:0.9:55:0.4:0.25:2',
+		dynamic: false,
+		generator: null,
+	},
+	chorus3d: {
+		args: 'chorus=0.5:0.9:50|60|40:0.4|0.32|0.3:0.25|0.4|0.3:2|2.3|1.3',
+		dynamic: false,
+		generator: null,
+	},
+	earrape: {
+		args: 'channelsplit;sidechaingate=level_in=64',
+		dynamic: false,
+		generator: null,
+	},
+	expander: {
+		args: 'compand=attacks=0:points=-80/-169|-54/-80|-49.5/-64.6|-41.1/-41.1|-25.8/-15|-10.8/-4.5|0/0|20/8.3',
+		dynamic: false,
+		generator: null,
+	},
+	flanger: {
+		args: 'flanger',
+		dynamic: false,
+		generator: null,
+	},
+	karaoke: {
+		args: 'stereotools=mlev=1',
+		dynamic: true,
+		generator: (enable: boolean) => `Parsed_stereotools_0 mlev ${enable ? '0.03' : '0'}`,
+	},
+	mcompand: {
+		args: 'mcompand',
+		dynamic: false,
+		generator: null,
+	},
+	mono: {
+		args: 'pan=mono|c0=.5*c0+.5*c1',
+		dynamic: false,
+		generator: null,
+	},
+	normalizer: {
+		args: 'dynaudnorm=g=301:m=1',
+		dynamic: false,
+		generator:
+			null /* (enable: boolean) => `Parsed_dynaudnorm_0 g ${enable ? '101' : '0'}\\\\:m ${enable ? '10' : '1'}` */,
+	},
+	phaser: {
+		args: 'aphaser=in_gain=0.4',
+		dynamic: false,
+		generator: null,
+	},
+	pulsator: {
+		args: 'apulsator=hz=1',
+		dynamic: false,
+		generator: null,
+	},
+	surrounding: {
+		args: 'surround',
+		dynamic: false,
+		generator: null,
+	},
+	treble: {
+		args: 'treble=g=0',
+		dynamic: true,
+		generator: (enable: boolean) => `Parsed_treble_0 g ${enable ? '5' : '0'}`,
+	},
+	tremolo: {
+		args: 'tremolo',
+		dynamic: false,
+		generator: null,
+	},
+	vibrato: {
+		args: 'vibrato=f=6.5',
+		dynamic: false,
+		generator: null,
+	},
+};
 
 export default class AudioFilters {
-	public audioFilters: AudioFilterTypes[];
+	public audioFilters: Map<keyof typeof AudioFiltersArguments, string>;
 
 	public constructor() {
-		this.audioFilters = [];
+		this.audioFilters = new Map();
 	}
 
 	public get hasFilter() {
-		return this.audioFilters.length > 0;
+		return Boolean(this.audioFilters.size);
 	}
 
-	public get filters() {
-		return this.audioFilters.map((filter) => AudioFilterTypes[filter as keyof typeof AudioFilterTypes]).join(',');
+	public filters() {
+		return Array.from(this.audioFilters.entries())
+			.filter(([key, _]) => !AudioFiltersArguments[key].dynamic)
+			.map(([_, val]) => val);
 	}
 
-	public hasFilterType(filter: AudioFilterTypes) {
-		return this.audioFilters.includes(filter);
+	public hasFilterType(filter: keyof typeof AudioFiltersArguments) {
+		return this.audioFilters.has(filter);
 	}
 
-	public addFilter(filter: AudioFilterTypes) {
-		if (!AudioFilterTypes[filter as keyof typeof AudioFilterTypes]) {
-			throw new Error('errors:music.filter.invalid');
-		}
+	public addFilter(filter: keyof typeof AudioFiltersArguments) {
+		const filterSelected = AudioFiltersArguments[filter];
 
-		this.audioFilters.push(filter);
+		this.audioFilters.set(filter, filterSelected.generator ? filterSelected.generator(true)! : filterSelected.args);
 
 		return true;
 	}
 
-	public removeFilter(filter: AudioFilterTypes) {
-		if (!AudioFilterTypes[filter as keyof typeof AudioFilterTypes]) {
-			throw new Error('errors:music.filter.invalid');
-		}
-
-		this.audioFilters = this.audioFilters.filter((fil) => fil !== filter);
+	public removeFilter(filter: keyof typeof AudioFiltersArguments) {
+		this.audioFilters.delete(filter);
 
 		return true;
 	}
 
 	public reset() {
-		this.audioFilters = [];
+		this.audioFilters = new Map();
 		return true;
+	}
+
+	public socketUpdates() {
+		return Array.from(this.audioFilters.entries())
+			.filter(([key, _]) => AudioFiltersArguments[key].dynamic)
+			.map(([_, val]) => val);
+	}
+
+	public get DynamicFilters() {
+		return Object.entries(AudioFiltersArguments)
+			.filter(([_, filter]) => filter.dynamic)
+			.map(([key, filter]) => this.audioFilters.get(key as keyof typeof AudioFiltersArguments) ?? filter.args);
+	}
+
+	public get StaticFilters() {
+		return Object.entries(AudioFiltersArguments)
+			.filter(([key, filter]) => !filter.dynamic && this.audioFilters.has(key as keyof typeof AudioFiltersArguments))
+			.map(([_, filter]) => filter.args);
 	}
 }

@@ -1,14 +1,15 @@
 import { PassThrough } from 'node:stream';
 import type { Readable } from 'node:stream';
-import prism, { type opus as Opus, type FFmpeg } from 'prism-media';
+import prism, { type opus as Opus /* type FFmpeg */ } from 'prism-media';
 import type { downloadOptions } from 'ytdl-core';
 import ytdl from 'ytdl-core';
 import { /* EnvironmentalVariables, */ YTDL_ARGS } from '../constants.js';
 // import { resolveEnv } from '../utils/env.js';
 import type AudioFilters from './AudioFilters.js';
 import type { Music } from './Songs.js';
+import { AudioTransform } from './Trancoder.js';
 
-const { opus: OpusTranscoder, FFmpeg: FFmpegTranscoder } = prism;
+const { opus: OpusTranscoder /* FFmpeg: FFmpegTranscoder */ } = prism;
 
 interface YTDLStreamOptions extends downloadOptions {
 	encoderArgs?: string[];
@@ -17,14 +18,10 @@ interface YTDLStreamOptions extends downloadOptions {
 	seek?: number;
 }
 
-const BaseFFmpegArgs = ['-analyzeduration', '0', '-loglevel', '0', '-f', `s16le`, '-ar', '48000', '-ac', '2'];
-
 export class StreamDownloader {
 	public url: string;
 
 	public options: YTDLStreamOptions;
-
-	public ffmpegArgs: string[];
 
 	public fmt: string;
 
@@ -34,7 +31,7 @@ export class StreamDownloader {
 
 	public outputStream: PassThrough;
 
-	public transcoder: FFmpeg | null;
+	public transcoder: AudioTransform | null;
 
 	public opus: Opus.Encoder | null;
 
@@ -43,7 +40,6 @@ export class StreamDownloader {
 	public constructor(url: string, manager: Music, options: YTDLStreamOptions = {}) {
 		this.url = url;
 		this.options = options;
-		this.ffmpegArgs = options.encoderArgs ?? [];
 		this.fmt = options.fmt ?? 'bestaudio';
 		this.seek = options.seek ?? 0;
 
@@ -54,10 +50,6 @@ export class StreamDownloader {
 
 		this.transcoder = null;
 		this.opus = null;
-	}
-
-	public filtersToArgs(filters: AudioFilters) {
-		return { args: [...BaseFFmpegArgs, ...(filters.hasFilter ? ['-af', filters.filters] : [])] };
 	}
 
 	public createYTDLStream() {
@@ -76,7 +68,7 @@ export class StreamDownloader {
 	}
 
 	public createTranscoder(filters: AudioFilters) {
-		this.transcoder = new FFmpegTranscoder(this.filtersToArgs(filters));
+		this.transcoder = new AudioTransform(filters);
 
 		return this.transcoder;
 	}
@@ -95,7 +87,7 @@ export class StreamDownloader {
 		// Pipe the base stream to the transcoder
 		this.baseStream?.pipe(this.transcoder!);
 		// Pipe the transcoder to the opus encoder
-		this.transcoder?.pipe(this.opus!);
+		this.transcoder?.outputStream.pipe(this.opus!);
 		// Pipe the opus encoder to the output stream
 		this.opus?.pipe(this.outputStream!);
 
@@ -106,7 +98,7 @@ export class StreamDownloader {
 
 	public changeFilters(filters: AudioFilters) {
 		// Create a new transcoder with the new filters
-		return filters;
+		this.transcoder!.setFilters(filters);
 	}
 
 	public start(filters: AudioFilters) {
