@@ -1,13 +1,21 @@
-export const AudioFiltersArguments = {
+interface Filter<T> {
+	args: string;
+	dynamic: T;
+	generator: T extends true ? (enable: boolean) => string : null;
+	generatorInitial?: T extends true ? (enable: boolean) => string : null;
+}
+
+export const AudioFiltersArguments: Record<string, Filter<boolean>> = {
 	'8D': {
 		args: 'apulsator=hz=0.09',
 		dynamic: false,
 		generator: null,
 	},
 	bassboost: {
-		args: 'bass=g=0:f=110:w=0.3',
+		args: 'bass=g=0:f=150:w=0.5',
 		dynamic: true,
-		generator: (enable: boolean) => `Parsed_bass_0 g ${enable ? '15' : '0'}`,
+		generator: (enable: boolean) => `Parsed_bass_0 g ${enable ? '5' : '0'}`,
+		generatorInitial: (enable: boolean) => `bass=g=${enable ? '5' : '0'}:f=150:w=0.5`,
 	},
 	chorus: {
 		args: 'chorus=0.7:0.9:55:0.4:0.25:2',
@@ -38,6 +46,7 @@ export const AudioFiltersArguments = {
 		args: 'stereotools=mlev=1',
 		dynamic: true,
 		generator: (enable: boolean) => `Parsed_stereotools_0 mlev ${enable ? '0.03' : '0'}`,
+		generatorInitial: (enable: boolean) => `stereotools=mlev=${enable ? '0.03' : '0'}`,
 	},
 	mcompand: {
 		args: 'mcompand',
@@ -50,10 +59,10 @@ export const AudioFiltersArguments = {
 		generator: null,
 	},
 	normalizer: {
-		args: 'dynaudnorm=g=301:m=1',
+		args: 'dynaudnorm=g=101',
 		dynamic: false,
-		generator:
-			null /* (enable: boolean) => `Parsed_dynaudnorm_0 g ${enable ? '101' : '0'}\\\\:m ${enable ? '10' : '1'}` */,
+		generator: (enable: boolean) => `Parsed_dynaudnorm_0 g ${enable ? '101' : '31'}`,
+		generatorInitial: (enable: boolean) => `dynaudnorm=g=${enable ? '101' : '31'}`,
 	},
 	phaser: {
 		args: 'aphaser=in_gain=0.4',
@@ -74,6 +83,7 @@ export const AudioFiltersArguments = {
 		args: 'treble=g=0',
 		dynamic: true,
 		generator: (enable: boolean) => `Parsed_treble_0 g ${enable ? '5' : '0'}`,
+		generatorInitial: (enable: boolean) => `treble=g=${enable ? '5' : '0'}`,
 	},
 	tremolo: {
 		args: 'tremolo',
@@ -87,20 +97,26 @@ export const AudioFiltersArguments = {
 	},
 };
 
+function isDynamicFilter(filter: Filter<boolean>): filter is Filter<true> {
+	return filter.dynamic;
+}
+
 export default class AudioFilters {
 	public audioFilters: Map<keyof typeof AudioFiltersArguments, string>;
+
+	public toDisable: Map<keyof typeof AudioFiltersArguments, string> = new Map();
 
 	public constructor() {
 		this.audioFilters = new Map();
 	}
 
 	public get hasFilter() {
-		return Boolean(this.audioFilters.size);
+		return Boolean(Array.from(this.audioFilters.values()).filter((key) => AudioFiltersArguments[key]?.dynamic).length);
 	}
 
 	public filters() {
 		return Array.from(this.audioFilters.entries())
-			.filter(([key, _]) => !AudioFiltersArguments[key].dynamic)
+			.filter(([key, _]) => !AudioFiltersArguments[key]?.dynamic)
 			.map(([_, val]) => val);
 	}
 
@@ -109,9 +125,16 @@ export default class AudioFilters {
 	}
 
 	public addFilter(filter: keyof typeof AudioFiltersArguments) {
-		const filterSelected = AudioFiltersArguments[filter];
+		const filterSelected = AudioFiltersArguments[filter]!;
 
-		this.audioFilters.set(filter, filterSelected.generator ? filterSelected.generator(true)! : filterSelected.args);
+		if (this.toDisable.has(filter)) {
+			this.toDisable.delete(filter);
+		}
+
+		this.audioFilters.set(
+			filter,
+			isDynamicFilter(filterSelected) ? filterSelected.generator(true)! : filterSelected.args,
+		);
 
 		return true;
 	}
@@ -119,24 +142,36 @@ export default class AudioFilters {
 	public removeFilter(filter: keyof typeof AudioFiltersArguments) {
 		this.audioFilters.delete(filter);
 
+		const filterSelected = AudioFiltersArguments[filter]!;
+
+		if (isDynamicFilter(filterSelected)) this.toDisable.set(filter, filterSelected.generator(false))!;
+
 		return true;
 	}
 
 	public reset() {
-		this.audioFilters = new Map();
+		for (const filter of this.audioFilters.keys()) this.removeFilter(filter);
 		return true;
 	}
 
 	public socketUpdates() {
+		const toDisable = Array.from(this.toDisable.values());
+		this.toDisable.clear();
+
 		return Array.from(this.audioFilters.entries())
-			.filter(([key, _]) => AudioFiltersArguments[key].dynamic)
-			.map(([_, val]) => val);
+			.filter(([key, _]) => AudioFiltersArguments[key]!.dynamic)
+			.map(([_, val]) => val)
+			.concat(toDisable);
 	}
 
 	public get DynamicFilters() {
 		return Object.entries(AudioFiltersArguments)
 			.filter(([_, filter]) => filter.dynamic)
-			.map(([key, filter]) => this.audioFilters.get(key as keyof typeof AudioFiltersArguments) ?? filter.args);
+			.map(([key, filter]) =>
+				this.audioFilters.has(key as keyof typeof AudioFiltersArguments)
+					? filter.generatorInitial?.(true)
+					: filter.args,
+			);
 	}
 
 	public get StaticFilters() {
