@@ -4,6 +4,7 @@ import SpotifyNode from 'spotify-web-api-node';
 import { Emojis, EnvironmentalVariables, SPOTIFY_REGEX } from '../constants.js';
 import { validateStatusCode } from '../utils/bool.js';
 import { resolveEnv } from '../utils/env.js';
+import type { SeedObject } from './Queue.js';
 
 type ArtistResponse = SpotifyApi.ArtistsTopTracksResponse & SpotifyApi.SingleArtistResponse;
 
@@ -356,6 +357,32 @@ export default class SpotifyApi {
 			...body,
 			tracks: tracksBody.tracks,
 		};
+	}
+
+	public async getRecommendations({ seeds }: { seeds: SeedObject[] }) {
+		this.rateLimited();
+
+		await this.getToken();
+
+		const { body, statusCode, headers } = await this.SpotifyClient.getRecommendations({
+			limit: 5,
+			seed_artists: seeds.filter((obj) => obj.type === 'artists').map((obj) => obj.id),
+			seed_tracks: seeds.filter((obj) => obj.type === 'tracks').map((obj) => obj.id),
+		}).catch(catchFallback);
+
+		if (!this._backOff(statusCode, headers) || typeof body === 'string') {
+			throw new Error(
+				`${Emojis.RedX} | Falha ao obter o artista no Spotify, a API retornou ${inlineCode(
+					String(statusCode),
+				)}${errorToCodeblock({
+					body: body as string,
+					statusCode,
+					headers,
+				})}`,
+			);
+		}
+
+		return body.tracks;
 	}
 
 	public get expireTimestamp() {

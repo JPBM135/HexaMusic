@@ -24,7 +24,6 @@ import {
 import { container } from 'tsyringe';
 // @ts-expect-error: Missing types
 import YtSr from 'youtube-sr';
-import ytdl from 'ytdl-core';
 import { Emojis, EMPTY_CHANNEL_TIMEOUT, EMPTY_QUEUE_TIMEOUT } from '../constants.js';
 import { editQueueMessage } from '../message/base.js';
 import { kQueues, kSpotify } from '../tokens.js';
@@ -53,6 +52,11 @@ interface QueueStates {
 	paused: boolean;
 	repeat: RepeatModes;
 	skipping: boolean;
+}
+
+export interface SeedObject {
+	id: string;
+	type: 'artists' | 'tracks';
 }
 
 export enum RepeatModes {
@@ -94,6 +98,8 @@ export class MusicQueue {
 
 	public pastVideos: Set<string>;
 
+	public seed: SeedObject | null;
+
 	public constructor(guild: Guild, voiceChannel: VoiceBasedChannel) {
 		this.guild = guild;
 		this.voiceChannel = voiceChannel;
@@ -107,6 +113,8 @@ export class MusicQueue {
 
 		this.connection = null;
 		this.player = null;
+
+		this.seed = null;
 
 		this.states = {
 			paused: false,
@@ -268,6 +276,9 @@ export class MusicQueue {
 		this.clearQueueTimeouts();
 
 		this.nowPlaying = this.queue.shift()!;
+
+		void this.setSeed(this.nowPlaying);
+
 		const resource = await this.nowPlaying.getResource();
 
 		if (!resource) {
@@ -384,6 +395,14 @@ export class MusicQueue {
 			return void sendInteraction(interaction, `${Emojis.RedX} | Autoplay desativado!`);
 		}
 
+		if (!this.seed) {
+			return void sendInteraction(
+				interaction,
+				`${Emojis.RedX} | Não foi possivel encontrar musicas para usar como base!`,
+				EmbedType.Error,
+			);
+		}
+
 		this.states.autoplay = true;
 
 		void this.resolveAutoPlay();
@@ -475,14 +494,24 @@ export class MusicQueue {
 
 	// #endregion
 
-	private clearQueueTimeouts() {
-		for (const [key, timeout] of Object.entries(this.timeouts) as [keyof Timeouts, NodeJS.Timeout][]) {
-			clearTimeout(timeout);
-			this.timeouts[key] = null;
-		}
-	}
-
 	// #region Resolve
+
+	public async setSeed(music: Music) {
+		const SpotifyApi = container.resolve<SpotifyApi>(kSpotify);
+
+		if (!music._data.spotify) {
+			const spotify = await SpotifyApi.searchTrack(`${music._data.video?.title} ${music._data.video?.channel?.name}`);
+
+			if (spotify && !music._data.spotify) {
+				music._data.spotify = spotify;
+			}
+		}
+
+		this.seed = {
+			type: 'tracks',
+			id: music._data.spotify!.id,
+		};
+	}
 
 	private async resolveSpotifyPlaylist(query: string, requester: GuildMember, inverse: boolean) {
 		try {
@@ -594,6 +623,11 @@ export class MusicQueue {
 			const SpotifyApi = container.resolve<SpotifyApi>(kSpotify);
 
 			const artist = await SpotifyApi.getArtist(query, true);
+
+			this.seed = {
+				id: artist.id,
+				type: 'artists',
+			};
 
 			const musics = artist.tracks.map(
 				(item) =>
@@ -813,30 +847,36 @@ export class MusicQueue {
 	}
 
 	public async resolveAutoPlay() {
-		if (!this.nowPlaying) return;
-		const suggestions = await ytdl.getInfo(this.nowPlaying._data.video!.url);
-		console.log(suggestions.related_videos);
+		const SpotifyApi = container.resolve<SpotifyApi>(kSpotify);
 
-		const video = suggestions.related_videos.filter((vid) => !this.pastVideos.has(vid.id!)).at(0);
+		if (!this.nowPlaying || !this.seed) return;
+		const suggestions = await SpotifyApi.getRecommendations({ seeds: [this.seed] });
 
-		if (!video) {
-			void sendMessage(`${Emojis.RedX} | Não foi possível encontrar um vídeo relacionado!`, EmbedType.Error);
+		if (!suggestions.length) {
+			void sendMessage(`${Emojis.RedX} | Não foi possível encontrar vídeos relacionados!`, EmbedType.Error);
+
+			this.states.autoplay = false;
+
+			void editQueueMessage();
 			return;
 		}
 
-		const autoplay = new Music(
-			{
-				looped: false,
-				playlist: null,
-				source: VideoSource.AutoPlay,
-				spotify: null,
-				video: await getVideo(`https://www.youtube.com/watch?v=${video.id}`),
-			},
-			this,
-			this.guild.members.me!,
+		const videos = suggestions.map(
+			(value) =>
+				new Music(
+					{
+						source: VideoSource.AutoPlay,
+						spotify: value as unknown as SpotifyApi.TrackObjectSimplified & { album: SpotifyApi.AlbumObjectSimplified },
+						looped: false,
+						playlist: null,
+						video: null,
+					},
+					this,
+					this.guild.members.me!,
+				),
 		);
 
-		this.queue.push(autoplay);
+		this.queue.push(...videos);
 
 		void editQueueMessage();
 	}
@@ -848,6 +888,13 @@ export class MusicQueue {
 			this.queue = this.queue.filter((item) => item.source !== VideoSource.AutoPlay);
 		} else {
 			this.queue = this.queue.filter((item) => !item.looped);
+		}
+	}
+
+	private clearQueueTimeouts() {
+		for (const [key, timeout] of Object.entries(this.timeouts) as [keyof Timeouts, NodeJS.Timeout][]) {
+			clearTimeout(timeout);
+			this.timeouts[key] = null;
 		}
 	}
 
