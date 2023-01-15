@@ -12,10 +12,10 @@ export const AudioFiltersArguments: Record<string, Filter<boolean>> = {
 		generator: null,
 	},
 	bassboost: {
-		args: 'bass=g=0:f=150:w=0.5',
+		args: 'bass=g=0:f=150:w=0.3',
 		dynamic: true,
 		generator: (enable: boolean) => `Parsed_bass_0 g ${enable ? '15' : '0'}`,
-		generatorInitial: (enable: boolean) => `bass=g=${enable ? '15' : '0'}:f=150:w=0.5`,
+		generatorInitial: (enable: boolean) => `bass=g=${enable ? '15' : '0'}:f=150:w=0.3`,
 	},
 	chorus: {
 		args: 'chorus=0.7:0.9:55:0.4:0.25:2',
