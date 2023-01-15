@@ -98,7 +98,7 @@ export class MusicQueue {
 
 	public pastVideos: Set<string>;
 
-	public seed: SeedObject | null;
+	public seeds: SeedObject[];
 
 	public constructor(guild: Guild, voiceChannel: VoiceBasedChannel) {
 		this.guild = guild;
@@ -114,7 +114,7 @@ export class MusicQueue {
 		this.connection = null;
 		this.player = null;
 
-		this.seed = null;
+		this.seeds = [];
 
 		this.states = {
 			paused: false,
@@ -299,8 +299,13 @@ export class MusicQueue {
 			void this.queue[1]?.getVideo();
 		}
 
-		if (this.queue.length === 0 && this.states.autoplay) {
-			void this.resolveAutoPlay();
+		if (this.queue.length === 0) {
+			if (this.states.autoplay) void this.resolveAutoPlay();
+			else this.seeds = [];
+		}
+
+		if (this.seeds.length > 3) {
+			this.seeds.shift();
 		}
 	}
 
@@ -315,6 +320,7 @@ export class MusicQueue {
 		this.states.skipping = true;
 		this.skipTimeout();
 
+		this.nowPlayingResource?.playStream.destroy();
 		this.nowPlaying = null;
 		void this.checkQueue();
 
@@ -395,7 +401,7 @@ export class MusicQueue {
 			return void sendInteraction(interaction, `${Emojis.RedX} | Autoplay desativado!`);
 		}
 
-		if (!this.seed) {
+		if (!this.seeds.length) {
 			return void sendInteraction(
 				interaction,
 				`${Emojis.RedX} | Não foi possivel encontrar musicas para usar como base!`,
@@ -502,15 +508,22 @@ export class MusicQueue {
 		if (!music._data.spotify) {
 			const spotify = await SpotifyApi.searchTrack(`${music._data.video?.title} ${music._data.video?.channel?.name}`);
 
-			if (spotify && !music._data.spotify) {
+			console.log({
+				query: `${music._data.video?.title} ${music._data.video?.channel?.name}`,
+				result: spotify,
+			});
+
+			if (!spotify) return;
+
+			if (!music._data.spotify) {
 				music._data.spotify = spotify;
 			}
 		}
 
-		this.seed = {
+		this.seeds.push({
 			type: 'tracks',
 			id: music._data.spotify!.id,
-		};
+		});
 	}
 
 	private async resolveSpotifyPlaylist(query: string, requester: GuildMember, inverse: boolean) {
@@ -624,10 +637,10 @@ export class MusicQueue {
 
 			const artist = await SpotifyApi.getArtist(query, true);
 
-			this.seed = {
+			this.seeds.push({
 				id: artist.id,
 				type: 'artists',
-			};
+			});
 
 			const musics = artist.tracks.map(
 				(item) =>
@@ -849,8 +862,13 @@ export class MusicQueue {
 	public async resolveAutoPlay() {
 		const SpotifyApi = container.resolve<SpotifyApi>(kSpotify);
 
-		if (!this.nowPlaying || !this.seed) return;
-		const suggestions = await SpotifyApi.getRecommendations({ seeds: [this.seed] });
+		if (!this.nowPlaying || !this.seeds.length) return;
+		const suggestions = await SpotifyApi.getRecommendations({ seeds: this.seeds });
+
+		console.log({
+			seeds: this.seeds,
+			suggestions,
+		});
 
 		if (!suggestions.length) {
 			void sendMessage(`${Emojis.RedX} | Não foi possível encontrar vídeos relacionados!`, EmbedType.Error);
