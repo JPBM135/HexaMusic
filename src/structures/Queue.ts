@@ -286,7 +286,7 @@ export class MusicQueue {
 			return void this.checkQueue();
 		}
 
-		this.pastVideos.add(this.nowPlaying._data.video?.id ?? '');
+		if (this.nowPlaying) this.pastVideos.add(this.nowPlaying._data.video?.id ?? '');
 		this.player?.play(resource);
 
 		void sendMessage(
