@@ -8,6 +8,8 @@ import type AudioFilters from './AudioFilters.js';
 
 const { FFmpeg: FFmpegTranscoder } = prism;
 
+const processMap: FFmpeg[] = [];
+
 export class AudioTransform extends Transform {
 	public audioFilters: AudioFilters;
 
@@ -19,6 +21,8 @@ export class AudioTransform extends Transform {
 
 	public constructor(filters: AudioFilters) {
 		super();
+
+		for (const process of processMap) process.destroy();
 
 		this.ffmpeg = new FFmpegTranscoder({
 			args: [
@@ -39,6 +43,8 @@ export class AudioTransform extends Transform {
 				}${filters.filters()},volume=1.5`,
 			],
 		});
+
+		processMap.push(this.ffmpeg);
 
 		console.log({
 			dynamic: filters.DynamicFilters.join(','),
