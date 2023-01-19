@@ -38,7 +38,7 @@ export class AudioTransform extends Transform {
 				'2',
 				'-af',
 				// eslint-disable-next-line no-useless-escape
-				`${filters.DynamicFilters.join(',')},azmq=bind_address=tcp\\\\://127.0.0.1\\\\:5555${
+				`${filters.DynamicFilters.join(',')},azmq=bind_address=tcp\\\\://127.0.0.1\\\\:2929${
 					filters.hasFilter ? ',' : ''
 				}${filters.filters()},volume=1.5`,
 			],
@@ -46,11 +46,11 @@ export class AudioTransform extends Transform {
 
 		processMap.push(this.ffmpeg);
 
-		console.log({
+		/* 		console.log({
 			dynamic: filters.DynamicFilters.join(','),
 			filters: filters.filters(),
-			full: `${filters.DynamicFilters.join(',')},azmq=bind_address=tcp\\\\://127.0.0.1\\\\:5555,${filters.filters()}`,
-		});
+			full: `${filters.DynamicFilters.join(',')},azmq=bind_address=tcp\\\\://127.0.0.1\\\\:2929,${filters.filters()}`,
+		}); */
 
 		this.audioFilters = filters;
 
@@ -74,9 +74,9 @@ export class AudioTransform extends Transform {
 	public setFilters(filters: AudioFilters) {
 		this.audioFilters = filters;
 
-		console.log({
+		/* 		console.log({
 			updates: this.audioFilters.socketUpdates(),
-		});
+		}); */
 
 		for (const update of this.audioFilters.socketUpdates()) {
 			this.socket?.send(update, undefined, (err) => err && console.log(err));
@@ -85,8 +85,7 @@ export class AudioTransform extends Transform {
 
 	private connectSocket() {
 		this.socket = socket('req');
-		// eslint-disable-next-line n/no-sync
-		this.socket.connect('tcp://127.0.0.1:5555');
+		this.socket.connect('tcp://127.0.0.1:2929');
 	}
 
 	private handleFFmpeg() {

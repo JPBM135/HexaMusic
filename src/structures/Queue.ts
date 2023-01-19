@@ -265,6 +265,8 @@ export class MusicQueue {
 			return;
 		}
 
+		this.clearQueueTimeouts();
+
 		if (this.voiceChannel.members.size === 1) {
 			this.nowPlaying = null;
 			this.timeouts.emptyChannel = setTimeout(() => {
@@ -273,9 +275,9 @@ export class MusicQueue {
 			}, EMPTY_CHANNEL_TIMEOUT);
 		}
 
-		this.clearQueueTimeouts();
-
 		this.nowPlaying = this.queue.shift()!;
+
+		if (!this.nowPlaying) return;
 
 		void this.setSeed(this.nowPlaying);
 
@@ -286,7 +288,7 @@ export class MusicQueue {
 			return void this.checkQueue();
 		}
 
-		if (this.nowPlaying) this.pastVideos.add(this.nowPlaying._data.video?.id ?? '');
+		this.pastVideos.add(this.nowPlaying._data.video?.id ?? '');
 		this.player?.play(resource);
 
 		void sendMessage(
@@ -508,11 +510,11 @@ export class MusicQueue {
 		if (!music._data.spotify) {
 			const spotify = await SpotifyApi.searchTrack(`${music._data.video?.title} ${music._data.video?.channel?.name}`);
 
-			console.log({
+			/* 			console.log({
 				query: `${music._data.video?.title} ${music._data.video?.channel?.name}`,
 				result: spotify,
 			});
-
+ */
 			if (!spotify) return;
 
 			if (!music._data.spotify) {
@@ -865,10 +867,10 @@ export class MusicQueue {
 		if (!this.nowPlaying || !this.seeds.length) return;
 		const suggestions = await SpotifyApi.getRecommendations({ seeds: this.seeds });
 
-		console.log({
+		/* 		console.log({
 			seeds: this.seeds,
 			suggestions,
-		});
+		}); */
 
 		if (!suggestions.length) {
 			void sendMessage(`${Emojis.RedX} | Não foi possível encontrar vídeos relacionados!`, EmbedType.Error);
@@ -911,6 +913,10 @@ export class MusicQueue {
 
 	private clearQueueTimeouts() {
 		for (const [key, timeout] of Object.entries(this.timeouts) as [keyof Timeouts, NodeJS.Timeout][]) {
+			if (key === 'emptyChannel' && this.voiceChannel.members.size === 1) {
+				continue;
+			}
+
 			clearTimeout(timeout);
 			this.timeouts[key] = null;
 		}

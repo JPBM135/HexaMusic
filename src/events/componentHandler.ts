@@ -51,10 +51,12 @@ export const ComponentHandlerEvent = {
 			return;
 		}
 
-		if (interaction.isSelectMenu()) {
+		if (interaction.isStringSelectMenu()) {
 			await queue.setEffects(interaction);
 			return;
 		}
+
+		if (!interaction.isButton()) return;
 
 		switch (command) {
 			case 'autoplay':

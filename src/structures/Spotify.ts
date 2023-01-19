@@ -400,4 +400,4 @@ export default class SpotifyApi {
 
 const spot = new SpotifyApi();
 
-console.log(await spot.getToken(), spot);
+// console.log(await spot.getToken(), spot);
