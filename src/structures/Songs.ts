@@ -115,7 +115,11 @@ export class Music {
 	}
 
 	public get thumbnail() {
-		return this._data.spotify?.album?.images[0]?.url ?? this._data.video?.thumbnail?.url ?? '';
+		return (
+			(this._data.source === VideoSource.Spotify
+				? this._data.spotify?.album?.images[0]?.url
+				: this._data.video?.thumbnail?.url) ?? ''
+		);
 	}
 
 	public async getResource(seek = 0): Promise<AudioResource<null>> {
