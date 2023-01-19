@@ -464,8 +464,10 @@ export class MusicQueue {
 
 	// #endregion
 
-	private clearQueueTimeouts() {
+	private clearQueueTimeouts(force = false) {
 		for (const [key, timeout] of Object.entries(this.timeouts) as [keyof Timeouts, NodeJS.Timeout][]) {
+			if (key === 'emptyChannel' && this.voiceChannel.members.size === 1 && !force) continue;
+
 			clearTimeout(timeout);
 			this.timeouts[key] = null;
 		}
@@ -841,7 +843,7 @@ export class MusicQueue {
 	}
 
 	public destroy() {
-		this.clearQueueTimeouts();
+		this.clearQueueTimeouts(true);
 
 		if (this.connection && this.connection.state.status !== VoiceConnectionStatus.Destroyed) {
 			this.connection.destroy();
