@@ -21,8 +21,8 @@ export function generateContent(guild: Guild, queue?: MusicQueue): string {
 			)}`,
 	);
 
-	if (parsedQueue.join('\n').length > 1_900) {
-		while (parsedQueue.join('\n').length > 1_900) {
+	if (parsedQueue.join('\n').length > 1_850) {
+		while (parsedQueue.join('\n').length > 1_850) {
 			parsedQueue.pop();
 		}
 
