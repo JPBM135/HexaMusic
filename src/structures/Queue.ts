@@ -1,3 +1,4 @@
+import process from 'node:process';
 import { setTimeout, clearTimeout } from 'node:timers';
 import {
 	type VoiceConnection,
@@ -13,14 +14,15 @@ import {
 	type VoiceBasedChannel,
 	type GuildMember,
 	type ButtonInteraction,
-	type SelectMenuInteraction,
 	type Collection,
+	type StringSelectMenuInteraction,
 	channelMention,
 	ChannelType,
 	hyperlink,
 	inlineCode,
 	userMention,
 } from 'discord.js';
+import { Histogram, Counter, Gauge } from 'prom-client';
 import { container } from 'tsyringe';
 // @ts-expect-error: Missing types
 import YtSr from 'youtube-sr';
@@ -41,6 +43,64 @@ import type SpotifyApi from './Spotify.js';
 
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
 const { getPlaylist, getVideo, searchOne } = YtSr as typeof import('../../node_modules/youtube-sr/dist/mod.js').default;
+
+new Gauge({
+	name: 'hexa_music_queue_size',
+	help: 'The size of the queue',
+	labelNames: ['guild_id'],
+	collect() {
+		for (const [guildId, queue] of container.resolve<Collection<string, MusicQueue>>(kQueues)) {
+			(this as Gauge).set({ guild_id: guildId }, queue.queue.length);
+		}
+	},
+});
+
+new Gauge({
+	name: 'hexa_music_queue_duration',
+	help: 'The duration of the queue',
+	labelNames: ['guild_id'],
+	collect() {
+		for (const [guildId, queue] of container.resolve<Collection<string, MusicQueue>>(kQueues)) {
+			(this as Gauge).set(
+				{ guild_id: guildId },
+				queue.queue.reduce((acc, curr) => acc + curr.duration, 0),
+			);
+		}
+	},
+});
+
+const requestersMetric = new Counter({
+	name: 'hexa_music_requesters',
+	help: 'The number of requesters',
+	labelNames: ['guild_id', 'user_id'],
+});
+
+new Gauge({
+	name: 'hexa_music_connected',
+	help: 'The number of connected users',
+	labelNames: ['guild_id'],
+	collect() {
+		for (const [guildId, queue] of container.resolve<Collection<string, MusicQueue>>(kQueues)) {
+			(this as Gauge).set({ guild_id: guildId }, queue.voiceChannel.members.size);
+		}
+	},
+});
+new Counter({
+	name: 'hexa_music_playing',
+	help: 'The amount of queues playing',
+	labelNames: ['guild_id'],
+	collect() {
+		for (const [guildId, queue] of container.resolve<Collection<string, MusicQueue>>(kQueues)) {
+			(this as Counter).inc({ guild_id: guildId }, queue.isPlaying() ? 1 : 0);
+		}
+	},
+});
+
+const queueSearchTimeMetric = new Histogram({
+	name: 'hexa_music_queue_search_duration',
+	help: 'The duration of the queue search',
+	labelNames: ['guild_id', 'query_mode'],
+});
 
 interface Timeouts {
 	emptyChannel: NodeJS.Timeout | null;
@@ -200,6 +260,8 @@ export class MusicQueue {
 			return void sendMessage(`${Emojis.RedX} | Você precisa especificar uma música para pesquisar!`, EmbedType.Error);
 		}
 
+		requestersMetric.inc({ guild_id: this.guild.id, user_id: requester.id });
+
 		const next = findFlags(queryString, ['next', 'proxima']);
 		const inverse = findFlags(queryString, ['inverse', 'inversa']);
 
@@ -207,6 +269,8 @@ export class MusicQueue {
 
 		const queryType = findQueryMode(queryString.trim());
 		let found = false;
+
+		const start = process.hrtime();
 
 		switch (queryType) {
 			case QueryMode.YoutubeVideo:
@@ -237,6 +301,10 @@ export class MusicQueue {
 				);
 				break;
 		}
+
+		const end = process.hrtime(start);
+
+		queueSearchTimeMetric.observe({ guild_id: this.guild.id, query_mode: queryType }, end[0] + end[1] / 1e9);
 
 		if (!found) return;
 
@@ -449,7 +517,7 @@ export class MusicQueue {
 		return void sendInteraction(interaction, `${Emojis.Delete} | Efeitos removidos com sucesso!`);
 	}
 
-	public async setEffects(interaction: SelectMenuInteraction) {
+	public async setEffects(interaction: StringSelectMenuInteraction) {
 		const effects = interaction.values;
 
 		this.audioEffects.reset();

@@ -1,6 +1,7 @@
 import { type AudioResource, createAudioResource, StreamType } from '@discordjs/voice';
 import type { GuildMember } from 'discord.js';
 import { codeBlock } from 'discord.js';
+import { Counter } from 'prom-client';
 // @ts-expect-error: Missing types
 import YtSr from 'youtube-sr';
 import type { Video } from '../../node_modules/youtube-sr/dist/mod.js';
@@ -10,6 +11,12 @@ import type { MusicQueue } from './Queue.js';
 import { StreamDownloader } from './StreamDowloader.js';
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
 const { searchOne } = YtSr as typeof import('../../node_modules/youtube-sr/dist/mod.js').default;
+
+const songsMetric = new Counter({
+	name: 'hexa_music_number_songs',
+	help: 'The number of songs',
+	labelNames: ['guild_id', 'source'],
+});
 
 export interface MusicData {
 	looped: boolean;
@@ -56,6 +63,8 @@ export class Music {
 		this.stream = null;
 		this.resource = null;
 		this.startedAt = null;
+
+		songsMetric.inc({ guild_id: this.manager.guild.id, source: VideoSource[this.source] });
 	}
 
 	public get source() {

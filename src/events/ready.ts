@@ -1,4 +1,6 @@
-import type { Client, GuildTextBasedChannel } from 'discord.js';
+import type { GuildTextBasedChannel } from 'discord.js';
+import { Client } from 'discord.js';
+import { Gauge } from 'prom-client';
 import { container } from 'tsyringe';
 import { EnvironmentalVariables } from '../constants.js';
 import logger from '../logger.js';
@@ -6,6 +8,15 @@ import { generatePadronizedMessage } from '../message/base.js';
 import SpotifyApi from '../structures/Spotify.js';
 import { kChannel, kErrorChannel, kMessage, kSpotify } from '../tokens.js';
 import { resolveEnv } from '../utils/env.js';
+
+new Gauge({
+	name: 'hexa_music_discord_heartbeat_latency',
+	help: 'Discord heartbeat latency',
+	collect() {
+		const client = container.resolve<Client>(Client);
+		(this as Gauge).set(client.ws.ping);
+	},
+});
 
 export const ReadyEvent = {
 	name: 'ready',
