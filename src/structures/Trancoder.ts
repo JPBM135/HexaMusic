@@ -47,7 +47,7 @@ export class MutableFFmpeg extends Duplex {
 					? // @ts-expect-error: Ignore
 					  EVENTS[event as keyof typeof EVENTS][method as key](event, fn)
 					: // @ts-expect-error: Ignore
-					  Duplex.prototype[method as keyof typeof Duplex['prototype']].call(this, event, fn);
+					  Duplex.prototype[method as keyof (typeof Duplex)['prototype']].call(this, event, fn);
 		}
 
 		this._reader.on('error', this.emit.bind(this, 'error'));
@@ -145,7 +145,6 @@ export class MutableFFmpeg extends Duplex {
 		try {
 			// eslint-disable-next-line n/no-sync
 			const result = ChildProcess.spawnSync(FFMpegPath, ['-h'], { windowsHide: true });
-			console.log(result);
 			if (result.error) throw result.error;
 			Object.assign(FFMPEG, {
 				command: FFMpegPath,

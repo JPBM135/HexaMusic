@@ -26,6 +26,7 @@ import { container } from 'tsyringe';
 import YtSr from 'youtube-sr';
 import ytdl from 'ytdl-core';
 import { Emojis, EMPTY_CHANNEL_TIMEOUT, EMPTY_QUEUE_TIMEOUT } from '../constants.js';
+import logger from '../logger.js';
 import { editQueueMessage } from '../message/base.js';
 import { kQueues, kSpotify } from '../tokens.js';
 import { conditionalArrayReverse } from '../utils/array.js';
@@ -806,7 +807,6 @@ export class MusicQueue {
 	public async resolveAutoPlay() {
 		if (!this.nowPlaying) return;
 		const suggestions = await ytdl.getInfo(this.nowPlaying._data.video!.url);
-		console.log(suggestions.related_videos);
 
 		const video = suggestions.related_videos.filter((vid) => !this.pastVideos.has(vid.id!)).at(0);
 
@@ -866,7 +866,7 @@ export class MusicQueue {
 
 	private connectionListeners() {
 		this.connection?.on('stateChange', (oldState, newState) => {
-			console.log(`Connection transitioned from ${oldState.status} to ${newState.status}`);
+			logger.debug(`[Connection]: Connection transitioned from ${oldState.status} to ${newState.status}`);
 
 			if (newState.status === VoiceConnectionStatus.Destroyed) {
 				this.destroy();
@@ -884,13 +884,13 @@ export class MusicQueue {
 		});
 
 		this.connection?.on('debug', (message) => {
-			console.log(message);
+			logger.debug(`[Connection]: ${message}`);
 		});
 	}
 
 	private playerListeners() {
 		this.player?.on('stateChange', async (oldState, newState) => {
-			console.log(`Player transitioned from ${oldState.status} to ${newState.status}`);
+			logger.debug(`[Player]: Player transitioned from ${oldState.status} to ${newState.status}`);
 			if (newState.status === AudioPlayerStatus.Idle) {
 				if (this.states.repeat === RepeatModes.Music) {
 					const resource = await this.nowPlaying?.getResource();
@@ -909,7 +909,7 @@ export class MusicQueue {
 
 		this.player?.on('error', (error) => {
 			if (error.message.toLowerCase().includes('premature') && this.states.skipping) {
-				console.error(error);
+				logger.debug('[Player]: Skipping premature error');
 				return;
 			}
 
@@ -922,14 +922,14 @@ export class MusicQueue {
 				return;
 			}
 
-			console.error(error);
+			logger.error('[Player]: Error', error);
 			void sendErrorMessage(error);
 			this.nowPlaying = null;
 			void this.checkQueue();
 		});
 
 		this.player?.on('debug', (message) => {
-			console.log(message);
+			logger.debug(`[Player]: ${message}`);
 		});
 	}
 

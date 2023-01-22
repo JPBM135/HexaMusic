@@ -401,7 +401,3 @@ export default class SpotifyApi {
 		return this.rateLimit.rateLimited;
 	}
 }
-
-const spot = new SpotifyApi();
-
-console.log(await spot.getToken(), spot);

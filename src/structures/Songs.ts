@@ -184,9 +184,5 @@ export class Music {
 			this.stream!.destroy();
 			this.stream = null;
 		});
-
-		/* 		this.stream!.on('data', () => {
-			console.log('data received');
-		}); */
 	}
 }

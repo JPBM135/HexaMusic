@@ -6,9 +6,12 @@ import { ComponentHandlerEvent } from './events/componentHandler.js';
 import { MessageCreateEvent } from './events/messageCreate.js';
 import { ReadyEvent } from './events/ready.js';
 import { VoiceStateEvent } from './events/voiceState.js';
+import logger from './logger.js';
 import type { MusicQueue } from './structures/Queue.js';
 import { kQueues } from './tokens.js';
 import { sendErrorMessage } from './utils/textChannel.js';
+
+logger.debugEnabled = process.env.NODE_ENV === 'development';
 
 const client = new Client({
 	intents: [
@@ -26,20 +29,24 @@ const queues = new Collection<string, MusicQueue>();
 container.register(kQueues, { useValue: queues });
 
 client.on('ready', async () => ReadyEvent.execute(client));
-console.log('Ready event registered');
+logger.info('Ready event registered');
+
 client.on('messageCreate', async (message) => MessageCreateEvent.execute(message));
-console.log('MessageCreate event registered');
+logger.info('MessageCreate event registered');
+
 client.on('interactionCreate', async (interaction) => ComponentHandlerEvent.execute(interaction));
-console.log('ButtonHandler event registered');
+logger.info('ButtonHandler event registered');
+
 client.on('voiceStateUpdate', async (oldState, newState) =>
 	VoiceStateEvent.execute(oldState as VoiceState, newState as VoiceState),
 );
-console.log('VoiceState event registered');
-client.on('debug', console.log);
-client.on('error', console.error);
-client.on('warn', console.warn);
-client.rest.on('rateLimited', console.warn);
-console.log('Debug event listeners registered');
+logger.info('VoiceState event registered');
+
+client.on('debug', (message) => logger.debug('[Client: debug]:', message));
+client.on('error', (error) => logger.error('[Client: error]:', error));
+client.on('warn', (message) => logger.warn('[Client: warn]:', message));
+client.rest.on('rateLimited', (info) => logger.warn('[REST: rateLimited]:', info));
+logger.info('Debug event listeners registered');
 
 process.on('unhandledRejection', (error) => {
 	console.trace(error);

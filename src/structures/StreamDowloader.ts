@@ -5,6 +5,7 @@ import type { downloadOptions } from 'ytdl-core';
 import ytdl from 'ytdl-core';
 import { /* EnvironmentalVariables, */ YTDL_ARGS } from '../constants.js';
 // import { resolveEnv } from '../utils/env.js';
+import logger from '../logger.js';
 import type AudioFilters from './AudioFilters.js';
 import type { Music } from './Songs.js';
 
@@ -124,7 +125,10 @@ export class StreamDownloader {
 
 	public destroy(error?: Error) {
 		if (error) this.manager.manager.player?.emit('error', error);
-		console.log('Destroying stream');
+		logger.warn('[StreamDownloader] Destroying stream downloader', {
+			url: this.url,
+			error,
+		});
 
 		this.baseStream?.destroy();
 		this.outputStream?.destroy();
@@ -135,19 +139,19 @@ export class StreamDownloader {
 	private _createListeners() {
 		this.baseStream!.on('error', (error) => {
 			this.onError(error);
-			console.error('Base stream error', error);
+			logger.error('[StreamDownloader] Base stream error', error);
 		});
 		this.transcoder!.on('error', (error) => {
 			this.onError(error);
-			console.error('Transcoder error', error);
+			console.error('[StreamDownloader] Transcoder error', error);
 		});
 		this.opus!.on('error', (error) => {
 			this.onError(error);
-			console.error('Opus error', error);
+			console.error('[StreamDownloader] Opus error', error);
 		});
 		this.outputStream?.on('error', (error) => {
 			this.onError(error);
-			console.error('Output stream error', error);
+			console.error('[StreamDownloader] Output stream error', error);
 		});
 
 		this.outputStream?.on('end', this.destroy.bind(this));

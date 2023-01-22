@@ -1,6 +1,7 @@
 import type { Client, GuildTextBasedChannel } from 'discord.js';
 import { container } from 'tsyringe';
 import { EnvironmentalVariables } from '../constants.js';
+import logger from '../logger.js';
 import { generatePadronizedMessage } from '../message/base.js';
 import SpotifyApi from '../structures/Spotify.js';
 import { kChannel, kErrorChannel, kMessage, kSpotify } from '../tokens.js';
@@ -9,13 +10,13 @@ import { resolveEnv } from '../utils/env.js';
 export const ReadyEvent = {
 	name: 'ready',
 	async execute(client: Client) {
-		console.log(`Logged in as ${client.user?.tag}!`);
+		logger.success(`[Client]: Logged in as ${client.user?.tag}!`);
 
 		const QueryChannel = (await client.channels.fetch(
 			resolveEnv(EnvironmentalVariables.QueryChannelId),
 		)) as GuildTextBasedChannel;
 
-		console.log(`Query channel registered: ${QueryChannel.name}`);
+		logger.info(`Query channel registered: ${QueryChannel.name}`);
 
 		container.register(kChannel, { useValue: QueryChannel });
 
@@ -28,13 +29,13 @@ export const ReadyEvent = {
 			container.register(kMessage, { useValue: message });
 		}
 
-		console.log(`Query message registered: ${QueryMessage?.id}`);
+		logger.info(`Query message registered: ${QueryMessage?.id}`);
 
 		container.register(kMessage, { useValue: QueryMessage });
 
 		const SpotifyClient = new SpotifyApi();
 
-		console.log('Spotify client registered');
+		logger.info('Spotify client registered');
 
 		container.register(kSpotify, { useValue: SpotifyClient });
 
@@ -45,7 +46,7 @@ export const ReadyEvent = {
 
 			container.register(kErrorChannel, { useValue: ErrorChannel });
 
-			console.log(`Error channel registered: ${ErrorChannel.name}`);
+			logger.info(`Error channel registered: ${ErrorChannel.name}`);
 		}
 	},
 };
