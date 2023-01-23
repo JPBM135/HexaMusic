@@ -70,13 +70,13 @@ new Gauge({
 });
 
 const requestersMetric = new Counter({
-	name: 'hexa_music_requesters',
+	name: 'hexa_music_music_requesters',
 	help: 'The number of requesters',
 	labelNames: ['guild_id', 'user_id'],
 });
 
 new Gauge({
-	name: 'hexa_music_connected',
+	name: 'hexa_music_members_connected_to_channel',
 	help: 'The number of connected users',
 	labelNames: ['guild_id'],
 	collect() {
@@ -85,13 +85,25 @@ new Gauge({
 		}
 	},
 });
-new Counter({
-	name: 'hexa_music_playing',
-	help: 'The amount of queues playing',
+
+new Gauge({
+	name: 'hexa_music_is_playing',
+	help: 'If the queue is playing',
 	labelNames: ['guild_id'],
 	collect() {
 		for (const [guildId, queue] of container.resolve<Collection<string, MusicQueue>>(kQueues)) {
-			(this as Counter).inc({ guild_id: guildId }, queue.isPlaying() ? 1 : 0);
+			(this as Gauge).set({ guild_id: guildId }, queue.isPlaying() ? 1 : 0);
+		}
+	},
+});
+
+new Gauge({
+	name: 'hexa_music_is_connected',
+	help: 'If the queue is connected',
+	labelNames: ['guild_id'],
+	collect() {
+		for (const [guildId, queue] of container.resolve<Collection<string, MusicQueue>>(kQueues)) {
+			(this as Gauge).set({ guild_id: guildId }, queue.isConnected() ? 1 : 0);
 		}
 	},
 });
