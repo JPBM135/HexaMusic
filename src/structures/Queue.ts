@@ -316,7 +316,7 @@ export class MusicQueue {
 
 		const end = process.hrtime(start);
 
-		queueSearchTimeMetric.observe({ guild_id: this.guild.id, query_mode: queryType }, end[0] + end[1] / 1e9);
+		queueSearchTimeMetric.observe({ guild_id: this.guild.id, query_mode: QueryMode[queryType] }, end[0] + end[1] / 1e9);
 
 		if (!found) return;
 
