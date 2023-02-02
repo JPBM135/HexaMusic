@@ -38,5 +38,5 @@ export function findFlags(query: string, flagsToFind: string[]) {
 }
 
 export function clearQuery(query: string) {
-	return query.replace(/-{1,2}\w+/g, '').trim();
+	return query.replaceAll(/\s-{1,2}\w+/g, '').trim();
 }
