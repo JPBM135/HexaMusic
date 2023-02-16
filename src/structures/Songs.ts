@@ -5,7 +5,8 @@ import { Counter } from 'prom-client';
 // @ts-expect-error: Missing types
 import YtSr from 'youtube-sr';
 import type { Video } from '../../node_modules/youtube-sr/dist/mod.js';
-import { YTDL_ARGS } from '../constants.js';
+import { EnvironmentalVariables, YTDL_ARGS } from '../constants.js';
+import { resolveEnv } from '../utils/env.js';
 import type AudioFilters from './AudioFilters.js';
 import type { MusicQueue } from './Queue.js';
 import { StreamDownloader } from './StreamDowloader.js';
@@ -13,7 +14,7 @@ import { StreamDownloader } from './StreamDowloader.js';
 const { searchOne } = YtSr as typeof import('../../node_modules/youtube-sr/dist/mod.js').default;
 
 const songsMetric = new Counter({
-	name: 'hexa_music_number_songs',
+	name: `${resolveEnv(EnvironmentalVariables.Prefix)}_music_number_songs`,
 	help: 'The number of songs',
 	labelNames: ['guild_id', 'source'],
 });

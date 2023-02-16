@@ -1,4 +1,4 @@
-import type { GuildTextBasedChannel, Message } from 'discord.js';
+import type { Collection, GuildTextBasedChannel, Message } from 'discord.js';
 
 /* eslint-disable unicorn/no-unsafe-regex */
 export const YTDL_ARGS = {
@@ -28,6 +28,7 @@ export enum EnvironmentalVariables {
 	Cookie = 'COOKIE',
 	ErrorChannelId = 'ERROR_CHANNEL_ID',
 	OwnerId = 'OWNER_ID',
+	Prefix = 'PREFIX',
 	QueryChannelsId = 'QUERY_CHANNELS_ID',
 	QueryMessagesId = 'QUERY_MESSAGES_ID',
 	SpotifyClientId = 'SPOTIFY_CLIENT_ID',
@@ -78,7 +79,7 @@ export const EMPTY_QUEUE_TIMEOUT = 10 * 60 * 1_000;
 
 export const DELETE_MESSAGE_TIMEOUT = 7_000;
 
-export type ChannelsMap = Map<
+export type ChannelsMap = Collection<
 	string,
 	{
 		channel: GuildTextBasedChannel;

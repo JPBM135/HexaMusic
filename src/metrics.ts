@@ -2,15 +2,17 @@ import process from 'node:process';
 import express from 'express';
 import { collectDefaultMetrics, register } from 'prom-client';
 import { container } from 'tsyringe';
+import { EnvironmentalVariables } from './constants.js';
 import logger from './logger.js';
 import { kPrometheus } from './tokens.js';
+import { resolveEnv } from './utils/env.js';
 
 export function createPromRegistry() {
 	container.register(kPrometheus, { useValue: register });
 
 	collectDefaultMetrics({
 		register,
-		prefix: 'hexa_music_',
+		prefix: `${resolveEnv(EnvironmentalVariables.Prefix)}_music_`,
 	});
 
 	const app = express();

@@ -27,13 +27,14 @@ import { container } from 'tsyringe';
 // @ts-expect-error: Missing types
 import YtSr from 'youtube-sr';
 import ytdl from 'ytdl-core';
-import { Emojis, EMPTY_CHANNEL_TIMEOUT, EMPTY_QUEUE_TIMEOUT } from '../constants.js';
+import { Emojis, EMPTY_CHANNEL_TIMEOUT, EMPTY_QUEUE_TIMEOUT, EnvironmentalVariables } from '../constants.js';
 import logger from '../logger.js';
 import { editQueueMessage } from '../message/base.js';
 import { kQueues, kSpotify } from '../tokens.js';
 import { conditionalArrayReverse } from '../utils/array.js';
 import { formatDate } from '../utils/date.js';
 import { promisifyEnterState } from '../utils/enterState.js';
+import { resolveEnv } from '../utils/env.js';
 import { formatPlaylistMessage } from '../utils/formatters.js';
 import { clearQuery, findFlags, findQueryMode } from '../utils/query.js';
 import { EmbedType, sendErrorMessage, sendInteraction, sendMessage } from '../utils/textChannel.js';
@@ -45,7 +46,7 @@ import type SpotifyApi from './Spotify.js';
 const { getPlaylist, getVideo, searchOne } = YtSr as typeof import('../../node_modules/youtube-sr/dist/mod.js').default;
 
 new Gauge({
-	name: 'hexa_music_queue_size',
+	name: `${resolveEnv(EnvironmentalVariables.Prefix)}_music_queue_size`,
 	help: 'The size of the queue',
 	labelNames: ['guild_id'],
 	collect() {
@@ -56,7 +57,7 @@ new Gauge({
 });
 
 new Gauge({
-	name: 'hexa_music_queue_duration',
+	name: `${resolveEnv(EnvironmentalVariables.Prefix)}_music_queue_duration`,
 	help: 'The duration of the queue',
 	labelNames: ['guild_id'],
 	collect() {
@@ -70,13 +71,13 @@ new Gauge({
 });
 
 const requestersMetric = new Counter({
-	name: 'hexa_music_music_requesters',
+	name: `${resolveEnv(EnvironmentalVariables.Prefix)}_music_music_requesters`,
 	help: 'The number of requesters',
 	labelNames: ['guild_id', 'user_id'],
 });
 
 new Gauge({
-	name: 'hexa_music_members_connected_to_channel',
+	name: `${resolveEnv(EnvironmentalVariables.Prefix)}_music_members_connected_to_channel`,
 	help: 'The number of connected users',
 	labelNames: ['guild_id'],
 	collect() {
@@ -87,7 +88,7 @@ new Gauge({
 });
 
 new Gauge({
-	name: 'hexa_music_is_playing',
+	name: `${resolveEnv(EnvironmentalVariables.Prefix)}_music_is_playing`,
 	help: 'If the queue is playing',
 	labelNames: ['guild_id'],
 	collect() {
@@ -98,7 +99,7 @@ new Gauge({
 });
 
 new Gauge({
-	name: 'hexa_music_is_connected',
+	name: `${resolveEnv(EnvironmentalVariables.Prefix)}_music_is_connected`,
 	help: 'If the queue is connected',
 	labelNames: ['guild_id'],
 	collect() {
@@ -109,7 +110,7 @@ new Gauge({
 });
 
 const queueSearchTimeMetric = new Histogram({
-	name: 'hexa_music_queue_search_duration',
+	name: `${resolveEnv(EnvironmentalVariables.Prefix)}_music_queue_search_duration`,
 	help: 'The duration of the queue search',
 	labelNames: ['guild_id', 'query_mode'],
 });

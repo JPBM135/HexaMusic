@@ -1,5 +1,5 @@
 import type { GuildTextBasedChannel } from 'discord.js';
-import { Client } from 'discord.js';
+import { Collection, Client } from 'discord.js';
 import { Gauge } from 'prom-client';
 import { container } from 'tsyringe';
 import { type ChannelsMap, EnvironmentalVariables } from '../constants.js';
@@ -10,7 +10,7 @@ import { kChannels, kErrorChannel, kSpotify } from '../tokens.js';
 import { resolveEnv } from '../utils/env.js';
 
 new Gauge({
-	name: 'hexa_music_discord_heartbeat_latency',
+	name: `${resolveEnv(EnvironmentalVariables.Prefix)}_music_discord_heartbeat_latency`,
 	help: 'Discord heartbeat latency',
 	collect() {
 		const client = container.resolve<Client>(Client);
@@ -18,7 +18,7 @@ new Gauge({
 	},
 });
 
-const channelMessages: ChannelsMap = new Map();
+const channelMessages: ChannelsMap = new Collection();
 
 export const ReadyEvent = {
 	name: 'ready',
