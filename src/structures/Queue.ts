@@ -226,7 +226,11 @@ export class MusicQueue {
 
 	public async connect() {
 		if (!this.voiceChannel.joinable) {
-			return sendMessage(`${Emojis.RedX} | Eu não tenho permissão para entrar nesse canal de voz!`, EmbedType.Error);
+			return sendMessage(
+				this.guild.id,
+				`${Emojis.RedX} | Eu não tenho permissão para entrar nesse canal de voz!`,
+				EmbedType.Error,
+			);
 		}
 
 		this.connection = joinVoiceChannel({
@@ -242,7 +246,7 @@ export class MusicQueue {
 
 		if (!(await promisifyEnterState(this.connection, VoiceConnectionStatus.Ready, 10_000))) {
 			this.destroy();
-			return sendMessage(`${Emojis.RedX} | Não foi possível conectar ao canal de voz!`, EmbedType.Error);
+			return sendMessage(this.guild.id, `${Emojis.RedX} | Não foi possível conectar ao canal de voz!`, EmbedType.Error);
 		}
 
 		if (this.voiceChannel.type === ChannelType.GuildStageVoice && !this.guild.members.me?.voice.suppress) {
@@ -260,16 +264,23 @@ export class MusicQueue {
 
 		this.connection.subscribe(this.player);
 
-		return sendMessage(`${Emojis.Join} | Conectado ao canal de voz ${channelMention(this.voiceChannel.id)}!`);
+		return sendMessage(
+			this.guild.id,
+			`${Emojis.Join} | Conectado ao canal de voz ${channelMention(this.voiceChannel.id)}!`,
+		);
 	}
 
 	public async query(queryString: string, requester: GuildMember) {
 		if (!this.connection) {
-			return void sendMessage(`${Emojis.RedX} | Não há uma conexão de voz ativa!`, EmbedType.Error);
+			return void sendMessage(this.guild.id, `${Emojis.RedX} | Não há uma conexão de voz ativa!`, EmbedType.Error);
 		}
 
 		if (queryString.length === 0) {
-			return void sendMessage(`${Emojis.RedX} | Você precisa especificar uma música para pesquisar!`, EmbedType.Error);
+			return void sendMessage(
+				this.guild.id,
+				`${Emojis.RedX} | Você precisa especificar uma música para pesquisar!`,
+				EmbedType.Error,
+			);
 		}
 
 		requestersMetric.inc({ guild_id: this.guild.id, user_id: requester.id });
@@ -308,6 +319,7 @@ export class MusicQueue {
 				break;
 			default:
 				void sendMessage(
+					this.guild.id,
 					`${Emojis.RedX} | Não foi possível encontrar nenhum resultado para a sua pesquisa!`,
 					EmbedType.Error,
 				);
@@ -322,7 +334,7 @@ export class MusicQueue {
 
 		void this.checkQueue();
 
-		return void editQueueMessage();
+		return void editQueueMessage(this.guild.id);
 	}
 
 	public async checkQueue(): Promise<void> {
@@ -332,9 +344,9 @@ export class MusicQueue {
 			this.nowPlaying = null;
 			this.timeouts.noSongs = setTimeout(() => {
 				this.destroy();
-				void sendMessage(`${Emojis.Leave} | Fila vazia por muito tempo, saindo do canal de voz!`);
+				void sendMessage(this.guild.id, `${Emojis.Leave} | Fila vazia por muito tempo, saindo do canal de voz!`);
 			}, EMPTY_QUEUE_TIMEOUT);
-			void editQueueMessage();
+			void editQueueMessage(this.guild.id);
 			return;
 		}
 
@@ -342,7 +354,10 @@ export class MusicQueue {
 			this.nowPlaying = null;
 			this.timeouts.emptyChannel = setTimeout(() => {
 				this.destroy();
-				void sendMessage(`${Emojis.Leave} | Canal de voz vazio por muito tempo, saindo do canal de voz!`);
+				void sendMessage(
+					this.guild.id,
+					`${Emojis.Leave} | Canal de voz vazio por muito tempo, saindo do canal de voz!`,
+				);
 			}, EMPTY_CHANNEL_TIMEOUT);
 		}
 
@@ -352,7 +367,11 @@ export class MusicQueue {
 		const resource = await this.nowPlaying.getResource();
 
 		if (!resource) {
-			void sendMessage(`${Emojis.RedX} | Não foi possível tocar ${this.nowPlaying.name}!`, EmbedType.Error);
+			void sendMessage(
+				this.guild.id,
+				`${Emojis.RedX} | Não foi possível tocar ${this.nowPlaying.name}!`,
+				EmbedType.Error,
+			);
 			return void this.checkQueue();
 		}
 
@@ -360,10 +379,11 @@ export class MusicQueue {
 		this.player?.play(resource);
 
 		void sendMessage(
+			this.guild.id,
 			`${Emojis.Play} | Tocando ${this.formattedNowPlaying()} pedido por ${userMention(this.nowPlaying.requester.id)}!`,
 		);
 
-		void editQueueMessage();
+		void editQueueMessage(this.guild.id);
 
 		if (this.queue.length > 0) {
 			void this.queue[1]?.getVideo();
@@ -388,7 +408,7 @@ export class MusicQueue {
 		this.nowPlaying = null;
 		void this.checkQueue();
 
-		void editQueueMessage();
+		void editQueueMessage(this.guild.id);
 		return void sendInteraction(interaction, `${Emojis.Skip} | Pulando ${this.formattedNowPlaying(oldPlaying)}!`);
 	}
 
@@ -410,14 +430,14 @@ export class MusicQueue {
 				this.timeouts.paused = null;
 			}
 
-			void editQueueMessage();
+			void editQueueMessage(this.guild.id);
 			return void sendInteraction(interaction, `${Emojis.Pause} | Resumindo ${this.formattedNowPlaying()}!`);
 		}
 
 		this.player?.pause();
 		this.timeouts.paused = setTimeout(() => {
 			this.destroy();
-			void sendMessage(`${Emojis.Leave} | Música pausada por muito tempo, saindo do canal de voz!`);
+			void sendMessage(this.guild.id, `${Emojis.Leave} | Música pausada por muito tempo, saindo do canal de voz!`);
 		}, EMPTY_CHANNEL_TIMEOUT);
 
 		if (!this.nowPlayingResource?.playStream.isPaused()) {
@@ -426,7 +446,7 @@ export class MusicQueue {
 
 		this.states.paused = true;
 
-		void editQueueMessage();
+		void editQueueMessage(this.guild.id);
 		return void sendInteraction(interaction, `${Emojis.Pause} | Pausando ${this.formattedNowPlaying()}!`);
 	}
 
@@ -441,7 +461,7 @@ export class MusicQueue {
 
 		this.queue = this.queue.sort(() => Math.random() - 0.5);
 
-		void editQueueMessage();
+		void editQueueMessage(this.guild.id);
 		return void sendInteraction(interaction, `${Emojis.Shuffle} | Fila embaralhada com sucesso!`);
 	}
 
@@ -452,7 +472,7 @@ export class MusicQueue {
 
 		this.queue = this.queue.reverse();
 
-		void editQueueMessage();
+		void editQueueMessage(this.guild.id);
 		return void sendInteraction(interaction, `${Emojis.Loop} | Fila invertida com sucesso!`);
 	}
 
@@ -461,7 +481,7 @@ export class MusicQueue {
 			this.states.autoplay = false;
 			this.removeFromQueue('autoplay');
 
-			void editQueueMessage();
+			void editQueueMessage(this.guild.id);
 			return void sendInteraction(interaction, `${Emojis.RedX} | Autoplay desativado!`);
 		}
 
@@ -469,7 +489,7 @@ export class MusicQueue {
 
 		void this.resolveAutoPlay();
 
-		void editQueueMessage();
+		void editQueueMessage(this.guild.id);
 		return void sendInteraction(interaction, `${Emojis.Stream} | Autoplay ativado!`);
 	}
 
@@ -477,33 +497,33 @@ export class MusicQueue {
 		if (this.states.repeat === RepeatModes.Off) {
 			this.states.repeat = RepeatModes.Music;
 
-			void editQueueMessage();
+			void editQueueMessage(this.guild.id);
 			return void sendInteraction(interaction, `${Emojis.RepeatOne} | Repetindo música!`);
 		}
 
 		if (this.states.repeat === RepeatModes.Music) {
 			this.states.repeat = RepeatModes.Queue;
 
-			void editQueueMessage();
+			void editQueueMessage(this.guild.id);
 			return void sendInteraction(interaction, `${Emojis.Repeat} | Repetindo fila!`);
 		}
 
 		this.states.repeat = RepeatModes.Off;
 		this.removeFromQueue('looped');
 
-		void editQueueMessage();
+		void editQueueMessage(this.guild.id);
 		return void sendInteraction(interaction, `${Emojis.RedX} | Repetição desativada!`);
 	}
 
 	public async setVolume(volume: number) {
 		if (volume < 0 || volume > 100) {
-			return void sendMessage(`${Emojis.RedX} | O volume deve estar entre 0 e 100!`, EmbedType.Error);
+			return void sendMessage(this.guild.id, `${Emojis.RedX} | O volume deve estar entre 0 e 100!`, EmbedType.Error);
 		}
 
 		this.nowPlaying?.resource?.volume?.setVolume(volume / 100);
 
-		void editQueueMessage();
-		return void sendMessage(`${Emojis.Music} | Volume definido para ${volume}%!`);
+		void editQueueMessage(this.guild.id);
+		return void sendMessage(this.guild.id, `${Emojis.Music} | Volume definido para ${volume}%!`);
 	}
 
 	public async sendQueueMessage(interaction: ButtonInteraction) {
@@ -513,7 +533,7 @@ export class MusicQueue {
 	public async clear(interaction: ButtonInteraction) {
 		this.queue = [];
 
-		void editQueueMessage();
+		void editQueueMessage(this.guild.id);
 		return void sendInteraction(interaction, `${Emojis.Delete} | Fila limpa com sucesso!`);
 	}
 
@@ -525,7 +545,7 @@ export class MusicQueue {
 	public async clearEffects(interaction: ButtonInteraction) {
 		this.audioEffects.reset();
 
-		void editQueueMessage();
+		void editQueueMessage(this.guild.id);
 		return void sendInteraction(interaction, `${Emojis.Delete} | Efeitos removidos com sucesso!`);
 	}
 
@@ -539,7 +559,7 @@ export class MusicQueue {
 			this.nowPlaying.changeFilter(this.audioEffects);
 		}
 
-		void editQueueMessage();
+		void editQueueMessage(this.guild.id);
 		return void sendInteraction(interaction, `${Emojis.Music} | Efeitos definidos com sucesso!`);
 	}
 
@@ -590,6 +610,7 @@ export class MusicQueue {
 			this.queue.push(...conditionalArrayReverse(musics, inverse));
 
 			await sendMessage(
+				this.guild.id,
 				formatPlaylistMessage({
 					channelName: playlist.owner.display_name ?? playlist.name,
 					playlistName: playlist.name,
@@ -602,7 +623,7 @@ export class MusicQueue {
 			);
 			return true;
 		} catch (error) {
-			void sendMessage((error as Error).message, EmbedType.Error);
+			void sendMessage(this.guild.id, (error as Error).message, EmbedType.Error);
 			return false;
 		}
 	}
@@ -644,6 +665,7 @@ export class MusicQueue {
 			this.queue.push(...conditionalArrayReverse(musics, inverse));
 
 			await sendMessage(
+				this.guild.id,
 				formatPlaylistMessage({
 					channelName: album.artists.map((artist) => artist.name).join(', '),
 					playlistName: album.name,
@@ -656,7 +678,7 @@ export class MusicQueue {
 			);
 			return true;
 		} catch (error) {
-			void sendMessage((error as Error).message, EmbedType.Error);
+			void sendMessage(this.guild.id, (error as Error).message, EmbedType.Error);
 			return false;
 		}
 	}
@@ -698,6 +720,7 @@ export class MusicQueue {
 			this.queue.push(...conditionalArrayReverse(musics, inverse));
 
 			await sendMessage(
+				this.guild.id,
 				formatPlaylistMessage({
 					channelName: artist.name,
 					playlistName: artist.name,
@@ -710,7 +733,7 @@ export class MusicQueue {
 			);
 			return true;
 		} catch (error) {
-			void sendMessage((error as Error).message, EmbedType.Error);
+			void sendMessage(this.guild.id, (error as Error).message, EmbedType.Error);
 			return false;
 		}
 	}
@@ -737,6 +760,7 @@ export class MusicQueue {
 			next ? this.queue.unshift(music) : this.queue.push(music);
 
 			await sendMessage(
+				this.guild.id,
 				`${Emojis.Track} | Música ${hyperlink(inlineCode(track.name), track.external_urls.spotify)} de ${hyperlink(
 					inlineCode(track.artists.map((artist) => artist.name).join(', ')),
 					track.artists.at(0)?.external_urls.spotify ?? track.external_urls.spotify,
@@ -744,7 +768,7 @@ export class MusicQueue {
 			);
 			return true;
 		} catch (error) {
-			void sendMessage((error as Error).message, EmbedType.Error);
+			void sendMessage(this.guild.id, (error as Error).message, EmbedType.Error);
 			return false;
 		}
 	}
@@ -756,7 +780,11 @@ export class MusicQueue {
 			});
 
 			if (!playlist ?? !playlist.videos.length) {
-				void sendMessage(`${Emojis.RedX} | Não foi possível encontrar a playlist informada!`, EmbedType.Error);
+				void sendMessage(
+					this.guild.id,
+					`${Emojis.RedX} | Não foi possível encontrar a playlist informada!`,
+					EmbedType.Error,
+				);
 				return false;
 			}
 
@@ -788,6 +816,7 @@ export class MusicQueue {
 			this.queue.push(...conditionalArrayReverse(musics, inverse));
 
 			await sendMessage(
+				this.guild.id,
 				formatPlaylistMessage({
 					channelName: playlist.channel?.name ?? 'Desconhecido',
 					playlistName: playlist.title!,
@@ -810,7 +839,11 @@ export class MusicQueue {
 			const video = await getVideo(query);
 
 			if (!video) {
-				void sendMessage(`${Emojis.RedX} | Não foi possível encontrar o video informado!`, EmbedType.Error);
+				void sendMessage(
+					this.guild.id,
+					`${Emojis.RedX} | Não foi possível encontrar o video informado!`,
+					EmbedType.Error,
+				);
 				return false;
 			}
 
@@ -832,6 +865,7 @@ export class MusicQueue {
 			const { isLive } = music;
 
 			await sendMessage(
+				this.guild.id,
 				`${Emojis[isLive ? 'Live' : 'Track']} | ${isLive ? 'Livestream' : 'Vídeo'} ${hyperlink(
 					inlineCode(video.title ?? 'Nenhum titúlo'),
 					video.url,
@@ -852,7 +886,11 @@ export class MusicQueue {
 			const video = await searchOne(query, 'video', false);
 
 			if (!video) {
-				void sendMessage(`${Emojis.RedX} | Não foi possível encontrar o video informado!`, EmbedType.Error);
+				void sendMessage(
+					this.guild.id,
+					`${Emojis.RedX} | Não foi possível encontrar o video informado!`,
+					EmbedType.Error,
+				);
 				return false;
 			}
 
@@ -872,6 +910,7 @@ export class MusicQueue {
 			next ? this.queue.unshift(music) : this.queue.push(music);
 
 			await sendMessage(
+				this.guild.id,
 				`${Emojis.Track} | Vídeo ${hyperlink(inlineCode(video.title ?? 'Nenhum titúlo'), video.url)} de ${hyperlink(
 					inlineCode(video.channel?.name ?? 'Desconhecido'),
 					video.channel?.url ?? 'https://youtube.com',
@@ -891,7 +930,11 @@ export class MusicQueue {
 		const video = suggestions.related_videos.filter((vid) => !this.pastVideos.has(vid.id!)).at(0);
 
 		if (!video) {
-			void sendMessage(`${Emojis.RedX} | Não foi possível encontrar um vídeo relacionado!`, EmbedType.Error);
+			void sendMessage(
+				this.guild.id,
+				`${Emojis.RedX} | Não foi possível encontrar um vídeo relacionado!`,
+				EmbedType.Error,
+			);
 			return;
 		}
 
@@ -909,7 +952,7 @@ export class MusicQueue {
 
 		this.queue.push(autoplay);
 
-		void editQueueMessage();
+		void editQueueMessage(this.guild.id);
 	}
 
 	// #endregion
@@ -941,7 +984,7 @@ export class MusicQueue {
 		const queues = container.resolve<Collection<string, MusicQueue>>(kQueues);
 		queues.delete(this.guild.id);
 
-		void editQueueMessage();
+		void editQueueMessage(this.guild.id);
 	}
 
 	private connectionListeners() {
@@ -995,6 +1038,7 @@ export class MusicQueue {
 
 			if (error.message.includes('410')) {
 				void sendMessage(
+					this.guild.id,
 					`${Emojis.RedX} | Estamos sendo limitados pelo YouTube, por segurança a rede e para impedir que percamos o acesso a plataforma, limparemos a fila!`,
 					EmbedType.Error,
 				);

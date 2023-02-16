@@ -1,3 +1,5 @@
+import type { GuildTextBasedChannel, Message } from 'discord.js';
+
 /* eslint-disable unicorn/no-unsafe-regex */
 export const YTDL_ARGS = {
 	quality: 'highestaudio',
@@ -26,8 +28,8 @@ export enum EnvironmentalVariables {
 	Cookie = 'COOKIE',
 	ErrorChannelId = 'ERROR_CHANNEL_ID',
 	OwnerId = 'OWNER_ID',
-	QueryChannelId = 'QUERY_CHANNEL_ID',
-	QueryMessageId = 'QUERY_MESSAGE_ID',
+	QueryChannelsId = 'QUERY_CHANNELS_ID',
+	QueryMessagesId = 'QUERY_MESSAGES_ID',
 	SpotifyClientId = 'SPOTIFY_CLIENT_ID',
 	SpotifyClientSecret = 'SPOTIFY_CLIENT_SECRET',
 	Token = 'DISCORD_TOKEN',
@@ -75,3 +77,11 @@ export const PAUSED_TIMEOUT = 20 * 60 * 1_000;
 export const EMPTY_QUEUE_TIMEOUT = 10 * 60 * 1_000;
 
 export const DELETE_MESSAGE_TIMEOUT = 7_000;
+
+export type ChannelsMap = Map<
+	string,
+	{
+		channel: GuildTextBasedChannel;
+		message: Message;
+	}
+>;

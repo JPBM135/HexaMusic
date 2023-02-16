@@ -8,8 +8,9 @@ import {
 	codeBlock,
 } from 'discord.js';
 import { container } from 'tsyringe';
+import type { ChannelsMap } from '../constants.js';
 import { DELETE_MESSAGE_TIMEOUT, EmbedColors, Emojis } from '../constants.js';
-import { kChannel, kErrorChannel } from '../tokens.js';
+import { kChannels, kErrorChannel } from '../tokens.js';
 
 export enum EmbedType {
 	None,
@@ -17,8 +18,11 @@ export enum EmbedType {
 	Error,
 }
 
-export async function sendMessage(payload: MessageReplyOptions | string, embed = EmbedType.Info) {
-	const channel = container.resolve<GuildTextBasedChannel>(kChannel);
+export async function sendMessage(guildId: string, payload: MessageReplyOptions | string, embed = EmbedType.Info) {
+	const channelGuild = container.resolve<ChannelsMap>(kChannels);
+
+	const channel = channelGuild.get(guildId)!.channel;
+
 	let message: Message<true> | null = null;
 
 	if (typeof payload === 'string' && embed !== EmbedType.None) {
@@ -63,15 +67,21 @@ export async function sendInteraction(
 	setTimeout(async () => interaction?.deleteReply(), DELETE_MESSAGE_TIMEOUT);
 }
 
-export async function sendErrorMessage(error: Error): Promise<void> {
-	const msg = await sendMessage(
-		`${Emojis.RedX} | An error occurred ${error.message}:\n${codeBlock('js', error.message)}`,
-		EmbedType.Error,
-	);
+export async function sendErrorMessage(error: Error, guildId?: string): Promise<void> {
+	const text = `${Emojis.RedX} | An error occurred ${error.message}:\n${codeBlock('js', error.message)}`;
+
+	if (guildId) {
+		await sendMessage(guildId, text, EmbedType.Error);
+	}
 
 	const ErrorChannel = container.resolve<GuildTextBasedChannel>(kErrorChannel);
 
 	await ErrorChannel.send({
-		embeds: msg.embeds,
+		embeds: [
+			{
+				color: EmbedColors.Error,
+				description: text,
+			},
+		],
 	});
 }

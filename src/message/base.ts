@@ -1,8 +1,9 @@
 import { setTimeout } from 'node:timers';
-import type { Guild, MessageReplyOptions, APIEmbed, Message } from 'discord.js';
+import type { Guild, MessageReplyOptions, APIEmbed } from 'discord.js';
 import { container } from 'tsyringe';
+import type { ChannelsMap } from '../constants.js';
 import type { MusicQueue } from '../structures/Queue.js';
-import { kMessage } from '../tokens.js';
+import { kChannels } from '../tokens.js';
 import { resolveQueue } from '../utils/resolveQueue.js';
 import { generatePadronizedComponents } from './components.js';
 import { generateContent } from './content.js';
@@ -29,10 +30,12 @@ export function generatePadronizedMessage(guild: Guild, queue?: MusicQueue): Mes
 
 let antiSpamCounter = 0;
 
-export async function editQueueMessage() {
+export async function editQueueMessage(guildId: string) {
 	if (antiSpamCounter > 2) return;
 
-	const message = container.resolve<Message>(kMessage);
+	const message = container.resolve<ChannelsMap>(kChannels).get(guildId)?.message;
+
+	if (!message) return;
 
 	await message.edit(generatePadronizedMessage(message.guild!, resolveQueue(message.guildId!)));
 	antiSpamCounter++;
@@ -41,7 +44,7 @@ export async function editQueueMessage() {
 		// eslint-disable-next-line require-atomic-updates
 		setTimeout(() => {
 			antiSpamCounter = 0;
-			void editQueueMessage();
+			void editQueueMessage(guildId);
 		}, 5_000).unref();
 	}
 }

@@ -2,11 +2,11 @@ import type { GuildTextBasedChannel } from 'discord.js';
 import { Client } from 'discord.js';
 import { Gauge } from 'prom-client';
 import { container } from 'tsyringe';
-import { EnvironmentalVariables } from '../constants.js';
+import { type ChannelsMap, EnvironmentalVariables } from '../constants.js';
 import logger from '../logger.js';
 import { generatePadronizedMessage } from '../message/base.js';
 import SpotifyApi from '../structures/Spotify.js';
-import { kChannel, kErrorChannel, kMessage, kSpotify } from '../tokens.js';
+import { kChannels, kErrorChannel, kSpotify } from '../tokens.js';
 import { resolveEnv } from '../utils/env.js';
 
 new Gauge({
@@ -18,31 +18,36 @@ new Gauge({
 	},
 });
 
+const channelMessages: ChannelsMap = new Map();
+
 export const ReadyEvent = {
 	name: 'ready',
 	async execute(client: Client) {
 		logger.success(`[Client]: Logged in as ${client.user?.tag}!`);
 
-		const QueryChannel = (await client.channels.fetch(
-			resolveEnv(EnvironmentalVariables.QueryChannelId),
-		)) as GuildTextBasedChannel;
+		const allowedChannels = resolveEnv(EnvironmentalVariables.QueryChannelsId).split(',');
+		const editMessages = resolveEnv(EnvironmentalVariables.QueryMessagesId).split(',');
 
-		logger.info(`Query channel registered: ${QueryChannel.name}`);
+		for (const [idx, channelId] of allowedChannels.entries()) {
+			const QueryChannel = (await client.channels.fetch(channelId)) as GuildTextBasedChannel;
 
-		container.register(kChannel, { useValue: QueryChannel });
+			let QueryMessage = editMessages[idx]
+				? await QueryChannel.messages.fetch(editMessages[idx]!).catch(() => null)
+				: null;
 
-		const QueryMessage = await QueryChannel.messages
-			.fetch(resolveEnv(EnvironmentalVariables.QueryMessageId))
-			.catch(() => null);
+			if (!QueryMessage) {
+				QueryMessage = await QueryChannel.send(generatePadronizedMessage(QueryChannel.guild));
+			}
 
-		if (!QueryMessage) {
-			const message = await QueryChannel.send(generatePadronizedMessage(QueryChannel.guild));
-			container.register(kMessage, { useValue: message });
+			channelMessages.set(QueryChannel.guildId, {
+				channel: QueryChannel,
+				message: QueryMessage!,
+			});
+
+			logger.info(`Query channel registered: ${QueryChannel.name}`);
 		}
 
-		logger.info(`Query message registered: ${QueryMessage?.id}`);
-
-		container.register(kMessage, { useValue: QueryMessage });
+		container.register(kChannels, { useValue: channelMessages });
 
 		const SpotifyClient = new SpotifyApi();
 
@@ -50,14 +55,12 @@ export const ReadyEvent = {
 
 		container.register(kSpotify, { useValue: SpotifyClient });
 
-		if (resolveEnv(EnvironmentalVariables.ErrorChannelId)) {
-			const ErrorChannel = (await client.channels.fetch(
-				resolveEnv(EnvironmentalVariables.ErrorChannelId),
-			)) as GuildTextBasedChannel;
+		const ErrorChannel = (await client.channels.fetch(
+			resolveEnv(EnvironmentalVariables.ErrorChannelId),
+		)) as GuildTextBasedChannel;
 
-			container.register(kErrorChannel, { useValue: ErrorChannel });
+		container.register(kErrorChannel, { useValue: ErrorChannel });
 
-			logger.info(`Error channel registered: ${ErrorChannel.name}`);
-		}
+		logger.info(`Error channel registered: ${ErrorChannel.name}`);
 	},
 };

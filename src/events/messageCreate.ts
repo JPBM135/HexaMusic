@@ -1,27 +1,29 @@
 import { setTimeout } from 'node:timers';
 import type { Message, Collection } from 'discord.js';
 import { container } from 'tsyringe';
-import { Emojis, EnvironmentalVariables } from '../constants.js';
+import type { ChannelsMap } from '../constants.js';
+import { Emojis } from '../constants.js';
 import { MusicQueue } from '../structures/Queue.js';
-import { kQueues } from '../tokens.js';
-import { resolveEnv } from '../utils/env.js';
+import { kChannels, kQueues } from '../tokens.js';
 import { EmbedType, sendMessage } from '../utils/textChannel.js';
 
 export const MessageCreateEvent = {
 	name: 'messageCreate',
 	async execute(message: Message) {
+		const channels = container.resolve<ChannelsMap>(kChannels);
+
 		if (message.author.bot || !message.inGuild()) return;
 
 		if (message.content === 'hexa!ping') {
 			await message.reply('Pong!');
 		}
 
-		if (message.channel.id !== resolveEnv(EnvironmentalVariables.QueryChannelId)) return;
+		if (!channels.has(message.guildId)) return;
 
 		setTimeout(async () => message.delete(), 500);
 
 		if (!message.member?.voice?.channel) {
-			await sendMessage(`${Emojis.RedX} | Você precisa estar em um canal de voz!`, EmbedType.Error);
+			await sendMessage(message.guildId, `${Emojis.RedX} | Você precisa estar em um canal de voz!`, EmbedType.Error);
 			return;
 		}
 
@@ -33,7 +35,11 @@ export const MessageCreateEvent = {
 		});
 
 		if (queue.voiceChannel.id !== message.member?.voice.channel.id) {
-			await sendMessage(`${Emojis.RedX} | Você precisa estar no mesmo canal de voz que eu!`, EmbedType.Error);
+			await sendMessage(
+				message.guildId,
+				`${Emojis.RedX} | Você precisa estar no mesmo canal de voz que eu!`,
+				EmbedType.Error,
+			);
 			return;
 		}
 

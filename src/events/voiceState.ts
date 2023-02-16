@@ -13,6 +13,7 @@ export const VoiceStateEvent = {
 			if (newState.channel && newState.channel?.id !== queue.voiceChannel.id) {
 				queue.voiceChannel = newState.channel;
 				void sendMessage(
+					newState.guild.id,
 					`${Emojis.OrangeConnection} | Conectado ao canal de voz ${channelMention(newState.channel.id)}!`,
 				);
 			}
