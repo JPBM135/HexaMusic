@@ -14,7 +14,8 @@
 		"start:dev": "yarn build && yarn dev",
 		"dev": "env-cmd node --enable-source-maps dist/index.js",
 		"update": "yarn upgrade-interactive",
-		"server:update": "git pull && yarn --immutable && yarn build && pm2 restart"
+		"server:update": "git pull && yarn --immutable && yarn build && pm2 restart",
+		"postinstall": "patch-package"
 	},
 	"type": "module",
 	"keywords": [],
@@ -35,6 +36,7 @@
 		"ffmpeg-static": "^5.1.0",
 		"kleur": "^4.1.5",
 		"node-gyp": "^9.3.1",
+		"patch-package": "^6.5.1",
 		"prism-media": "^1.3.4",
 		"prom-client": "^14.1.1",
 		"reflect-metadata": "^0.1.13",
