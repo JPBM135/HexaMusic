@@ -34,7 +34,7 @@ const logger: ILogger = {
 		console.log(`${kleur.yellow('[Warn]:')} ${message}`, ...args);
 	},
 	error(message: string, ...args: any[]) {
-		console.log(`${kleur.red('[Error]:')} ${message}`, ...args);
+		console.trace(`${kleur.red('[Error]:')} ${message}`, ...args);
 	},
 };
 
