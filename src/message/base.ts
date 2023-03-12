@@ -1,5 +1,5 @@
 import { setTimeout } from 'node:timers';
-import type { Guild, MessageReplyOptions, APIEmbed } from 'discord.js';
+import type { Guild, APIEmbed, MessageEditOptions, MessageCreateOptions } from 'discord.js';
 import { container } from 'tsyringe';
 import type { ChannelsMap } from '../constants.js';
 import type { MusicQueue } from '../structures/Queue.js';
@@ -10,7 +10,7 @@ import { generateContent } from './content.js';
 import { generateAuthor, generateDescription, generateFooter } from './embed.js';
 import { getColor } from './utils.js';
 
-export function generatePadronizedMessage(guild: Guild, queue?: MusicQueue): MessageReplyOptions {
+export function generatePadronizedMessage(guild: Guild, queue?: MusicQueue): MessageCreateOptions {
 	const embed: APIEmbed = {
 		author: generateAuthor(guild, queue),
 		color: getColor(queue?.nowPlaying?.source),
@@ -37,7 +37,7 @@ export async function editQueueMessage(guildId: string) {
 
 	if (!message) return;
 
-	await message.edit(generatePadronizedMessage(message.guild!, resolveQueue(message.guildId!)));
+	await message.edit(generatePadronizedMessage(message.guild!, resolveQueue(message.guildId!)) as MessageEditOptions);
 	antiSpamCounter++;
 
 	if (antiSpamCounter > 2) {
