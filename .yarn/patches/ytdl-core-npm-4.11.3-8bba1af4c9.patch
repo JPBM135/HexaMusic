@@ -1,7 +1,7 @@
-diff --git a/lib/utils.js b/lib/utils.js
-index 705c8dd3dd9c2aad97c21f70c95029b32a69ce1c..143ef1ff3f66f344b5df9e0312c7b812064308b2 100644
---- a/lib/utils.js
-+++ b/lib/utils.js
+diff --git a/node_modules/ytdl-core/lib/utils.js b/node_modules/ytdl-core/lib/utils.js
+index 705c8dd..143ef1f 100644
+--- a/node_modules/ytdl-core/lib/utils.js
++++ b/node_modules/ytdl-core/lib/utils.js
 @@ -60,7 +60,7 @@ const ESCAPING_SEQUENZES = [
    { start: "'", end: "'" },
    { start: '`', end: '`' },
