@@ -1,0 +1,23 @@
+{
+	"audit-logs": {
+		"created-initial-channel": "Channel created to house the initial message and inputs.",
+		"created-initial-restricted-role": "Role created to restrict access to the {{BOT_NAME}}."
+	},
+	"events": {
+		"guild-created": {
+			"missing-permission": {
+				"create-initial-channel": "<:icons_Wrong:1042946194839715891> | I don't have permission to create a channel in this server. Please give me the `Manage Channels` permission and try again.",
+				"create-restricted-role": "<:icons_Wrong:1042946194839715891> | I don't have permission to create a role in this server. Please give me the `Manage Roles` permission and try again."
+			},
+			"created-initial-channel": "<:icons_Correct:1043283096574890066> | I've created a channel called `{{channelName}}` to house the initial message and inputs for the {{BOT_NAME}}.",
+			"channel-already-exists": "<:icons_info:1193779203892588616> | We've detected that you already have a channel called configured for the {{BOT_NAME}}. If you want to change the channel, you can use the `/config channel` command.",
+			"created-restricted-role": "<:icons_Correct:1043283096574890066> | I've created a role called `{{roleName}}` to restrict access to the {{BOT_NAME}}.",
+			"role-already-exists": "<:icons_info:1193779203892588616> | We've detected that you already have a role called configured for the {{BOT_NAME}}. If you want to change the role, you can use the `/config role` command.",
+			"channel-channel-topic": "*Supported flags:*\n➜ `-p/--next`: adds the song as next\n➜ `-i/--reverse`: reverses the playlist before adding it\n➜ `-s/--shuffle`: shuffles the playlist before adding it\n➜ `-r/--repeat`: repeats the playlist\n➜ `-c/--clear`: clears the queue before adding the playlist",
+			"initial-setup": {
+				"author": "Initial setup for {{guildName}}",
+				"description": "\n\n{{createdChannelResult}}\n{{createdRestrictedRoleResult}}\n\n*Note: If you want to change the channel or role, you can use the `/config <sub-command>` command.*"
+			}
+		}
+	}
+}

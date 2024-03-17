@@ -1,0 +1,8 @@
+{
+	"unknown-error": "<:icons_Wrong:1042946194839715891> | An unknown error has occurred.",
+	"events": {
+		"guild-create": {
+			"guild-not-allowed": "<:icons_Wrong:1042946194839715891> | You are not allowed to add this bot to your server."
+		}
+	}
+}

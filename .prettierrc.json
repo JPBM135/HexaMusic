@@ -1,7 +1,9 @@
 {
-	"printWidth": 120,
-	"useTabs": true,
+	"printWidth": 100,
+	"useTabs": false,
 	"singleQuote": true,
+	"tabWidth": 2,
+	"semi": true,
 	"quoteProps": "as-needed",
 	"trailingComma": "all",
 	"endOfLine": "lf"

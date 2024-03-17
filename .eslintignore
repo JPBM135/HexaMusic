@@ -3,3 +3,4 @@ dist/
 node_modules/
 locales/
 !locales/en-US/
+*-schema.ts

@@ -1,0 +1,42 @@
+{
+	"queue": {
+		"content": {
+			"base": "<:icons_createchannel:1043283098130989086> | **Queue for {{guild}}**",
+			"not_playing": "<:icons_music:1042946184018415696> - There is nothing playing right now.",
+			"empty": "<:icons_music:1042946184018415696> - There are no songs in the queue.",
+			"track": "{{emoji}} - {{title}} ➜ {{owner}}",
+			"and_more": "And {{count}} more..."
+		},
+		"embed": {
+			"not_playing": {
+				"author": "Queue for {{guild}}",
+				"description": "Nothing is playing right now :(\n\n> You can send a song name or a link to play it.",
+				"footer": "Queue empty | 00:00 total duration | 100% volume"
+			},
+			"author": "{{owner}} - Now playing",
+			"description": "Title: {{title}}\nChannel: {{channel}}\nDuration: **{{duration}}** ({{timestamp}})",
+			"footer": "{{count}} song(s) | {{duration}} total duration | {{volume}}% volume"
+		},
+		"components": {
+			"buttons": {
+				"skip": "Skip",
+				"play_pause": {
+					"play": "Play",
+					"pause": "Pause"
+				},
+				"shuffle": "Shuffle",
+				"invert": "Invert",
+				"clear": "Clear queue",
+				"autoplay": "Autoplay",
+				"loop": {
+					"off": "Loop",
+					"one": "Loop (one)",
+					"all": "Loop (all)"
+				},
+				"volume": "Volume ({{volume}}%)",
+				"disconnect": "Disconnect",
+				"clear_effects": "Clear effects"
+			}
+		}
+	}
+}

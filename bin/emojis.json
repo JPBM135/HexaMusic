@@ -1,0 +1,2177 @@
+[
+	{
+		"animated": false,
+		"name": "icons_on",
+		"id": "860499265947959326"
+	},
+	{
+		"animated": false,
+		"name": "icons_online",
+		"id": "860123643395571713"
+	},
+	{
+		"animated": false,
+		"name": "icons_outage",
+		"id": "868122243845206087"
+	},
+	{
+		"animated": false,
+		"name": "icons_premium",
+		"id": "860508110920613918"
+	},
+	{
+		"animated": false,
+		"name": "icons_question",
+		"id": "860133545905225768"
+	},
+	{
+		"animated": false,
+		"name": "icons_quotes",
+		"id": "860123643887091723"
+	},
+	{
+		"animated": false,
+		"name": "icons_richpresence",
+		"id": "860133546173923388"
+	},
+	{
+		"animated": false,
+		"name": "icons_rules",
+		"id": "860123643756281876"
+	},
+	{
+		"animated": false,
+		"name": "icons_slashcmd",
+		"id": "860133546315218944"
+	},
+	{
+		"animated": false,
+		"name": "icons_spark",
+		"id": "860123643722727444"
+	},
+	{
+		"animated": false,
+		"name": "icons_speaker",
+		"id": "860133545544908802"
+	},
+	{
+		"animated": false,
+		"name": "icons_speakerlock",
+		"id": "860133546010345472"
+	},
+	{
+		"animated": false,
+		"name": "icons_speakerlow",
+		"id": "860133546278387763"
+	},
+	{
+		"animated": false,
+		"name": "icons_speakermute",
+		"id": "860133545963159563"
+	},
+	{
+		"animated": false,
+		"name": "icons_stickers",
+		"id": "861124851435831317"
+	},
+	{
+		"animated": false,
+		"name": "icons_stream",
+		"id": "860123644453715978"
+	},
+	{
+		"animated": false,
+		"name": "icons_ticket",
+		"id": "860123644520562698"
+	},
+	{
+		"animated": false,
+		"name": "icons_tilde",
+		"id": "860133545682141204"
+	},
+	{
+		"animated": false,
+		"name": "icons_todolist",
+		"id": "860123644196683807"
+	},
+	{
+		"animated": false,
+		"name": "icons_uparrow",
+		"id": "860123643715125279"
+	},
+	{
+		"animated": false,
+		"name": "icons_update",
+		"id": "860123644297871382"
+	},
+	{
+		"animated": false,
+		"name": "icons_view",
+		"id": "860123644398534676"
+	},
+	{
+		"animated": false,
+		"name": "icons_vip",
+		"id": "860133545884123136"
+	},
+	{
+		"animated": false,
+		"name": "icons_bookmark",
+		"id": "860123644037824512"
+	},
+	{
+		"animated": false,
+		"name": "icons_busy",
+		"id": "860123643219410965"
+	},
+	{
+		"animated": false,
+		"name": "icons_camera",
+		"id": "860123644331163648"
+	},
+	{
+		"animated": false,
+		"name": "icons_clouddown",
+		"id": "860133546776985610"
+	},
+	{
+		"animated": false,
+		"name": "icons_code",
+		"id": "860123643563474955"
+	},
+	{
+		"animated": false,
+		"name": "icons_control",
+		"id": "860123644650323988"
+	},
+	{
+		"animated": false,
+		"name": "icons_downarrow",
+		"id": "860123643300675605"
+	},
+	{
+		"animated": false,
+		"name": "icons_education",
+		"id": "860123644457648128"
+	},
+	{
+		"animated": false,
+		"name": "icons_flag",
+		"id": "860123644058664990"
+	},
+	{
+		"animated": false,
+		"name": "icons_folder",
+		"id": "860123643659681802"
+	},
+	{
+		"animated": false,
+		"name": "icons_fword",
+		"id": "861124851954876416"
+	},
+	{
+		"animated": false,
+		"name": "icons_games",
+		"id": "860123644402335775"
+	},
+	{
+		"animated": false,
+		"name": "icons_gif",
+		"id": "861124851531644939"
+	},
+	{
+		"animated": false,
+		"name": "icons_gift",
+		"id": "860123643710668851"
+	},
+	{
+		"animated": false,
+		"name": "icons_heart",
+		"id": "860123644235743232"
+	},
+	{
+		"animated": false,
+		"name": "icons_hi",
+		"id": "860123644205072395"
+	},
+	{
+		"animated": false,
+		"name": "icons_id",
+		"id": "860133546102620190"
+	},
+	{
+		"animated": false,
+		"name": "icons_idle",
+		"id": "860123644265365514"
+	},
+	{
+		"animated": false,
+		"name": "icons_image",
+		"id": "861124851828523038"
+	},
+	{
+		"animated": false,
+		"name": "icons_leftarrow",
+		"id": "860123643816312852"
+	},
+	{
+		"animated": false,
+		"name": "icons_list",
+		"id": "860123643710537789"
+	},
+	{
+		"animated": false,
+		"name": "icons_loadingerror",
+		"id": "860133545681616907"
+	},
+	{
+		"animated": false,
+		"name": "icons_message",
+		"id": "860123644545204234"
+	},
+	{
+		"animated": false,
+		"name": "icons_music",
+		"id": "860123644201271326"
+	},
+	{
+		"animated": false,
+		"name": "icons_notify",
+		"id": "860123644621226004"
+	},
+	{
+		"animated": false,
+		"name": "icons_off",
+		"id": "860499265289191434"
+	},
+	{
+		"animated": false,
+		"name": "icons_offline",
+		"id": "860123643954462740"
+	},
+	{
+		"animated": true,
+		"name": "icons_logo",
+		"id": "1032468076110811236"
+	},
+	{
+		"animated": false,
+		"name": "icons_activedevbadge",
+		"id": "1040516510612992040"
+	},
+	{
+		"animated": false,
+		"name": "icons_activities",
+		"id": "949635040021721138"
+	},
+	{
+		"animated": false,
+		"name": "icons_announce",
+		"id": "859424400456679445"
+	},
+	{
+		"animated": false,
+		"name": "icons_archive",
+		"id": "869507189797158953"
+	},
+	{
+		"animated": false,
+		"name": "icons_audiodisable",
+		"id": "875395222593478767"
+	},
+	{
+		"animated": false,
+		"name": "icons_audioenable",
+		"id": "875395222291513354"
+	},
+	{
+		"animated": false,
+		"name": "icons_award",
+		"id": "869513411103424563"
+	},
+	{
+		"animated": false,
+		"name": "icons_awardcup",
+		"id": "875395223419777085"
+	},
+	{
+		"animated": false,
+		"name": "icons_backforward",
+		"id": "988409328698523708"
+	},
+	{
+		"animated": false,
+		"name": "icons_badping",
+		"id": "880113405007114271"
+	},
+	{
+		"animated": false,
+		"name": "icons_ban",
+		"id": "859424400968646676"
+	},
+	{
+		"animated": false,
+		"name": "icons_bank",
+		"id": "949635040252428318"
+	},
+	{
+		"animated": false,
+		"name": "icons_beta1",
+		"id": "997766017931558962"
+	},
+	{
+		"animated": false,
+		"name": "icons_beta1A",
+		"id": "998575726229979187"
+	},
+	{
+		"animated": false,
+		"name": "icons_beta2",
+		"id": "997766020854984754"
+	},
+	{
+		"animated": false,
+		"name": "icons_beta2A",
+		"id": "998575728390054028"
+	},
+	{
+		"animated": false,
+		"name": "icons_birdman",
+		"id": "869538073996845056"
+	},
+	{
+		"animated": false,
+		"name": "icons_box",
+		"id": "869507189298040833"
+	},
+	{
+		"animated": false,
+		"name": "icons_bright",
+		"id": "859388129038303252"
+	},
+	{
+		"animated": false,
+		"name": "icons_Bugs",
+		"id": "859388130803974174"
+	},
+	{
+		"animated": false,
+		"name": "icons_bulb",
+		"id": "882595243579559958"
+	},
+	{
+		"animated": false,
+		"name": "icons_calendar1",
+		"id": "941679946760351794"
+	},
+	{
+		"animated": false,
+		"name": "icons_callconnect",
+		"id": "875395223428161576"
+	},
+	{
+		"animated": false,
+		"name": "icons_calldecline",
+		"id": "948168205371858954"
+	},
+	{
+		"animated": false,
+		"name": "icons_calldisconnect",
+		"id": "875395223147139122"
+	},
+	{
+		"animated": false,
+		"name": "icons_channel",
+		"id": "859424401950113822"
+	},
+	{
+		"animated": false,
+		"name": "icons_clock",
+		"id": "964491800465276940"
+	},
+	{
+		"animated": false,
+		"name": "icons_coin",
+		"id": "875397816523030558"
+	},
+	{
+		"animated": false,
+		"name": "icons_colorboostnitro",
+		"id": "869528229436858378"
+	},
+	{
+		"animated": false,
+		"name": "icons_colornitro",
+		"id": "869528229193584650"
+	},
+	{
+		"animated": false,
+		"name": "icons_colorserverpartner",
+		"id": "869529747447746600"
+	},
+	{
+		"animated": false,
+		"name": "icons_colorserververified",
+		"id": "869529747846234162"
+	},
+	{
+		"animated": false,
+		"name": "icons_colorstaff",
+		"id": "869554761840603196"
+	},
+	{
+		"animated": false,
+		"name": "icons_connect",
+		"id": "875395223512047626"
+	},
+	{
+		"animated": false,
+		"name": "icons_Correct",
+		"id": "859388130411282442"
+	},
+	{
+		"animated": false,
+		"name": "icons_creditcard",
+		"id": "882595243793473566"
+	},
+	{
+		"animated": false,
+		"name": "icons_customstaff",
+		"id": "988409331793948742"
+	},
+	{
+		"animated": false,
+		"name": "icons_DAC",
+		"id": "1040522409150779454"
+	},
+	{
+		"animated": false,
+		"name": "icons_dblurple",
+		"id": "875710295258046535"
+	},
+	{
+		"animated": false,
+		"name": "icons_delete",
+		"id": "867650498030731315"
+	},
+	{
+		"animated": false,
+		"name": "icons_dfuchsia",
+		"id": "875710295081910292"
+	},
+	{
+		"animated": false,
+		"name": "icons_dgreen",
+		"id": "875710296147255347"
+	},
+	{
+		"animated": false,
+		"name": "icons_discover",
+		"id": "859429432535023666"
+	},
+	{
+		"animated": false,
+		"name": "icons_djoin",
+		"id": "875754472834469948"
+	},
+	{
+		"animated": false,
+		"name": "icons_dleave",
+		"id": "875754473023229972"
+	},
+	{
+		"animated": false,
+		"name": "icons_dollar",
+		"id": "988409333782020216"
+	},
+	{
+		"animated": false,
+		"name": "icons_Download",
+		"id": "859388129269776384"
+	},
+	{
+		"animated": false,
+		"name": "icons_downvote",
+		"id": "911135418420953138"
+	},
+	{
+		"animated": false,
+		"name": "icons_dred",
+		"id": "875710295866216509"
+	},
+	{
+		"animated": false,
+		"name": "icons_dwhite",
+		"id": "875710295253848144"
+	},
+	{
+		"animated": false,
+		"name": "icons_dyellow",
+		"id": "875710296071757824"
+	},
+	{
+		"animated": false,
+		"name": "icons_edit",
+		"id": "859388129625374720"
+	},
+	{
+		"animated": false,
+		"name": "icons_emojiguardian",
+		"id": "874587985218244649"
+	},
+	{
+		"animated": false,
+		"name": "icons_eventcolour",
+		"id": "870646213429563445"
+	},
+	{
+		"animated": false,
+		"name": "icons_exclamation",
+		"id": "859388127885131796"
+	},
+	{
+		"animated": false,
+		"name": "icons_file",
+		"id": "859424401899651072"
+	},
+	{
+		"animated": false,
+		"name": "icons_fire",
+		"id": "869513411044724746"
+	},
+	{
+		"animated": false,
+		"name": "icons_forum",
+		"id": "964425853138264094"
+	},
+	{
+		"animated": false,
+		"name": "icons_forumNFSW",
+		"id": "964425853582852138"
+	},
+	{
+		"animated": false,
+		"name": "icons_frontforward",
+		"id": "988409335791124551"
+	},
+	{
+		"animated": false,
+		"name": "icons_gitbranch",
+		"id": "869507190552166460"
+	},
+	{
+		"animated": false,
+		"name": "icons_gitcommit",
+		"id": "869507190199828490"
+	},
+	{
+		"animated": false,
+		"name": "icons_gitmerge",
+		"id": "869507189549723718"
+	},
+	{
+		"animated": false,
+		"name": "icons_gitpullrequest",
+		"id": "869507190057234433"
+	},
+	{
+		"animated": false,
+		"name": "icons_globe",
+		"id": "859424401971609600"
+	},
+	{
+		"animated": false,
+		"name": "icons_goodping",
+		"id": "880113406915538995"
+	},
+	{
+		"animated": false,
+		"name": "icons_hammer",
+		"id": "949635040424374342"
+	},
+	{
+		"animated": false,
+		"name": "icons_headphone",
+		"id": "859424401274568744"
+	},
+	{
+		"animated": false,
+		"name": "icons_headphonedeafen",
+		"id": "859424401035100200"
+	},
+	{
+		"animated": false,
+		"name": "icons_hyphen",
+		"id": "859388129596014592"
+	},
+	{
+		"animated": false,
+		"name": "icons_idelping",
+		"id": "880113405720145990"
+	},
+	{
+		"animated": false,
+		"name": "icons_illustrator",
+		"id": "949635040168538132"
+	},
+	{
+		"animated": false,
+		"name": "icons_info",
+		"id": "880113401207095346"
+	},
+	{
+		"animated": false,
+		"name": "icons_invite",
+		"id": "859424400750542858"
+	},
+	{
+		"animated": false,
+		"name": "icons_dwhite",
+		"id": "875710295253848144"
+	},
+	{
+		"animated": false,
+		"name": "icons_dyellow",
+		"id": "875710296071757824"
+	},
+	{
+		"animated": false,
+		"name": "icons_edit",
+		"id": "859388129625374720"
+	},
+	{
+		"animated": false,
+		"name": "icons_emojiguardian",
+		"id": "874587985218244649"
+	},
+	{
+		"animated": false,
+		"name": "icons_eventcolour",
+		"id": "870646213429563445"
+	},
+	{
+		"animated": false,
+		"name": "icons_exclamation",
+		"id": "859388127885131796"
+	},
+	{
+		"animated": false,
+		"name": "icons_file",
+		"id": "859424401899651072"
+	},
+	{
+		"animated": false,
+		"name": "icons_fire",
+		"id": "869513411044724746"
+	},
+	{
+		"animated": false,
+		"name": "icons_forum",
+		"id": "964425853138264094"
+	},
+	{
+		"animated": false,
+		"name": "icons_forumNFSW",
+		"id": "964425853582852138"
+	},
+	{
+		"animated": false,
+		"name": "icons_frontforward",
+		"id": "988409335791124551"
+	},
+	{
+		"animated": false,
+		"name": "icons_gitbranch",
+		"id": "869507190552166460"
+	},
+	{
+		"animated": false,
+		"name": "icons_gitcommit",
+		"id": "869507190199828490"
+	},
+	{
+		"animated": false,
+		"name": "icons_gitmerge",
+		"id": "869507189549723718"
+	},
+	{
+		"animated": false,
+		"name": "icons_gitpullrequest",
+		"id": "869507190057234433"
+	},
+	{
+		"animated": false,
+		"name": "icons_globe",
+		"id": "859424401971609600"
+	},
+	{
+		"animated": false,
+		"name": "icons_goodping",
+		"id": "880113406915538995"
+	},
+	{
+		"animated": false,
+		"name": "icons_hammer",
+		"id": "949635040424374342"
+	},
+	{
+		"animated": false,
+		"name": "icons_headphone",
+		"id": "859424401274568744"
+	},
+	{
+		"animated": false,
+		"name": "icons_headphonedeafen",
+		"id": "859424401035100200"
+	},
+	{
+		"animated": false,
+		"name": "icons_hyphen",
+		"id": "859388129596014592"
+	},
+	{
+		"animated": false,
+		"name": "icons_idelping",
+		"id": "880113405720145990"
+	},
+	{
+		"animated": false,
+		"name": "icons_illustrator",
+		"id": "949635040168538132"
+	},
+	{
+		"animated": false,
+		"name": "icons_info",
+		"id": "880113401207095346"
+	},
+	{
+		"animated": false,
+		"name": "icons_invite",
+		"id": "859424400750542858"
+	},
+	{
+		"animated": false,
+		"name": "icons_join",
+		"id": "860487640720343071"
+	},
+	{
+		"animated": false,
+		"name": "icons_kick",
+		"id": "859424400557604886"
+	},
+	{
+		"animated": false,
+		"name": "icons_kick",
+		"id": "950409450966110269"
+	},
+	{
+		"animated": false,
+		"name": "icons_leave",
+		"id": "860487640113217546"
+	},
+	{
+		"animated": false,
+		"name": "icons_link",
+		"id": "859388126875484180"
+	},
+	{
+		"animated": false,
+		"name": "icons_linked",
+		"id": "875395222962585660"
+	},
+	{
+		"animated": false,
+		"name": "icons_live",
+		"id": "859424401014128660"
+	},
+	{
+		"animated": false,
+		"name": "icons_loading",
+		"id": "859424401036148776"
+	},
+	{
+		"animated": false,
+		"name": "icons_magicwand",
+		"id": "875754473706893362"
+	},
+	{
+		"animated": false,
+		"name": "icons_mashroomman",
+		"id": "869538073581617193"
+	},
+	{
+		"animated": false,
+		"name": "icons_mentalhealth",
+		"id": "875395223583350855"
+	},
+	{
+		"animated": false,
+		"name": "icons_mic",
+		"id": "859424401198678017"
+	},
+	{
+		"animated": false,
+		"name": "icons_micmute",
+		"id": "859424401970561024"
+	},
+	{
+		"animated": false,
+		"name": "icons_monitor",
+		"id": "866583417138839563"
+	},
+	{
+		"animated": false,
+		"name": "icons_musicstop",
+		"id": "988409337837924422"
+	},
+	{
+		"animated": false,
+		"name": "icons_new1",
+		"id": "997766023174439093"
+	},
+	{
+		"animated": false,
+		"name": "icons_new1A",
+		"id": "998575730441072721"
+	},
+	{
+		"animated": false,
+		"name": "icons_new2",
+		"id": "997766025871364116"
+	},
+	{
+		"animated": false,
+		"name": "icons_new2A",
+		"id": "998575733117026395"
+	},
+	{
+		"animated": false,
+		"name": "icons_newmembers",
+		"id": "964425853410893874"
+	},
+	{
+		"animated": false,
+		"name": "icons_news1",
+		"id": "997862824925745173"
+	},
+	{
+		"animated": false,
+		"name": "icons_news2",
+		"id": "997862827815600219"
+	},
+	{
+		"animated": false,
+		"name": "icons_night",
+		"id": "859388130636333066"
+	},
+	{
+		"animated": false,
+		"name": "icons_nitro",
+		"id": "859424400812802048"
+	},
+	{
+		"animated": false,
+		"name": "icons_nitroboost",
+		"id": "859424401514168341"
+	},
+	{
+		"animated": false,
+		"name": "icons_owner",
+		"id": "859429432380227594"
+	},
+	{
+		"animated": false,
+		"name": "icons_paintpadbrush",
+		"id": "882595244380667944"
+	},
+	{
+		"animated": false,
+		"name": "icons_pause",
+		"id": "988409339851198495"
+	},
+	{
+		"animated": false,
+		"name": "icons_paypal",
+		"id": "944118377520197702"
+	},
+	{
+		"animated": false,
+		"name": "icons_pen",
+		"id": "869507189553922061"
+	},
+	{
+		"animated": false,
+		"name": "icons_people",
+		"id": "964425853930995783"
+	},
+	{
+		"animated": false,
+		"name": "icons_Person",
+		"id": "859388129932214292"
+	},
+	{
+		"animated": false,
+		"name": "icons_photoshop",
+		"id": "949635040038490163"
+	},
+	{
+		"animated": false,
+		"name": "icons_pin",
+		"id": "859388130598715392"
+	},
+	{
+		"animated": false,
+		"name": "icons_ping",
+		"id": "859424401324900352"
+	},
+	{
+		"animated": false,
+		"name": "icons_plant",
+		"id": "1040522412850155540"
+	},
+	{
+		"animated": false,
+		"name": "icons_play",
+		"id": "988409341784768533"
+	},
+	{
+		"animated": false,
+		"name": "icons_plus",
+		"id": "988409343743496232"
+	},
+	{
+		"animated": false,
+		"name": "icons_podcast",
+		"id": "859424401304846366"
+	},
+	{
+		"animated": false,
+		"name": "icons_premiumchannel",
+		"id": "964425853616422922"
+	},
+	{
+		"animated": false,
+		"name": "icons_reminder",
+		"id": "859388128364199946"
+	},
+	{
+		"animated": false,
+		"name": "icons_repeat",
+		"id": "988409346637594744"
+	},
+	{
+		"animated": false,
+		"name": "icons_repeatonce",
+		"id": "988409348826992680"
+	},
+	{
+		"animated": false,
+		"name": "icons_reply",
+		"id": "859388126153932802"
+	},
+	{
+		"animated": false,
+		"name": "icons_rightarrow",
+		"id": "859388126653186058"
+	},
+	{
+		"animated": false,
+		"name": "icons_saturn",
+		"id": "941683992409804850"
+	},
+	{
+		"animated": false,
+		"name": "icons_screenshare",
+		"id": "859424401186095114"
+	},
+	{
+		"animated": false,
+		"name": "icons_search",
+		"id": "859424401723883560"
+	},
+	{
+		"animated": false,
+		"name": "icons_sentry",
+		"id": "969499099671957565"
+	},
+	{
+		"animated": false,
+		"name": "icons_servermute",
+		"id": "988409351976935447"
+	},
+	{
+		"animated": false,
+		"name": "icons_settings",
+		"id": "859388128040976384"
+	},
+	{
+		"animated": false,
+		"name": "icons_share",
+		"id": "869507190380171344"
+	},
+	{
+		"animated": false,
+		"name": "icons_shine1",
+		"id": "859424400959602718"
+	},
+	{
+		"animated": false,
+		"name": "icons_shine2",
+		"id": "859424401472356372"
+	},
+	{
+		"animated": false,
+		"name": "icons_shine3",
+		"id": "859424401061970021"
+	},
+	{
+		"animated": false,
+		"name": "icons_shuffle",
+		"id": "988409354208313404"
+	},
+	{
+		"animated": false,
+		"name": "icons_splash",
+		"id": "859426808461525044"
+	},
+	{
+		"animated": false,
+		"name": "icons_spotify",
+		"id": "988409356313825361"
+	},
+	{
+		"animated": false,
+		"name": "icons_stageleave",
+		"id": "988409358427762698"
+	},
+	{
+		"animated": false,
+		"name": "icons_stagelocked",
+		"id": "988409360935956520"
+	},
+	{
+		"animated": false,
+		"name": "icons_stagemoderator",
+		"id": "988409363255410688"
+	},
+	{
+		"animated": false,
+		"name": "icons_stagemoveaudience",
+		"id": "988409365428043776"
+	},
+	{
+		"animated": false,
+		"name": "icons_stagemovespeaker",
+		"id": "988409368343109683"
+	},
+	{
+		"animated": false,
+		"name": "icons_stagerequesttospeak",
+		"id": "988409370800951316"
+	},
+	{
+		"animated": false,
+		"name": "icons_stagerequesttospeaklist",
+		"id": "988409373648887858"
+	},
+	{
+		"animated": false,
+		"name": "icons_star",
+		"id": "859388127880544296"
+	},
+	{
+		"animated": false,
+		"name": "icons_store",
+		"id": "875395222673186817"
+	},
+	{
+		"animated": false,
+		"name": "icons_supportscommandsbadge",
+		"id": "1000051291839545454"
+	},
+	{
+		"animated": false,
+		"name": "icons_text1",
+		"id": "875985515357282316"
+	},
+	{
+		"animated": false,
+		"name": "icons_text2",
+		"id": "875985515701231677"
+	},
+	{
+		"animated": false,
+		"name": "icons_text3",
+		"id": "875985515948679208"
+	},
+	{
+		"animated": false,
+		"name": "icons_text4",
+		"id": "920259058164989973"
+	},
+	{
+		"animated": false,
+		"name": "icons_text5",
+		"id": "920259712728072252"
+	},
+	{
+		"animated": false,
+		"name": "icons_text6",
+		"id": "920260975112888330"
+	},
+	{
+		"animated": false,
+		"name": "icons_timeout",
+		"id": "930797536900415548"
+	},
+	{
+		"animated": false,
+		"name": "icons_topgg",
+		"id": "988409375905443900"
+	},
+	{
+		"animated": false,
+		"name": "icons_transferownership",
+		"id": "869559200047570955"
+	},
+	{
+		"animated": false,
+		"name": "icons_update1",
+		"id": "997766033135906846"
+	},
+	{
+		"animated": false,
+		"name": "icons_update2",
+		"id": "997766035698630716"
+	},
+	{
+		"animated": false,
+		"name": "icons_upvote",
+		"id": "909715386843430933"
+	},
+	{
+		"animated": false,
+		"name": "icons_verified",
+		"id": "859424400939286549"
+	},
+	{
+		"animated": false,
+		"name": "icons_video",
+		"id": "859424401552572446"
+	},
+	{
+		"animated": false,
+		"name": "icons_Wrong",
+		"id": "859388130636988436"
+	},
+	{
+		"animated": false,
+		"name": "icons_wumpus",
+		"id": "859424402416336906"
+	},
+	{
+		"animated": false,
+		"name": "icons_xmarkwhite",
+		"id": "988409378161954866"
+	},
+	{
+		"animated": false,
+		"name": "Iconslogo",
+		"id": "950417237683105912"
+	},
+	{
+		"animated": false,
+		"name": "icons_1",
+		"id": "861865198465974274"
+	},
+	{
+		"animated": false,
+		"name": "icons_addreactions",
+		"id": "866920224581746698"
+	},
+	{
+		"animated": false,
+		"name": "icons_aka",
+		"id": "861852633333628928"
+	},
+	{
+		"animated": false,
+		"name": "icons_behance",
+		"id": "861919741642539018"
+	},
+	{
+		"animated": false,
+		"name": "icons_beta",
+		"id": "861852632725585920"
+	},
+	{
+		"animated": false,
+		"name": "icons_bots",
+		"id": "865488228789649429"
+	},
+	{
+		"animated": false,
+		"name": "icons_clean",
+		"id": "861852633799065660"
+	},
+	{
+		"animated": false,
+		"name": "icons_defaultperms",
+		"id": "866943907698180137"
+	},
+	{
+		"animated": false,
+		"name": "icons_discordbotdev",
+		"id": "861852633433636864"
+	},
+	{
+		"animated": false,
+		"name": "icons_discordbughunter",
+		"id": "861852633195347988"
+	},
+	{
+		"animated": false,
+		"name": "icons_discordhypesquard",
+		"id": "861852632757829632"
+	},
+	{
+		"animated": false,
+		"name": "icons_discordmod",
+		"id": "861852632863211540"
+	},
+	{
+		"animated": false,
+		"name": "icons_discordnitro",
+		"id": "861852633592758302"
+	},
+	{
+		"animated": false,
+		"name": "icons_discordpartner",
+		"id": "861852633027182612"
+	},
+	{
+		"animated": false,
+		"name": "icons_discordstaff",
+		"id": "861852633119326218"
+	},
+	{
+		"animated": false,
+		"name": "icons_dislike",
+		"id": "865488228642848778"
+	},
+	{
+		"animated": false,
+		"name": "icons_earlysupporter",
+		"id": "861852633505071104"
+	},
+	{
+		"animated": false,
+		"name": "icons_fb",
+		"id": "861919740217393153"
+	},
+	{
+		"animated": false,
+		"name": "icons_figma",
+		"id": "861863653577719818"
+	},
+	{
+		"animated": false,
+		"name": "icons_files",
+		"id": "865488228387651584"
+	},
+	{
+		"animated": false,
+		"name": "icons_friends",
+		"id": "861852632767528970"
+	},
+	{
+		"animated": false,
+		"name": "icons_github",
+		"id": "861919741836656671"
+	},
+	{
+		"animated": false,
+		"name": "icons_hoursglass",
+		"id": "866943907278094338"
+	},
+	{
+		"animated": false,
+		"name": "icons_HSbalance",
+		"id": "861852632829919282"
+	},
+	{
+		"animated": false,
+		"name": "icons_HSbravery",
+		"id": "861852632858492928"
+	},
+	{
+		"animated": false,
+		"name": "icons_HSbrilliance",
+		"id": "861920754094178304"
+	},
+	{
+		"animated": false,
+		"name": "icons_instagram",
+		"id": "889394485807677450"
+	},
+	{
+		"animated": false,
+		"name": "icons_kicking",
+		"id": "866943907131424799"
+	},
+	{
+		"animated": false,
+		"name": "icons_kofi",
+		"id": "866946908912353280"
+	},
+	{
+		"animated": false,
+		"name": "icons_like",
+		"id": "865488228719394876"
+	},
+	{
+		"animated": false,
+		"name": "icons_locked",
+		"id": "861852633193906177"
+	},
+	{
+		"animated": false,
+		"name": "icons_loop",
+		"id": "861852632893227029"
+	},
+	{
+		"animated": false,
+		"name": "icons_menu",
+		"id": "861852633617661983"
+	},
+	{
+		"animated": false,
+		"name": "icons_MSvisualcode",
+		"id": "861863653561335829"
+	},
+	{
+		"animated": false,
+		"name": "icons_musicstop",
+		"id": "861852633979420712"
+	},
+	{
+		"animated": false,
+		"name": "icons_New",
+		"id": "861852632774869034"
+	},
+	{
+		"animated": false,
+		"name": "icons_partner",
+		"id": "866943907152920576"
+	},
+	{
+		"animated": false,
+		"name": "icons_patreon",
+		"id": "861919741244735488"
+	},
+	{
+		"animated": false,
+		"name": "icons_pause",
+		"id": "861852632914198548"
+	},
+	{
+		"animated": false,
+		"name": "icons_pings",
+		"id": "866944313630654465"
+	},
+	{
+		"animated": false,
+		"name": "icons_play",
+		"id": "861852632800952320"
+	},
+	{
+		"animated": false,
+		"name": "icons_queue",
+		"id": "861852633240961024"
+	},
+	{
+		"animated": false,
+		"name": "icons_reddit",
+		"id": "861919740775890944"
+	},
+	{
+		"animated": false,
+		"name": "icons_serverpartner",
+		"id": "861920753930469376"
+	},
+	{
+		"animated": false,
+		"name": "icons_serververified",
+		"id": "861920754755960832"
+	},
+	{
+		"animated": false,
+		"name": "icons_snapchat",
+		"id": "861919740984557568"
+	},
+	{
+		"animated": false,
+		"name": "icons_supportteam",
+		"id": "861863654710706196"
+	},
+	{
+		"animated": false,
+		"name": "icons_twitter",
+		"id": "861863654097682452"
+	},
+	{
+		"animated": false,
+		"name": "icons_unlock",
+		"id": "861864835778871297"
+	},
+	{
+		"animated": false,
+		"name": "icons_youtube",
+		"id": "861863653962416128"
+	},
+	{
+		"animated": false,
+		"name": "icons_banmembers",
+		"id": "866943415361732628"
+	},
+	{
+		"animated": false,
+		"name": "icons_channelfollowed",
+		"id": "866599434375528488"
+	},
+	{
+		"animated": false,
+		"name": "icons_createcategory",
+		"id": "866599433687793685"
+	},
+	{
+		"animated": false,
+		"name": "icons_createchannel",
+		"id": "866943415643799552"
+	},
+	{
+		"animated": false,
+		"name": "icons_createchannels",
+		"id": "866599433574678559"
+	},
+	{
+		"animated": false,
+		"name": "icons_createemoji",
+		"id": "866943416474796062"
+	},
+	{
+		"animated": false,
+		"name": "icons_createintegration",
+		"id": "866943415329226782"
+	},
+	{
+		"animated": false,
+		"name": "icons_createrole",
+		"id": "866943415774478388"
+	},
+	{
+		"animated": false,
+		"name": "icons_createsticker",
+		"id": "866943415370514442"
+	},
+	{
+		"animated": false,
+		"name": "icons_createthread",
+		"id": "866943416251973672"
+	},
+	{
+		"animated": false,
+		"name": "icons_createwebhook",
+		"id": "866943414729965590"
+	},
+	{
+		"animated": false,
+		"name": "icons_deletechannel",
+		"id": "866943415396990987"
+	},
+	{
+		"animated": false,
+		"name": "icons_deleteemoji",
+		"id": "866943415090413589"
+	},
+	{
+		"animated": false,
+		"name": "icons_deleteevent",
+		"id": "866943416226152468"
+	},
+	{
+		"animated": false,
+		"name": "icons_deleteintegration",
+		"id": "866943415915642931"
+	},
+	{
+		"animated": false,
+		"name": "icons_deleterole",
+		"id": "866943415895851018"
+	},
+	{
+		"animated": false,
+		"name": "icons_deletesticker",
+		"id": "866943415912497163"
+	},
+	{
+		"animated": false,
+		"name": "icons_deletethread",
+		"id": "866943415988256798"
+	},
+	{
+		"animated": false,
+		"name": "icons_deletewebhook",
+		"id": "866943415094476830"
+	},
+	{
+		"animated": false,
+		"name": "icons_disable",
+		"id": "866599433712828477"
+	},
+	{
+		"animated": false,
+		"name": "icons_Discord",
+		"id": "866329296020701218"
+	},
+	{
+		"animated": false,
+		"name": "icons_enable",
+		"id": "866599434866786324"
+	},
+	{
+		"animated": false,
+		"name": "icons_endstage",
+		"id": "866943416377933824"
+	},
+	{
+		"animated": false,
+		"name": "icons_generalinfo",
+		"id": "866599434098835486"
+	},
+	{
+		"animated": false,
+		"name": "icons_growth",
+		"id": "866605190396510238"
+	},
+	{
+		"animated": false,
+		"name": "icons_linkadd",
+		"id": "865572290065072128"
+	},
+	{
+		"animated": false,
+		"name": "icons_linkrevoke",
+		"id": "865572289022394368"
+	},
+	{
+		"animated": false,
+		"name": "icons_linkupdate",
+		"id": "865572289180205057"
+	},
+	{
+		"animated": false,
+		"name": "icons_markasread",
+		"id": "866599434100015115"
+	},
+	{
+		"animated": false,
+		"name": "icons_notificationsettings",
+		"id": "866599434251010089"
+	},
+	{
+		"animated": false,
+		"name": "icons_OAuth2",
+		"id": "866599434729029642"
+	},
+	{
+		"animated": false,
+		"name": "icons_roles",
+		"id": "866605189029298197"
+	},
+	{
+		"animated": false,
+		"name": "icons_scheduleevent",
+		"id": "866943416021811200"
+	},
+	{
+		"animated": false,
+		"name": "icons_serverinsight",
+		"id": "866599433901572096"
+	},
+	{
+		"animated": false,
+		"name": "icons_startstage",
+		"id": "866943414699032577"
+	},
+	{
+		"animated": false,
+		"name": "icons_swardx",
+		"id": "866599435214389258"
+	},
+	{
+		"animated": false,
+		"name": "icons_threadchannel",
+		"id": "866694823972438056"
+	},
+	{
+		"animated": false,
+		"name": "icons_unbanmember",
+		"id": "866943415321100289"
+	},
+	{
+		"animated": false,
+		"name": "icons_updatechannel",
+		"id": "866943415450599437"
+	},
+	{
+		"animated": false,
+		"name": "icons_updateemoji",
+		"id": "866943416343461891"
+	},
+	{
+		"animated": false,
+		"name": "icons_updateevent",
+		"id": "866943415614046266"
+	},
+	{
+		"animated": false,
+		"name": "icons_updateintegration",
+		"id": "866943415891263518"
+	},
+	{
+		"animated": false,
+		"name": "icons_updatemember",
+		"id": "866943416256167936"
+	},
+	{
+		"animated": false,
+		"name": "icons_updaterole",
+		"id": "866943415278895114"
+	},
+	{
+		"animated": false,
+		"name": "icons_updateserver",
+		"id": "866943416158781451"
+	},
+	{
+		"animated": false,
+		"name": "icons_updatestage",
+		"id": "866943415447191592"
+	},
+	{
+		"animated": false,
+		"name": "icons_updatesticker",
+		"id": "866943415560175697"
+	},
+	{
+		"animated": false,
+		"name": "icons_updatethread",
+		"id": "866943415136026674"
+	},
+	{
+		"animated": false,
+		"name": "icons_updatewebhook",
+		"id": "866943415384277002"
+	},
+	{
+		"animated": false,
+		"name": "icons_0",
+		"id": "866997284961386496"
+	},
+	{
+		"animated": false,
+		"name": "icons_1",
+		"id": "866951385148293170"
+	},
+	{
+		"animated": false,
+		"name": "icons_10",
+		"id": "866951386159906816"
+	},
+	{
+		"animated": false,
+		"name": "icons_2",
+		"id": "866951385416859668"
+	},
+	{
+		"animated": false,
+		"name": "icons_3",
+		"id": "866951386187825182"
+	},
+	{
+		"animated": false,
+		"name": "icons_4",
+		"id": "866951385114476565"
+	},
+	{
+		"animated": false,
+		"name": "icons_5",
+		"id": "866951385664978984"
+	},
+	{
+		"animated": false,
+		"name": "icons_6",
+		"id": "866951386372505600"
+	},
+	{
+		"animated": false,
+		"name": "icons_7",
+		"id": "866951385542950943"
+	},
+	{
+		"animated": false,
+		"name": "icons_8",
+		"id": "866951385765773323"
+	},
+	{
+		"animated": false,
+		"name": "icons_9",
+		"id": "866951385164283934"
+	},
+	{
+		"animated": false,
+		"name": "icons_a",
+		"id": "866997309723639818"
+	},
+	{
+		"animated": false,
+		"name": "icons_amogus",
+		"id": "867651538448809984"
+	},
+	{
+		"animated": false,
+		"name": "icons_b",
+		"id": "866997309383901184"
+	},
+	{
+		"animated": false,
+		"name": "icons_bday",
+		"id": "868022351873318972"
+	},
+	{
+		"animated": false,
+		"name": "icons_book",
+		"id": "867656825545424898"
+	},
+	{
+		"animated": false,
+		"name": "icons_c",
+		"id": "866997309552197662"
+	},
+	{
+		"animated": false,
+		"name": "icons_d",
+		"id": "866997309052944385"
+	},
+	{
+		"animated": false,
+		"name": "icons_e",
+		"id": "866997309325312030"
+	},
+	{
+		"animated": false,
+		"name": "icons_f",
+		"id": "866997309211541515"
+	},
+	{
+		"animated": false,
+		"name": "icons_fingerprint",
+		"id": "867656826899136553"
+	},
+	{
+		"animated": false,
+		"name": "icons_g",
+		"id": "866997309429383169"
+	},
+	{
+		"animated": false,
+		"name": "Icons_Guardian",
+		"id": "867400863822512148"
+	},
+	{
+		"animated": false,
+		"name": "icons_h",
+		"id": "866997309601611786"
+	},
+	{
+		"animated": false,
+		"name": "icons_he_him",
+		"id": "868025274745372673"
+	},
+	{
+		"animated": false,
+		"name": "icons_i",
+		"id": "866997309576314901"
+	},
+	{
+		"animated": false,
+		"name": "icons_j",
+		"id": "866997309472636969"
+	},
+	{
+		"animated": false,
+		"name": "icons_k",
+		"id": "866997309685497856"
+	},
+	{
+		"animated": false,
+		"name": "icons_l",
+		"id": "866997309802676244"
+	},
+	{
+		"animated": false,
+		"name": "icons_library",
+		"id": "867022827035164692"
+	},
+	{
+		"animated": false,
+		"name": "icons_m",
+		"id": "866997310197727263"
+	},
+	{
+		"animated": false,
+		"name": "icons_n",
+		"id": "866997309334093844"
+	},
+	{
+		"animated": false,
+		"name": "icons_o",
+		"id": "866997310378606652"
+	},
+	{
+		"animated": false,
+		"name": "icons_p",
+		"id": "866997310332207134"
+	},
+	{
+		"animated": false,
+		"name": "icons_q",
+		"id": "866997309489152030"
+	},
+	{
+		"animated": false,
+		"name": "icons_r",
+		"id": "866997309447208970"
+	},
+	{
+		"animated": false,
+		"name": "icons_s",
+		"id": "866997310364581918"
+	},
+	{
+		"animated": false,
+		"name": "icons_she_her",
+		"id": "868025274799898666"
+	},
+	{
+		"animated": false,
+		"name": "icons_statsdown",
+		"id": "867656825478184990"
+	},
+	{
+		"animated": false,
+		"name": "icons_t",
+		"id": "866997309828235284"
+	},
+	{
+		"animated": false,
+		"name": "icons_tada",
+		"id": "868022351508414474"
+	},
+	{
+		"animated": false,
+		"name": "icons_they_them",
+		"id": "868025379233882163"
+	},
+	{
+		"animated": false,
+		"name": "icons_translate",
+		"id": "867656825527730176"
+	},
+	{
+		"animated": false,
+		"name": "icons_u",
+		"id": "866997309678026754"
+	},
+	{
+		"animated": false,
+		"name": "icons_v",
+		"id": "866997310599987210"
+	},
+	{
+		"animated": false,
+		"name": "icons_vpn",
+		"id": "867656825346981899"
+	},
+	{
+		"animated": false,
+		"name": "icons_w",
+		"id": "866997310365499393"
+	},
+	{
+		"animated": false,
+		"name": "icons_x",
+		"id": "866997309798481920"
+	},
+	{
+		"animated": false,
+		"name": "icons_y",
+		"id": "866997309737140234"
+	},
+	{
+		"animated": false,
+		"name": "icons_z",
+		"id": "866997309521657886"
+	},
+	{
+		"animated": false,
+		"name": "icons_18",
+		"id": "908958944125386762"
+	},
+	{
+		"animated": false,
+		"name": "icons_bigender",
+		"id": "886586235278221323"
+	},
+	{
+		"animated": false,
+		"name": "icons_calender",
+		"id": "886913968331976744"
+	},
+	{
+		"animated": false,
+		"name": "icons_calenderdate",
+		"id": "886913968566833152"
+	},
+	{
+		"animated": false,
+		"name": "icons_cmd",
+		"id": "886913968386490368"
+	},
+	{
+		"animated": false,
+		"name": "icons_discordjs",
+		"id": "891686633991192607"
+	},
+	{
+		"animated": false,
+		"name": "icons_Female",
+		"id": "886586235567624243"
+	},
+	{
+		"animated": false,
+		"name": "icons_gay",
+		"id": "886586235399856129"
+	},
+	{
+		"animated": false,
+		"name": "icons_gender",
+		"id": "908959006796681216"
+	},
+	{
+		"animated": false,
+		"name": "icons_hetero",
+		"id": "886586234577768518"
+	},
+	{
+		"animated": false,
+		"name": "icons_jpg",
+		"id": "908958943726956564"
+	},
+	{
+		"animated": false,
+		"name": "icons_js",
+		"id": "891686633869545503"
+	},
+	{
+		"animated": false,
+		"name": "icons_lesbian",
+		"id": "886586235840233543"
+	},
+	{
+		"animated": false,
+		"name": "icons_Male",
+		"id": "886586234883932181"
+	},
+	{
+		"animated": false,
+		"name": "icons_moderationhig",
+		"id": "892004694535327814"
+	},
+	{
+		"animated": false,
+		"name": "icons_moderationhighest",
+		"id": "892004694120103946"
+	},
+	{
+		"animated": false,
+		"name": "icons_moderationlow",
+		"id": "892004694157848616"
+	},
+	{
+		"animated": false,
+		"name": "icons_moderationmedium",
+		"id": "892004694887653416"
+	},
+	{
+		"animated": false,
+		"name": "icons_moderationnone",
+		"id": "892004693943926785"
+	},
+	{
+		"animated": false,
+		"name": "icons_nodejs",
+		"id": "891686636625223680"
+	},
+	{
+		"animated": false,
+		"name": "icons_png",
+		"id": "908958943454302219"
+	},
+	{
+		"animated": false,
+		"name": "Icons_radmins",
+		"id": "888881202382118922"
+	},
+	{
+		"animated": false,
+		"name": "Icons_rartists",
+		"id": "889125916624683088"
+	},
+	{
+		"animated": false,
+		"name": "Icons_rboosters",
+		"id": "888881202256306237"
+	},
+	{
+		"animated": false,
+		"name": "Icons_rbots",
+		"id": "888881202797375548"
+	},
+	{
+		"animated": false,
+		"name": "Icons_rcamera",
+		"id": "889125916658253854"
+	},
+	{
+		"animated": false,
+		"name": "Icons_rdevelopers",
+		"id": "889125916922511420"
+	},
+	{
+		"animated": false,
+		"name": "Icons_revents",
+		"id": "888881202835107850"
+	},
+	{
+		"animated": false,
+		"name": "Icons_rfire",
+		"id": "889125916956033024"
+	},
+	{
+		"animated": false,
+		"name": "Icons_rguardians",
+		"id": "888881201128013867"
+	},
+	{
+		"animated": false,
+		"name": "Icons_rhelpers",
+		"id": "888881202369552474"
+	},
+	{
+		"animated": false,
+		"name": "Icons_rmembers",
+		"id": "888881202377949214"
+	},
+	{
+		"animated": false,
+		"name": "Icons_rmods",
+		"id": "888881201354514522"
+	},
+	{
+		"animated": false,
+		"name": "Icons_rowner",
+		"id": "888881202352754688"
+	},
+	{
+		"animated": false,
+		"name": "Icons_rpodcast",
+		"id": "889125916494688276"
+	},
+	{
+		"animated": false,
+		"name": "Icons_rsdonator",
+		"id": "889125916377227274"
+	},
+	{
+		"animated": false,
+		"name": "Icons_rspartner",
+		"id": "889125916851191808"
+	},
+	{
+		"animated": false,
+		"name": "Icons_rsstaffs",
+		"id": "889125916041691177"
+	},
+	{
+		"animated": false,
+		"name": "Icons_rstaff",
+		"id": "888881202877067275"
+	},
+	{
+		"animated": false,
+		"name": "Icons_rverification",
+		"id": "889125916700201031"
+	},
+	{
+		"animated": false,
+		"name": "Icons_rverified",
+		"id": "888881202700894218"
+	},
+	{
+		"animated": false,
+		"name": "Icons_rVIP",
+		"id": "888881201199329311"
+	},
+	{
+		"animated": false,
+		"name": "icons_snowflake",
+		"id": "909680178437976114"
+	},
+	{
+		"animated": false,
+		"name": "Icons_tiktok",
+		"id": "941672576449654804"
+	},
+	{
+		"animated": false,
+		"name": "icons_transgender",
+		"id": "886586234800078889"
+	},
+	{
+		"animated": false,
+		"name": "icons_twitch",
+		"id": "908592812046573588"
+	},
+	{
+		"animated": false,
+		"name": "Icons_vklogo",
+		"id": "938087795065520199"
+	},
+	{
+		"animated": false,
+		"name": "icons_warning",
+		"id": "908958943466893323"
+	},
+	{
+		"animated": false,
+		"name": "icons_wave",
+		"id": "908959006725378048"
+	},
+	{
+		"animated": false,
+		"name": "icons_webp",
+		"id": "908958943550779413"
+	}
+]
