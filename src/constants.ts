@@ -8,8 +8,8 @@ export const YTDL_ARGS = {
 };
 
 export const SPOTIFY_REGEX = {
-	track_no_query: /^https?:\/\/open\.spotify\.com\/track/,
-	track: /^https?:\/\/(?:www.)?(?:open\.)?spotify.com\/track\/(?<id>[\dA-Za-z]{22})(?:.+)?$/,
+	track_no_query: /^https?:\/\/open\.spotify\.com\/?(?:intl-.*)?\/track/,
+	track: /^https?:\/\/(?:www.)?(?:open\.)?spotify.com\/?(?:intl-.*)?\/track\/(?<id>[\dA-Za-z]{22})(?:.+)?$/,
 	playlist_no_query: /^https?:\/\/open\.spotify\.com\/playlist/,
 	playlist: /^https?:\/\/(?:www.)?(?:open\.)?spotify.com\/playlist\/(?<id>[\dA-Za-z]{22})(?:.+)?$/,
 	album_no_query: /^https?:\/\/open\.spotify\.com\/album/,
