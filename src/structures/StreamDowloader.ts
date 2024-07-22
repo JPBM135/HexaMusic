@@ -1,8 +1,8 @@
 import { PassThrough } from 'node:stream';
 import type { Readable } from 'node:stream';
+import type { downloadOptions } from '@distube/ytdl-core';
+import ytdl from '@distube/ytdl-core';
 import prism, { type opus as Opus, type FFmpeg } from 'prism-media';
-import type { downloadOptions } from 'ytdl-core';
-import ytdl from 'ytdl-core';
 import { /* EnvironmentalVariables, */ YTDL_ARGS } from '../constants.js';
 // import { resolveEnv } from '../utils/env.js';
 import logger from '../logger.js';

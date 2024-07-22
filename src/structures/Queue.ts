@@ -9,6 +9,7 @@ import {
 	NoSubscriberBehavior,
 	AudioPlayerStatus,
 } from '@discordjs/voice';
+import ytdl from '@distube/ytdl-core';
 import {
 	type Guild,
 	type VoiceBasedChannel,
@@ -26,7 +27,6 @@ import { Histogram, Counter, Gauge } from 'prom-client';
 import { container } from 'tsyringe';
 // @ts-expect-error: Missing types
 import YtSr from 'youtube-sr';
-import ytdl from 'ytdl-core';
 import { Emojis, EMPTY_CHANNEL_TIMEOUT, EMPTY_QUEUE_TIMEOUT, EnvironmentalVariables } from '../constants.js';
 import logger from '../logger.js';
 import { editQueueMessage } from '../message/base.js';
