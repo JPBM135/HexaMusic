@@ -382,16 +382,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@discordjs/voice@npm:^0.16.0":
-  version: 0.16.0
-  resolution: "@discordjs/voice@npm:0.16.0"
+"@discordjs/voice@npm:^0.16.1":
+  version: 0.16.1
+  resolution: "@discordjs/voice@npm:0.16.1"
   dependencies:
-    "@types/ws": ^8.5.4
-    discord-api-types: ^0.37.37
+    "@types/ws": ^8.5.9
+    discord-api-types: 0.37.61
     prism-media: ^1.3.5
-    tslib: ^2.5.0
-    ws: ^8.13.0
-  checksum: 521824475c5257cf2098b7e7303e44c7906c2126603c7d85de14ad5f6ec12e61e459e18af92b97a11d504db91209aeb5b3e0c324b1f4f790c20e8db925fd66e9
+    tslib: ^2.6.2
+    ws: ^8.14.2
+  checksum: c8394888ed4f316ef0ccf3f0de3a8e5f299f83877092837c604049934d4200b638b840e3154792cab10d153c026e8bed50e1e4288807a18f1fe32c0725b3fd4c
   languageName: node
   linkType: hard
 
@@ -533,7 +533,7 @@ __metadata:
   resolution: "@jpbm135/hexa-music@workspace:."
   dependencies:
     "@discordjs/opus": ^0.9.0
-    "@discordjs/voice": ^0.16.0
+    "@discordjs/voice": ^0.16.1
     "@swc/cli": ^0.1.62
     "@swc/core": ^1.3.59
     "@types/express": ^4.17.17
@@ -566,10 +566,10 @@ __metadata:
     typescript: ^4.9.5
     undici: ^5.22.1
     utf-8-validate: ^6.0.3
-    yarn: ^1.22.19
+    yarn: ^1.22.22
     youtube-ext: ^1.0.11
     youtube-sr: ^4.3.4
-    ytdl-core: ^4.11.4
+    ytdl-core: ^4.11.5
     zlib-sync: ^0.1.8
   languageName: unknown
   linkType: soft
@@ -1264,6 +1264,15 @@ __metadata:
   dependencies:
     "@types/node": "*"
   checksum: fefbad20d211929bb996285c4e6f699b12192548afedbe4930ab4384f8a94577c9cd421acaad163cacd36b88649509970a05a0b8f20615b30c501ed5269038d1
+  languageName: node
+  linkType: hard
+
+"@types/ws@npm:^8.5.9":
+  version: 8.5.11
+  resolution: "@types/ws@npm:8.5.11"
+  dependencies:
+    "@types/node": "*"
+  checksum: 91d3ad6cc802f52b01c8cc7b0de149617785e8166e631291201d5f50937db2a578cbe70b61d96f43140d57170ad2f904782d3ec9ed86c34c5e9cec9a847a94dc
   languageName: node
   linkType: hard
 
@@ -2872,6 +2881,13 @@ __metadata:
   dependencies:
     path-type: ^4.0.0
   checksum: fa05e18324510d7283f55862f3161c6759a3f2f8dbce491a2fc14c8324c498286c54282c1f0e933cb930da8419b30679389499b919122952a4f8592362ef4615
+  languageName: node
+  linkType: hard
+
+"discord-api-types@npm:0.37.61":
+  version: 0.37.61
+  resolution: "discord-api-types@npm:0.37.61"
+  checksum: fe33d528e31a6de0bab2afb43d0e058957a6da6cfc4d797943fac83aeb8d07543dc0f85cad3c4e6789cbbac0c7ca49dae5ac465224b129c7acb716097fa0b081
   languageName: node
   linkType: hard
 
@@ -8636,6 +8652,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"tslib@npm:^2.6.2":
+  version: 2.6.3
+  resolution: "tslib@npm:2.6.3"
+  checksum: 74fce0e100f1ebd95b8995fbbd0e6c91bdd8f4c35c00d4da62e285a3363aaa534de40a80db30ecfd388ed7c313c42d930ee0eaf108e8114214b180eec3dbe6f5
+  languageName: node
+  linkType: hard
+
 "tsutils-etc@npm:^1.4.1":
   version: 1.4.2
   resolution: "tsutils-etc@npm:1.4.2"
@@ -9238,6 +9261,21 @@ __metadata:
   languageName: node
   linkType: hard
 
+"ws@npm:^8.14.2":
+  version: 8.18.0
+  resolution: "ws@npm:8.18.0"
+  peerDependencies:
+    bufferutil: ^4.0.1
+    utf-8-validate: ">=5.0.2"
+  peerDependenciesMeta:
+    bufferutil:
+      optional: true
+    utf-8-validate:
+      optional: true
+  checksum: 91d4d35bc99ff6df483bdf029b9ea4bfd7af1f16fc91231a96777a63d263e1eabf486e13a2353970efc534f9faa43bdbf9ee76525af22f4752cbc5ebda333975
+  languageName: node
+  linkType: hard
+
 "xml-name-validator@npm:^4.0.0":
   version: 4.0.0
   resolution: "xml-name-validator@npm:4.0.0"
@@ -9309,13 +9347,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"yarn@npm:^1.22.19":
-  version: 1.22.19
-  resolution: "yarn@npm:1.22.19"
+"yarn@npm:^1.22.22":
+  version: 1.22.22
+  resolution: "yarn@npm:1.22.22"
   bin:
     yarn: bin/yarn.js
     yarnpkg: bin/yarn.js
-  checksum: b43d2cc5fee7e933beb12a8aee7dfceca9e9ef2dd17c5d04d15a12ab7bec5f5744ea34a07b86e013da7f291a18c4e1ad8f70e150f5ed2f4666e6723c7f0a8452
+  checksum: 59aeef5ccfd3347287f939448e6d3594f0a42f74025b9bdc2a277641c1d4070c07a38b6e7c35e695f77410b0269a5a43c78535786564f86f39c9f781e6efa311
   languageName: node
   linkType: hard
 
@@ -9342,14 +9380,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ytdl-core@npm:^4.11.4":
-  version: 4.11.4
-  resolution: "ytdl-core@npm:4.11.4"
+"ytdl-core@npm:^4.11.5":
+  version: 4.11.5
+  resolution: "ytdl-core@npm:4.11.5"
   dependencies:
     m3u8stream: ^0.8.6
     miniget: ^4.2.2
     sax: ^1.1.3
-  checksum: 62c83baf85b4fc4808a149d2ec9a2afdd86f60597362aa8ceebb3dac5c11d9a54f9de11bb4b3d34e70d4a55679457b879a1e3f079124e2933dac036d086bc378
+  checksum: f81ae907780747c4522198003967da1730af33fb6c8632ed2ba7a3dfb67a3fd1bf73807a68506a5926d209ee2f3305bfb6a633f6829b39ed60694c033c300fa9
   languageName: node
   linkType: hard
 
